@@ -1,0 +1,76 @@
+.writing-container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-top: 4rem;
+}
+
+.writing-writing {
+  color: #706f6f;
+}
+
+.writing-contentContainer {
+  text-align: center;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+#writing-subtitle {
+  margin-top: 4rem;
+  text-indent: 3rem;
+}
+
+#writing-subtitle2 {
+  text-indent: 3rem;
+}
+
+.writing-imageContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.writing-pic {
+  border-radius: 50%;
+  border: 2px solid $blue;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 1);
+  height: 300px;
+  width: 300px;
+}
+
+#writing-pic2,
+#writing-pic3 {
+  margin-left: -20px;
+}
+
+.writing-listContainer {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.writing-subheading {
+  font-weight: bold;
+  color: $blue;
+}
+
+.writing-appLink {
+  color: $blue;
+}
+
+@media only screen and (max-width: $desktop-breakpoint) {
+  #writing-pic1,
+  #writing-pic3 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: $tablet-breakpoint) {
+  .writing-listContainer {
+    flex-direction: column;
+  }
+}

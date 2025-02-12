@@ -1,0 +1,47 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  // scroll-behavior: smooth;
+}
+
+body {
+  color: $off-white;
+  background-color: #eaeaea;
+  font-family: "brandon-grotesque", Helvetica, Arial, sans-serif;
+  font-size: $m-size;
+  line-height: 1.6;
+}
+
+button, .button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+.is-active {
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.section-title {
+  color: #333;
+  text-transform: uppercase;
+  font-size: 4rem;
+}
+
+.section-subtitle {
+  max-width: 700px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+

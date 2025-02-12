@@ -1,0 +1,41 @@
+.NavBar-navBar {
+    display: flex;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.NavBar-item {
+    font-family: "brandon-grotesque", Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.875em;
+    text-decoration: none;
+    padding: 1em 2em;
+    -webkit-transition: color .6s;
+    transition: color .6s;
+}
+
+.NavBar-item:hover {
+    color: #706f6f;
+    cursor: pointer;
+}
+
+#NavBar-icon {
+    margin-right: auto;
+}
+
+#NavBar-icon > img {
+    width: 5rem;
+    height: 5rem;
+}
+
+@media only screen and (max-width: $tablet-breakpoint) {
+    #NavBar-icon {
+        display: none;
+    }
+
+    .NavBar-navBar {
+        justify-content: space-around;
+    }
+}

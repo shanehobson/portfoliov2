@@ -1,0 +1,73 @@
+.HeaderContent-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+    padding-top: 12rem;
+}
+
+.HeaderContent-title {
+    font-size: 76px;
+    text-shadow: 8px 8px 20px rgba(0, 0, 0, 1);
+}
+
+.HeaderContent-subtitle {
+    font-size: 24px;
+    width: 40%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 3.5rem;
+    text-align: center;
+}
+
+.HeaderContent-header .button {
+    display: block;
+    font-size: 24px;
+    color: $off-white;
+    border: 2px solid $off-white;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    margin-top: 7rem;
+    -webkit-transition: background-color .6s, color .6s;
+    transition: background-color .6s, color .6s;
+}
+
+.HeaderContent-header .button:hover {
+    background-color: $off-white;
+    color: $blue;
+}
+
+@media only screen and (max-width: $desktop-breakpoint) {
+    .HeaderContent-header {
+        margin-top: 3rem;
+        padding-top: 12rem;
+    }
+
+    .HeaderContent-title {
+        font-size: 62px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .HeaderContent-subtitle {
+        width: 90%;
+        font-size: 24px;
+    }
+}
+
+@media only screen and (max-width: $tablet-breakpoint) {
+    .HeaderContent-title {
+        font-size: 50px;
+    }
+
+    .HeaderContent-header {
+        padding-top: 7rem;
+    }
+}
+
+@media only screen and (max-width: $iphone-breakpoint) {
+    .HeaderContent-title {
+        font-size: 44px;
+    }
+}

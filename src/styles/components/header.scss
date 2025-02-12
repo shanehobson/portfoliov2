@@ -1,0 +1,30 @@
+.header {
+    min-height: 100vh;
+    background: url("/images/bg.jpg") no-repeat;
+    background-color: $blue;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.header_dark-overlay {
+    background-color: $dark-overlay;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.header-navBar_container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+@media only screen and (max-height: 620px) {
+    .header,
+    .header_dark-overlay {
+        height: 700px;
+    }
+}

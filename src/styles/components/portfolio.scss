@@ -1,0 +1,110 @@
+.portfolio-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-top: 4rem;
+}
+
+.portfolio-portfolio {
+    color: #706f6f;
+}
+
+.portfolio-contentContainer {
+    text-align: center;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.portfolio-portfolioItem {
+    display: grid;
+    grid-template-areas: "l l";
+    margin-top: 6rem;
+    margin-bottom: 5rem;
+}
+
+.portfolio-portfolioItemTitle {
+    color: #333;
+}
+
+.portfolio-portfolioItemText p {
+    max-width: 500px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.portfolio-portfolioButtonContainer {
+    margin-top: 2rem;
+}
+
+.portfolio-portfolioButton {
+    display: inline-block;
+    margin: 1rem 1rem 2rem 1rem;
+}
+
+.portfolio-portfolioButton .button {
+    font-size: 18px;
+    color: $blue;
+    border: 2px solid $blue;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    margin-top: 7rem;
+    -webkit-transition: background-color .6s, color .6s;
+    transition: background-color .6s, color .6s;
+    width: 40%;
+}
+
+.portfolio-portfolioButton .button:hover {
+    background-color: $blue;
+    color: $off-white;
+}
+
+
+.portfolio-screenshot {
+    max-height: 700px;
+    max-width: 650px;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 1);
+    border-radius: 1rem;
+    margin-top: 3.3rem;
+}
+
+#portfolio-blindsTrackerImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#portfolio-portfolioSiteText  {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+@media only screen and (max-width: $desktop-breakpoint) {
+    .portfolio-portfolioItem {
+       display: flex;
+       flex-direction: column;
+    }
+
+    #portfolio-loaderGalleryImage,
+    #portfolio-blindsTrackerImage {
+        order: 2;
+    }
+
+    #portfolio-loaderGalleryText,
+    #portfolio-blindsTrackerText {
+        order: 1;
+    }
+
+    .portfolio-screenshot {
+        width: 100%;
+    }
+
+    .portfolio-portfolioItem {
+        margin-top: 2rem;
+    }
+}
