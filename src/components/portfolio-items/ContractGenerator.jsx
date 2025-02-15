@@ -4,7 +4,7 @@ const ContractGenerator = () => {
   return (
     <div className='portfolio-portfolioItem'>
          <div className='portfolio-portfolioItemImage'>
-            <a href='https://ancient-stream-13100.herokuapp.com/'  target='blank'><img src='/images/contract-generator.png' className='portfolio-screenshot'></img></a>
+            <a href='https://d31z2giqzo64q3.cloudfront.net'  target='blank'><img src='/images/contract-generator.png' className='portfolio-screenshot'></img></a>
         </div>
         <div className='portfolio-portfolioItemText'>
             <h2 className='portfolio-portfolioItemTitle'>Contract Generator</h2>
@@ -16,7 +16,7 @@ const ContractGenerator = () => {
             </p>
             <div className='portfolio-portfolioButtonContainer'>
                 <div className='portfolio-portfolioButton'>
-                    <a href='https://ancient-stream-13100.herokuapp.com/' className='button' target='blank'>Explore The App</a>
+                    <a href='https://d31z2giqzo64q3.cloudfront.net' className='button' target='blank'>Explore The App</a>
                 </div>
                 <div className='portfolio-portfolioButton'>
                     <a href='https://github.com/shanehobson/contract-generator' className='button' target='blank'>View Source Code</a>

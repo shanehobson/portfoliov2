@@ -22,9 +22,9 @@ const PitchingTheory = () => {
             Check out the video to the left to see the system in action and watch me create, edit, and delete a blog post in three minutes.
             </p>
             <div className='portfolio-portfolioButtonContainer'>
-                <div className='portfolio-portfolioButton'>
+                {/* <div className='portfolio-portfolioButton'>
                     <a href='https://www.pitchingtheory.com' className='button' target='blank'>Explore The App</a>
-                </div>
+                </div> */}
                 <div className='portfolio-portfolioButton'>
                     <a href='https://github.com/shanehobson/pitching-theory-app' className='button' target='blank'>View Source Code</a>
                 </div>

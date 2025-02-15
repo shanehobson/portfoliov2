@@ -13,9 +13,9 @@ const InvoiceGenerator = () => {
             Check out the video to the right to see me create an invoice in less than three minutes.
             </p>
             <div className='portfolio-portfolioButtonContainer'>
-                <div className='portfolio-portfolioButton'>
+                {/* <div className='portfolio-portfolioButton'>
                     <a href='https://form-tree-invoice-generator.herokuapp.com/' className='button' target='blank'>Explore The App</a>
-                </div>
+                </div> */}
                 <div className='portfolio-portfolioButton'>
                     <a href='https://github.com/shanehobson/invoice-generator-fe' className='button' target='blank'>View Front-End Source Code</a>
                 </div>

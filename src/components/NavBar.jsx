@@ -28,7 +28,7 @@ const NavBar = () => {
                 offset={0}
                 duration={1000}
               >
-                <p>My Writing</p>
+                <p>Writing</p>
               </Link>
             </div>
             <div className='NavBar-item'>

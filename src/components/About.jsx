@@ -12,7 +12,7 @@ const About = () => {
             </div>
 
             <p className='section-subtitle' id='about-subtitle'>
-                I am a software engineer building high-performance, scalable applications that serve hundreds of thousands of users. I have experince across the entire stack, from frontend to backend to dev ops and cloud services. I have nearly a decade of experience building software for the web, and I am an Amazon Web Services Certified Solutions Architect.
+                I am a software engineer building high-performance, scalable applications that serve hundreds of thousands of users. I have experience across the entire stack, from frontend to backend to dev ops and cloud services. I have nearly a decade of experience building software for the web, and I am an Amazon Web Services Certified Solutions Architect.
                 <br />
             </p>
 
@@ -22,7 +22,7 @@ const About = () => {
             </p>
 
             <p className='section-subtitle' id='about-subtitle2'>
-                I currently work as a consultant for a Fortune 100 media company, helping build a system that manages over a billion dollars in ad revenue.  When not working, I enjoy learning new technologies, building all sorts of web apps large and small, writing about software, and reading widely on subjects including software architecture and design, history, philosophy, and law. I also enjoy traveling and exploring the outdoors from my home base in Denver, CO.
+                I currently work as a consultant for a Fortune 100 media company, helping build a greenfield system that manages over a billion dollars in ad revenue.  When not working, I enjoy learning new technologies, building all sorts of web apps large and small, writing about software, and reading widely on technical and non-technical subjects. I also enjoy traveling and exploring the outdoors from my home base in Denver, CO.
             </p>
             <p className='section-subtitle' id='about-subtitle3'>
                 Prior to becoming a web developer, I attended law school and practiced law for three years as a litigation and trial attorney. I remain a licensed attorney. As a result of this background, I am deeply interested in the intersection between law and technology and I am passionate about using my dual skillset to solve legal problems using technology. 

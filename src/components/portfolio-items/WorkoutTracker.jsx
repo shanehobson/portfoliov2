@@ -11,16 +11,17 @@ const WorkoutTracker = () => {
             The front-end of Workout Tracker was built using Angular, and the backend was built using Node.js, Express, and a MongoDB cloud database.
             </p>
             <div className='portfolio-portfolioButtonContainer'>
-                <div className='portfolio-portfolioButton'>
-                    <a href='https://workout-tracker-application.herokuapp.com/' className='button' target='blank'>Explore The App</a>
-                </div>
+                {/* <div className='portfolio-portfolioButton'>
+                    <a href='https://www.pitchingtheory.com' className='button' target='blank'>Explore The App</a>
+                </div> */}
                 <div className='portfolio-portfolioButton'>
                     <a href='https://github.com/shanehobson/workout-tracker' className='button' target='blank'>View Front-End Source Code</a>
                 </div>
                 <div className='portfolio-portfolioButton'>
-                    <a href='https://github.com/shanehobson/workout-tracker-api' className='button' target='blank'>View Back-End Source Code</a>
+                    <a href='https://github.com/shanehobson/workout-tracker-api' className='button' target='blank'>View Backend Source Code</a>
                 </div>
             </div>
+           
         </div>
         <div className='portfolio-portfolioItemImage' id='portfolio-loaderGalleryImage' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <video
