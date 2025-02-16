@@ -10,7 +10,7 @@ const InvoiceGenerator = () => {
             The front-end of the project was built using React and Redux. On the backend, there is a Node.js/Express server that constructs a PDF document and saves the document in the cloud with AWS S3.
             </p>
             <p>
-            Check out the video to the right to see me create an invoice in less than three minutes.
+            Check out the video to see me create an invoice in less than three minutes.
             </p>
             <div className='portfolio-portfolioButtonContainer'>
                 {/* <div className='portfolio-portfolioButton'>

@@ -18,7 +18,7 @@ const Vault = () => {
             Vault is a web application that allows for quick and easy upload and cloud storage of photos and videos from your phone, tablet, or computer. Vault has a React frontend, and a serverless backend built on AWS Cognito, API Gateway, Lambda, DynamoDB, and S3.
             </p>
             <p>
-            Check out the video to the left to see it in action.
+            Check out the video to see it in action.
             </p>
           
         </div>
