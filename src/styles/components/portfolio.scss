@@ -22,9 +22,22 @@
 
 .portfolio-portfolioItem {
     display: grid;
-    grid-template-areas: "l l";
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
     margin-top: 6rem;
     margin-bottom: 5rem;
+}
+
+.portfolio-portfolioItemText {
+    width: 100%;
+}
+
+.portfolio-portfolioItemImage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .portfolio-portfolioItemTitle {
@@ -95,18 +108,21 @@
 
 @media only screen and (max-width: $desktop-breakpoint) {
     .portfolio-portfolioItem {
-       display: flex;
-       flex-direction: column;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
     }
 
     .portfolio-portfolioItemImage {
         order: 2;
+        width: 100%;
         max-width: 100%;
         overflow: hidden;
     }
 
     .portfolio-portfolioItemText {
         order: 1;
+        width: 100%;
     }
 
     .portfolio-screenshot {
