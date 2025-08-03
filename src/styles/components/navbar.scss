@@ -2,6 +2,13 @@
     display: flex;
     padding-left: 5rem;
     padding-right: 5rem;
+    align-items: center;
+    position: relative;
+}
+
+.NavBar-menu {
+    display: flex;
+    align-items: center;
 }
 
 .NavBar-item {
@@ -30,12 +37,86 @@
     height: 5rem;
 }
 
+.NavBar-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+    margin-left: auto;
+}
+
+.NavBar-hamburger-line {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.NavBar-hamburger-line.open:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.NavBar-hamburger-line.open:nth-child(2) {
+    opacity: 0;
+}
+
+.NavBar-hamburger-line.open:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 @media only screen and (max-width: $tablet-breakpoint) {
-    #NavBar-icon {
-        display: none;
+    .NavBar-navBar {
+        padding-left: 2rem;
+        padding-right: 2rem;
+        flex-wrap: wrap;
+        position: relative;
     }
 
+    .NavBar-hamburger {
+        display: block;
+    }
+
+    .NavBar-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        max-height: 0;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        transition: max-height 0.3s ease;
+        z-index: 1000;
+    }
+
+    .NavBar-menu-open {
+        max-height: 500px;
+    }
+
+    .NavBar-item {
+        width: 100%;
+        text-align: center;
+        padding: 1.5em 2em;
+    }
+
+    #NavBar-icon {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: $iphone-breakpoint) {
     .NavBar-navBar {
-        justify-content: space-around;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #NavBar-icon > img {
+        width: 4rem;
+        height: 4rem;
     }
 }

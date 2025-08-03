@@ -4,6 +4,8 @@
     padding-left: 2rem;
     padding-right: 2rem;
     margin-top: 4rem;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .portfolio-portfolio {
@@ -68,9 +70,16 @@
 .portfolio-screenshot {
     max-height: 700px;
     max-width: 650px;
+    width: 100%;
+    height: auto;
     box-shadow: 3px 3px 20px rgba(0, 0, 0, 1);
     border-radius: 1rem;
     margin-top: 3.3rem;
+}
+
+.portfolio-portfolioItemImage video {
+    max-width: 100%;
+    height: auto;
 }
 
 #portfolio-blindsTrackerImage {
@@ -90,18 +99,26 @@
        flex-direction: column;
     }
 
-    #portfolio-loaderGalleryImage,
-    #portfolio-blindsTrackerImage {
+    .portfolio-portfolioItemImage {
         order: 2;
+        max-width: 100%;
+        overflow: hidden;
     }
 
-    #portfolio-loaderGalleryText,
-    #portfolio-blindsTrackerText {
+    .portfolio-portfolioItemText {
         order: 1;
     }
 
     .portfolio-screenshot {
         width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .portfolio-portfolioItemImage video {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
     }
 
     .portfolio-portfolioItem {
