@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Vault = () => {
+const Vault = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
          <div className='portfolio-portfolioItemImage' id='portfolio-loaderGalleryImage' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <video
             height="300"

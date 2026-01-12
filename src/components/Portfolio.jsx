@@ -4,8 +4,10 @@ import HobsonElectric from "./portfolio-items/HobsonElectric";
 import InvoiceGenerator from "./portfolio-items/InvoiceGenerator";
 import KnechtInsurance from "./portfolio-items/KnechtInsurance";
 import LoaderGallery from "./portfolio-items/LoaderGallery";
+import Lumina from "./portfolio-items/Lumina";
 import Nadia from "./portfolio-items/Nadia";
 import NightingaleNails from "./portfolio-items/NightingaleNails";
+import Odyssey from "./portfolio-items/Odyssey";
 import PitchingTheory from "./portfolio-items/PitchingTheory";
 import Vault from "./portfolio-items/Vault";
 import WorkoutTracker from "./portfolio-items/WorkoutTracker";
@@ -15,30 +17,34 @@ const Portfolio = () => {
     <div className="portfolio-contentContainer">
       <div>
         <h1 className="section-title">Portfolio</h1>
-        <p className="section-subtitle">
+        {/* <p className="section-subtitle">
           Below are some of the projects I've built for fun, for friends, for
           hire, or as business ideas:
-        </p>
+        </p> */}
       </div>
-      <Vault />
+      <Odyssey />
       <hr />
-      <NightingaleNails />
-      <hr />
-      <Nadia />
-      <hr />
-      <InvoiceGenerator />
-      <hr />
-      <ContractGenerator />
+      <Vault imageRight />
       <hr />
       <WorkoutTracker />
       <hr />
-      <PitchingTheory />
+      <PitchingTheory imageRight />
+      <hr />
+      <InvoiceGenerator />
+      <hr />
+      <ContractGenerator imageRight />
+      <hr />
+      <NightingaleNails />
+      <hr />
+      <Nadia imageRight />
       <hr />
       <HobsonElectric />
       <hr />
+      <Lumina imageRight />
+      <hr />
       <KnechtInsurance />
       <hr />
-      <LoaderGallery />
+      <LoaderGallery imageRight />
       <hr />
       <BlindsTracker />
       {/* <PortfolioPage />

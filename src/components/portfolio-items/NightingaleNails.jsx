@@ -1,8 +1,8 @@
 import React from "react";
 
-const NightingaleNails = () => {
+const NightingaleNails = ({ imageRight }) => {
   return (
-    <div className="portfolio-portfolioItem">
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
       <div
         className="portfolio-portfolioItemText"
         id="portfolio-blindsTrackerText"

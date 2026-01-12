@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ContractGenerator = () => {
+const ContractGenerator = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
          <div className='portfolio-portfolioItemImage'>
             <a href='https://d31z2giqzo64q3.cloudfront.net'  target='blank'><img src='/images/contract-generator.png' className='portfolio-screenshot'></img></a>
         </div>

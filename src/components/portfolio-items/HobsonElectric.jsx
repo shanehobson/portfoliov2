@@ -1,8 +1,8 @@
 import React from 'react';
 
-const HobsonElectric = () => {
+const HobsonElectric = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
         <div className='portfolio-portfolioItemText'>
             <h2 className='portfolio-portfolioItemTitle'>Hobson Electric, Inc.</h2>
             <p>This project is a website for an electrical services company.

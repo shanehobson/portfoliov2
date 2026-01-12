@@ -1,8 +1,8 @@
 import React from 'react';
 
-const PitchingTheory = () => {
+const PitchingTheory = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
         <div className='portfolio-portfolioItemImage' id='portfolio-loaderGalleryImage' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <a href='https://d115owle18y2b1.cloudfront.net/' target='blank'><img src='/images/nadia.png' className='portfolio-screenshot'></img></a>
         </div>

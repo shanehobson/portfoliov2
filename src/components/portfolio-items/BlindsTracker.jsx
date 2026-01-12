@@ -1,8 +1,8 @@
 import React from "react";
 
-const BlindsTracker = () => {
+const BlindsTracker = ({ imageRight }) => {
   return (
-    <div className="portfolio-portfolioItem">
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
       <div
         className="portfolio-portfolioItemImage"
         id="portfolio-blindsTrackerImage"

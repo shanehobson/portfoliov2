@@ -1,8 +1,8 @@
 import React from 'react';
 
-const LoaderGallery = () => {
+const LoaderGallery = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
         <div className='portfolio-portfolioItemText' id='portfolio-loaderGalleryText'>
             <h2 className='portfolio-portfolioItemTitle'>LoaderGallery.com</h2>
             <p>This web application allows web developers to quickly and easily add loading animations to their websites and web apps

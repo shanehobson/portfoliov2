@@ -27,6 +27,26 @@
     align-items: center;
     margin-top: 6rem;
     margin-bottom: 5rem;
+
+    // Default: image on left (column 1), text on right (column 2)
+    .portfolio-portfolioItemImage {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    .portfolio-portfolioItemText {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    // Modifier: image on right (column 2), text on left (column 1)
+    &.portfolio-portfolioItem--imageRight {
+        .portfolio-portfolioItemImage {
+            grid-column: 2;
+        }
+        .portfolio-portfolioItemText {
+            grid-column: 1;
+        }
+    }
 }
 
 .portfolio-portfolioItemText {

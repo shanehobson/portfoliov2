@@ -1,8 +1,8 @@
 import React from 'react';
 
-const InvoiceGenerator = () => {
+const InvoiceGenerator = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
         <div className='portfolio-portfolioItemText' id='portfolio-loaderGalleryText'>
             <h2 className='portfolio-portfolioItemTitle'>Invoice Generator</h2>
             <p>

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const WorkoutTracker = () => {
+const WorkoutTracker = ({ imageRight }) => {
   return (
-    <div className='portfolio-portfolioItem'>
+    <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
         <div className='portfolio-portfolioItemText'>
             <h2 className='portfolio-portfolioItemTitle'>Workout Tracker</h2>
             <p>Workout Tracker allows the user to keep a daily log of their workouts and provides the user with analytics concerning the frequency and intensity of their workouts, along with the relative distribution of exercise types and body part usage.

@@ -23,7 +23,7 @@ const Book = () => {
         <div className='portfolio-portfolioItemImage' id='portfolio-bookImage' style={{display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}>
             <a href='https://www.amazon.com/How-Become-Self-Taught-Software-Developer/dp/B0CCCHSC82' target='blank'>
             <img
-                height="400"
+                height="550"
                 src="/images/Book.png"
           >
             </img>
