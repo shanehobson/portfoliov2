@@ -11,8 +11,8 @@ const Odyssey = ({ imageRight }) => {
         <video
           height="300"
           controls
-          src="/video/Odyssey_video.mov"
-          type="video/quicktime"
+          src="/video/Odyssey_video.mp4"
+          type="video/mp4"
         >
         </video>
       </div>
