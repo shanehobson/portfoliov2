@@ -40,8 +40,6 @@ const About = () => {
           in ad revenue. When not working, I enjoy learning new technologies,
           building all sorts of web apps large and small, writing about
           software, and reading widely on technical and non-technical subjects.
-          I also enjoy traveling and exploring the outdoors from my home base in
-          Denver, CO.
         </p>
         <p className="section-subtitle" id="about-subtitle3">
           Prior to becoming a web developer, I attended law school and practiced
