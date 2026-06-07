@@ -5,12 +5,14 @@ import InvoiceGenerator from "./portfolio-items/InvoiceGenerator";
 import KnechtInsurance from "./portfolio-items/KnechtInsurance";
 import LoaderGallery from "./portfolio-items/LoaderGallery";
 import Lumina from "./portfolio-items/Lumina";
+import MaxManicure from "./portfolio-items/MaxManicure";
 import Nadia from "./portfolio-items/Nadia";
 import NightingaleNails from "./portfolio-items/NightingaleNails";
 import Odyssey from "./portfolio-items/Odyssey";
 import PitchingTheory from "./portfolio-items/PitchingTheory";
 import Vault from "./portfolio-items/Vault";
 import WorkoutTracker from "./portfolio-items/WorkoutTracker";
+import Zaera from "./portfolio-items/Zaera";
 
 const Portfolio = () => {
   return (
@@ -22,17 +24,21 @@ const Portfolio = () => {
           hire, or as business ideas:
         </p> */}
       </div>
-      <Odyssey />
+      <Zaera />
       <hr />
-      <Vault imageRight />
+      <Odyssey imageRight />
       <hr />
-      <WorkoutTracker />
+      <Vault />
       <hr />
-      <PitchingTheory imageRight />
+      <WorkoutTracker imageRight />
       <hr />
-      <InvoiceGenerator />
+      <PitchingTheory />
       <hr />
-      <ContractGenerator imageRight />
+      <InvoiceGenerator imageRight />
+      <hr />
+      <ContractGenerator />
+      <hr />
+      <MaxManicure imageRight />
       <hr />
       <NightingaleNails />
       <hr />
