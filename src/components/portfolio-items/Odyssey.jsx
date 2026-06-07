@@ -19,19 +19,14 @@ const Odyssey = ({ imageRight }) => {
       <div className="portfolio-portfolioItemText">
         <h2 className="portfolio-portfolioItemTitle">Odyssey</h2>
         <p>
-          Odyssey is a full-stack, AI-driven travel planning application that
-          turns high-level ideas into structured, day-by-day itineraries in
-          seconds. It combines real-time AI generation, modern frontend
-          architecture, and scalable cloud infrastructure to deliver a
-          production-ready SaaS experience.
+          Odyssey is an AI-driven travel planning application that turns
+          prompts into structured, day-by-day itineraries in seconds.
         </p>
         <p>
           Built with streaming AI architecture for live partial responses,
           usage-aware design with tiered plans and cost-protection guardrails,
           and a modern React stack using TanStack Query. The serverless backend
-          runs on AWS (Lambda, API Gateway, DynamoDB, S3) with authentication,
-          multi-tenant user model, and production-grade concerns like error
-          boundaries, retries, and rate limiting.
+          runs on AWS (Lambda, API Gateway, DynamoDB, S3).
         </p>
         <div className="portfolio-portfolioButtonContainer">
           <div className="portfolio-portfolioButton">
