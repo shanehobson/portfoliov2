@@ -17,7 +17,7 @@ const NightingaleNails = ({ imageRight }) => {
         <div className="portfolio-portfolioButtonContainer">
           <div className="portfolio-portfolioButton">
             <a
-              href="https://nightingalenails.com/"
+              href="https://nails-git-main-shane-hobsons-projects.vercel.app/"
               className="button"
               target="blank"
             >
@@ -30,7 +30,7 @@ const NightingaleNails = ({ imageRight }) => {
         className="portfolio-portfolioItemImage"
         id="portfolio-nightingaleNails"
       >
-        <a href="https://nightingalenails.com" target="blank">
+        <a href="https://nails-git-main-shane-hobsons-projects.vercel.app/" target="blank">
           <img
             src="/images/nightingale-nails.png"
             className="portfolio-screenshot"
