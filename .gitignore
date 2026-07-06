@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# CDK
+cdk/cdk.out
+cdk/node_modules
+cdk/*.js
+cdk/*.d.ts
+cdk/.cdk.staging
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

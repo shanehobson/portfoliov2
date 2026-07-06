@@ -1,0 +1,5 @@
+*.ts
+!*.d.ts
+
+# CDK Context & Staging files
+cdk.out
