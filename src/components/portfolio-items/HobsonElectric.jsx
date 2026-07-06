@@ -14,7 +14,7 @@ const HobsonElectric = ({ imageRight }) => {
             </p>
             <div className='portfolio-portfolioButtonContainer'>
                 <div className='portfolio-portfolioButton'>
-                    <a href='https://dpu19jusqcx96.cloudfront.net' className='button' target='blank'>Explore The App</a>
+                    <a href='https://d2rovogyqdtmn6.cloudfront.net' className='button' target='blank'>Explore The App</a>
                 </div>
                 <div className='portfolio-portfolioButton'>
                     <a href='https://github.com/shanehobson/hobson_electric' className='button' target='blank'>View Front-End Code</a>
@@ -25,7 +25,7 @@ const HobsonElectric = ({ imageRight }) => {
             </div>
         </div>
          <div className='portfolio-portfolioItemImage'>
-            <a href='https://dpu19jusqcx96.cloudfront.net' target='blank'><img src='/images/hobson-electric.png' className='portfolio-screenshot'></img></a>
+            <a href='https://d2rovogyqdtmn6.cloudfront.net' target='blank'><img src='/images/hobson-electric.png' className='portfolio-screenshot'></img></a>
         </div>
         
     </div>
