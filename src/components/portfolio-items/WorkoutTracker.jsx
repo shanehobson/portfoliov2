@@ -27,6 +27,8 @@ const WorkoutTracker = ({ imageRight }) => {
             <video
                 height="300"
                 controls
+                preload="none"
+                poster="/images/workout-tracker-poster.webp"
                 src="/video/workout-tracker-video.mp4"
                 type="video/mp4">
             </video>

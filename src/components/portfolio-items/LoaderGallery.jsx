@@ -21,7 +21,7 @@ const LoaderGallery = ({ imageRight }) => {
             </div>
         </div>
         <div className='portfolio-portfolioItemImage' id='portfolio-loaderGalleryImage'>
-            <a href='https://www.loadergallery.com' target='blank'><img src='/images/loader-gallery.png' className='portfolio-screenshot'></img></a>
+            <a href='https://www.loadergallery.com' target='blank'><img src='/images/loader-gallery.webp' className='portfolio-screenshot' width='1300' height='617' loading='lazy' decoding='async'></img></a>
         </div>
     </div>
   );

@@ -8,8 +8,12 @@ const KnechtInsurance = ({ imageRight }) => {
         id="portfolio-blindsTrackerImage"
       >
         <img
-          src="/images/knecht-insurance.png"
+          src="/images/knecht-insurance.webp"
           className="portfolio-screenshot"
+          width="1300"
+          height="734"
+          loading="lazy"
+          decoding="async"
         ></img>
       </div>
       <div

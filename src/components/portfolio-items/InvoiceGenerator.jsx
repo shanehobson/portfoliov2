@@ -28,6 +28,8 @@ const InvoiceGenerator = ({ imageRight }) => {
             <video
             height="300"
             controls
+            preload="none"
+            poster="/images/invoice-generator-poster.webp"
             src="/video/Invoice_Generator.mp4"
             type="video/mp4"
             >

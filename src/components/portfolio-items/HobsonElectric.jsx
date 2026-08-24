@@ -25,7 +25,7 @@ const HobsonElectric = ({ imageRight }) => {
             </div>
         </div>
          <div className='portfolio-portfolioItemImage'>
-            <a href='https://d2rovogyqdtmn6.cloudfront.net' target='blank'><img src='/images/hobson-electric.png' className='portfolio-screenshot'></img></a>
+            <a href='https://d2rovogyqdtmn6.cloudfront.net' target='blank'><img src='/images/hobson-electric.webp' className='portfolio-screenshot' width='1300' height='615' loading='lazy' decoding='async'></img></a>
         </div>
         
     </div>

@@ -23,8 +23,12 @@ const Lumina = ({ imageRight }) => {
       <div className="portfolio-portfolioItemImage">
         <a href="https://www.luminamodelacademy.com" target="blank">
           <img
-            src="/images/lumina.png"
+            src="/images/lumina.webp"
             className="portfolio-screenshot"
+            width="1300"
+            height="655"
+            loading="lazy"
+            decoding="async"
           ></img>
         </a>
       </div>

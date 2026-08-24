@@ -11,6 +11,8 @@ const Odyssey = ({ imageRight }) => {
         <video
           height="300"
           controls
+          preload="none"
+          poster="/images/odyssey-poster.webp"
           src="/video/Odyssey_video.mp4"
           type="video/mp4"
         >

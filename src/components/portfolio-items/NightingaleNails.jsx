@@ -32,8 +32,12 @@ const NightingaleNails = ({ imageRight }) => {
       >
         <a href="https://nails-git-main-shane-hobsons-projects.vercel.app/" target="blank">
           <img
-            src="/images/nightingale-nails.png"
+            src="/images/nightingale-nails.webp"
             className="portfolio-screenshot"
+            width="1300"
+            height="767"
+            loading="lazy"
+            decoding="async"
           ></img>
         </a>
       </div>

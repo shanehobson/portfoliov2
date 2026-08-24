@@ -44,7 +44,13 @@ const Book = () => {
           href="https://www.amazon.com/How-Become-Self-Taught-Software-Developer/dp/B0CCCHSC82"
           target="blank"
         >
-          <img height="530" src="/images/Book.png"></img>
+          <img
+            src="/images/Book.webp"
+            width="351"
+            height="530"
+            loading="lazy"
+            decoding="async"
+          ></img>
         </a>
       </div>
     </div>

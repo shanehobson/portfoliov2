@@ -60,6 +60,16 @@
     align-items: center;
 }
 
+// Screenshots wrapped in a link are shrink-to-fit flex items, so the image's
+// `width: 100%` would resolve against a zero-width parent until the image
+// itself loaded. That collapsed a lazy-loaded image to 0x0, which never
+// intersects the viewport and so never loads at all. Give the link a definite
+// width so the image can size from it.
+.portfolio-portfolioItemImage > a {
+    display: block;
+    width: 100%;
+}
+
 .portfolio-portfolioItemTitle {
     color: #333;
 }

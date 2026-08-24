@@ -8,8 +8,12 @@ const BlindsTracker = ({ imageRight }) => {
         id="portfolio-blindsTrackerImage"
       >
         <img
-          src="/images/blinds-tracker.png"
+          src="/images/blinds-tracker.webp"
           className="portfolio-screenshot"
+          width="1300"
+          height="603"
+          loading="lazy"
+          decoding="async"
         ></img>
       </div>
       <div

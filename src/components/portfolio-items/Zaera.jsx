@@ -38,8 +38,12 @@ const Zaera = ({ imageRight }) => {
       >
         <a href="https://zaera.io" target="blank">
           <img
-            src="/images/zaera.png"
+            src="/images/zaera.webp"
             className="portfolio-screenshot"
+            width="982"
+            height="583"
+            loading="lazy"
+            decoding="async"
           ></img>
         </a>
       </div>

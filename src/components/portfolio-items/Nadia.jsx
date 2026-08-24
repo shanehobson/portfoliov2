@@ -4,7 +4,7 @@ const PitchingTheory = ({ imageRight }) => {
   return (
     <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
         <div className='portfolio-portfolioItemImage' id='portfolio-loaderGalleryImage' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <a href='https://d115owle18y2b1.cloudfront.net/' target='blank'><img src='/images/nadia.png' className='portfolio-screenshot'></img></a>
+        <a href='https://d115owle18y2b1.cloudfront.net/' target='blank'><img src='/images/nadia.webp' className='portfolio-screenshot' width='1300' height='670' loading='lazy' decoding='async'></img></a>
         </div>
         <div className='portfolio-portfolioItemText' id='portfolio-loaderGalleryText'>
             <h2 className='portfolio-portfolioItemTitle'>The Science of Dance</h2>

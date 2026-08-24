@@ -32,8 +32,12 @@ const MaxManicure = ({ imageRight }) => {
       >
         <a href="https://www.maxmanicure.com" target="blank">
           <img
-            src="/images/max-manicure.png"
+            src="/images/max-manicure.webp"
             className="portfolio-screenshot"
+            width="1242"
+            height="860"
+            loading="lazy"
+            decoding="async"
           ></img>
         </a>
       </div>

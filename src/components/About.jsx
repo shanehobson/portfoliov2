@@ -6,13 +6,15 @@ const About = () => {
       <div>
         <h1 className="section-title">About Me</h1>
         <div className="about-imageContainer">
-          {/* <img src='/images/me5.png' className='about-pic' id='about-pic1'></img> */}
           <img
-            src="/images/shane.png"
+            src="/images/shane.webp"
             className="about-pic"
             id="about-pic2"
+            width="600"
+            height="645"
+            loading="lazy"
+            decoding="async"
           ></img>
-          {/* <img src='/images/profile-pic5.jpg' className='about-pic' id='about-pic3'></img> */}
         </div>
 
         <p className="section-subtitle" id="about-subtitle">

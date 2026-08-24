@@ -4,7 +4,7 @@ const ContractGenerator = ({ imageRight }) => {
   return (
     <div className={`portfolio-portfolioItem${imageRight ? ' portfolio-portfolioItem--imageRight' : ''}`}>
          <div className='portfolio-portfolioItemImage'>
-            <a href='https://dtame3ylp25go.cloudfront.net'  target='blank'><img src='/images/contract-generator.png' className='portfolio-screenshot'></img></a>
+            <a href='https://dtame3ylp25go.cloudfront.net'  target='blank'><img src='/images/contract-generator.webp' className='portfolio-screenshot' width='1300' height='609' loading='lazy' decoding='async'></img></a>
         </div>
         <div className='portfolio-portfolioItemText'>
             <h2 className='portfolio-portfolioItemTitle'>Contract Generator</h2>

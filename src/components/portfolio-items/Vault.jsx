@@ -7,6 +7,8 @@ const Vault = ({ imageRight }) => {
             <video
             height="300"
             controls
+            preload="none"
+            poster="/images/vault-poster.webp"
             src="/video/Vault_Demo.mp4"
             type="video/mp4"
             >

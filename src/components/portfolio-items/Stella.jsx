@@ -1,6 +1,36 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+const useReducedMotion = () => {
+  const [reduced, setReduced] = useState(
+    () => window.matchMedia(REDUCED_MOTION).matches
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia(REDUCED_MOTION);
+    const onChange = (event) => setReduced(event.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  return reduced;
+};
 
 const Stella = ({ imageRight }) => {
+  const videoRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+
+  // `autoPlay` covers the initial render; this only has to catch someone
+  // turning the OS setting on while the page is already open. There is no
+  // matching resume — starting playback from script would override the
+  // browser's own autoplay policy (battery saver, data saver, and so on).
+  useEffect(() => {
+    if (!reducedMotion || !videoRef.current) return;
+    videoRef.current.pause();
+    videoRef.current.currentTime = 0;
+  }, [reducedMotion]);
+
   return (
     <div
       className={`portfolio-portfolioItem${
@@ -11,14 +41,22 @@ const Stella = ({ imageRight }) => {
         className="portfolio-portfolioItemImage"
         style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
+        {/*
+          A 3s silent loop is an animated screenshot, so it autoplays rather
+          than sitting behind a play button. Under reduced motion it becomes a
+          still poster with controls instead — motion the viewer did not ask
+          for, and cannot stop, is the thing that setting exists to prevent.
+        */}
         <video
+          ref={videoRef}
           height="300"
-          autoPlay
-          loop
+          autoPlay={!reducedMotion}
+          loop={!reducedMotion}
+          controls={reducedMotion}
           muted
           playsInline
-          preload="metadata"
-          poster="/images/stella-poster.jpg"
+          preload={reducedMotion ? "none" : "metadata"}
+          poster="/images/stella-poster.webp"
           aria-label="The tools and capability catalogue in Stella"
           src="/video/Stella_Demo.mp4"
           type="video/mp4"

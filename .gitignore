@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Full-size image originals, re-encoded into public/images by
+# scripts/optimize-images.sh
+images-src
+
 # CDK
 cdk/cdk.out
 cdk/node_modules

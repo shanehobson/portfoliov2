@@ -1,6 +1,6 @@
 .header {
     min-height: 100vh;
-    background: url("/images/bg.jpg") no-repeat;
+    background: url("/images/bg.webp") no-repeat;
     background-color: $blue;
     background-size: cover;
     background-repeat: no-repeat;
@@ -20,6 +20,12 @@
     margin-left: auto;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+}
+
+@media only screen and (max-width: $tablet-breakpoint) {
+    .header {
+        background-image: url("/images/bg-mobile.webp");
+    }
 }
 
 @media only screen and (max-height: 620px) {

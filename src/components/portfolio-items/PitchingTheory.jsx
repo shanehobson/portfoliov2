@@ -7,6 +7,8 @@ const PitchingTheory = ({ imageRight }) => {
             <video
             height="300"
             controls
+            preload="none"
+            poster="/images/pitching-theory-poster.webp"
             src="/video/app-demo-1.mp4"
             type="video/mp4"
             >

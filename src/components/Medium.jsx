@@ -34,7 +34,13 @@ const Medium = () => {
         }}
       >
         <a href="https://medium.com/@shanehobson1" target="blank">
-          <img height="280" src="/images/medium.png"></img>
+          <img
+            src="/images/medium.webp"
+            width="560"
+            height="280"
+            loading="lazy"
+            decoding="async"
+          ></img>
         </a>
       </div>
     </div>
