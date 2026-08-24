@@ -7,8 +7,8 @@ const Vault = ({ imageRight }) => {
             <video
             height="300"
             controls
-            src="/video/Vault_Demo.mov"
-            type="video/mov"
+            src="/video/Vault_Demo.mp4"
+            type="video/mp4"
             >
             </video>
         </div>
