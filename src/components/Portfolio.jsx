@@ -10,6 +10,7 @@ import Nadia from "./portfolio-items/Nadia";
 import NightingaleNails from "./portfolio-items/NightingaleNails";
 import Odyssey from "./portfolio-items/Odyssey";
 import PitchingTheory from "./portfolio-items/PitchingTheory";
+import Stella from "./portfolio-items/Stella";
 import Vault from "./portfolio-items/Vault";
 import WorkoutTracker from "./portfolio-items/WorkoutTracker";
 import Zaera from "./portfolio-items/Zaera";
@@ -26,33 +27,35 @@ const Portfolio = () => {
       </div>
       <Zaera />
       <hr />
-      <Odyssey imageRight />
+      <Stella imageRight />
       <hr />
-      <Vault />
+      <Odyssey />
       <hr />
-      <WorkoutTracker imageRight />
+      <Vault imageRight />
       <hr />
-      <PitchingTheory />
+      <WorkoutTracker />
       <hr />
-      <InvoiceGenerator imageRight />
+      <PitchingTheory imageRight />
       <hr />
-      <ContractGenerator />
+      <InvoiceGenerator />
       <hr />
-      <MaxManicure imageRight />
+      <ContractGenerator imageRight />
       <hr />
-      <NightingaleNails />
+      <MaxManicure />
       <hr />
-      <Nadia imageRight />
+      <NightingaleNails imageRight />
       <hr />
-      <HobsonElectric />
+      <Nadia />
       <hr />
-      <Lumina imageRight />
+      <HobsonElectric imageRight />
       <hr />
-      <KnechtInsurance />
+      <Lumina />
       <hr />
-      <LoaderGallery imageRight />
+      <KnechtInsurance imageRight />
       <hr />
-      <BlindsTracker />
+      <LoaderGallery />
+      <hr />
+      <BlindsTracker imageRight />
       {/* <PortfolioPage />
       <hr /> */}
     </div>
