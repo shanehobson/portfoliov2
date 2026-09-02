@@ -72,7 +72,7 @@ img {
 .blog-wrap {
   max-width: 76rem;
   margin: 0 auto;
-  padding: $xl-size 3rem 0;
+  padding: $xl-size 3rem $xl-size;
 }
 
 // ------------------------------------------------------------------ sidebar
@@ -153,11 +153,7 @@ img {
   text-transform: uppercase;
   font-size: 4rem;
   line-height: 1.1;
-  margin: 0 0 $s-size;
-}
-
-.blog-index__intro {
-  margin: 0 0 $xl-size;
+  margin: 0 0 $l-size;
 }
 
 .blog-index__list {
@@ -321,21 +317,6 @@ a:hover .blog-index__item-title {
   margin-top: $m-size;
 }
 
-// ------------------------------------------------------------------- footer
-
-.blog-footer {
-  background: $blue;
-  color: $off-white;
-  margin-top: $xl-size;
-  padding: $l-size 2rem;
-  text-align: center;
-
-  a {
-    color: $off-white;
-    text-decoration: underline;
-  }
-}
-
 // --------------------------------------------------------------- responsive
 
 @media only screen and (max-width: $blog-stack-breakpoint) {
@@ -405,7 +386,7 @@ a:hover .blog-index__item-title {
   }
 
   .blog-wrap {
-    padding: $l-size 2rem 0;
+    padding: $l-size 2rem $l-size;
   }
 }
 

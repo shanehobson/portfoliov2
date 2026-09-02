@@ -179,12 +179,6 @@ function sidebar(posts, currentSlug) {
     </aside>`;
 }
 
-function footer() {
-  return `<footer class="blog-footer">
-      <p>Handcrafted by me &copy; ${new Date().getUTCFullYear()}. <a href="/">Back to the portfolio</a></p>
-    </footer>`;
-}
-
 function page({ title, description, canonical, head = '', sidebarFor, posts, body }) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -203,7 +197,6 @@ ${head}  </head>
     ${sidebar(posts, sidebarFor)}
       <div class="blog-content">
 ${body}
-${footer()}
       </div>
     </div>
   </body>
@@ -314,11 +307,7 @@ function indexPage(posts) {
     <meta name="twitter:card" content="summary_large_image" />
 `,
     body: `    <main class="blog-wrap">
-      <h1 class="blog-index__title">Articles</h1>
-      <p class="blog-index__intro">
-        Writing about software development: architecture, scalability, AI, and
-        real-world lessons from building production systems.
-      </p>
+      <h1 class="blog-index__title">Recent Posts</h1>
       <ul class="blog-index__list">
 ${items}
       </ul>
