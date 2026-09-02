@@ -190,6 +190,7 @@ function page({ title, description, canonical, head = '', sidebarFor, posts, bod
     <meta name="description" content="${escapeHtml(description)}" />
     <link rel="canonical" href="${escapeHtml(canonical)}" />
     <link rel="alternate" type="application/rss+xml" title="${escapeHtml(AUTHOR)}" href="/blog/feed.xml" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-var.woff2" crossorigin />
     <link rel="stylesheet" href="/src/styles/blog.scss" />
 ${head}  </head>
   <body>

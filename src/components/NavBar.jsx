@@ -1,16 +1,46 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-scroll";
 
 const SECTIONS = [
-  { to: "about", label: "About" },
-  { to: "writing", label: "Writing" },
-  { to: "work", label: "Work" },
-  { to: "contact", label: "Contact" },
+  { id: "about", label: "About" },
+  { id: "writing", label: "Writing" },
+  { id: "work", label: "Work" },
+  { id: "contact", label: "Contact" },
 ];
+
+// Which section is under the middle of the viewport, by id, or null over the
+// hero and the footer. The nav links are plain fragment anchors — the browser
+// does the smooth scroll (`scroll-behavior` in _base.scss, which also honours
+// reduced motion) and `scroll-padding-top` keeps the target out from under the
+// fixed bar — so all that is left for JS is the highlight.
+const useActiveSection = () => {
+  const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const targets = SECTIONS.map(({ id }) =>
+      document.getElementById(id)
+    ).filter(Boolean);
+    // A thin band across the middle of the viewport: the highlight flips the
+    // moment a section's edge crosses it, in either direction.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  return active;
+};
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const active = useActiveSection();
 
   // The bar is transparent over the hero and picks up a ground and a hairline
   // once anything has scrolled under it.
@@ -43,30 +73,20 @@ const NavBar = () => {
   return (
     <header className={`nav${isScrolled ? " nav--scrolled" : ""}`}>
       <div className="nav-inner shell">
-        <Link
-          to="hero"
-          smooth
-          duration={600}
-          className="nav-mark"
-          onClick={closeMenu}
-        >
+        <a className="nav-mark" href="#hero" onClick={closeMenu}>
           SH<sup>®</sup>
-        </Link>
+        </a>
 
         <nav className="nav-links" aria-label="Sections">
-          {SECTIONS.map(({ to, label }) => (
-            <Link
-              key={to}
-              className="nav-link"
-              activeClass="nav-link--active"
-              to={to}
-              spy
-              smooth
-              offset={-80}
-              duration={600}
+          {SECTIONS.map(({ id, label }) => (
+            <a
+              key={id}
+              className={`nav-link${active === id ? " nav-link--active" : ""}`}
+              href={`#${id}`}
+              aria-current={active === id ? "location" : undefined}
             >
               {label}
-            </Link>
+            </a>
           ))}
           <a className="nav-link" href="/blog/">
             Blog
@@ -88,24 +108,16 @@ const NavBar = () => {
         className={`nav-overlay${isMenuOpen ? " nav-overlay--open" : ""}`}
         // Hidden from assistive tech and from the tab order while closed; the
         // panel is still in the DOM so it can transition.
-        {...(isMenuOpen ? {} : { inert: "" })}
+        inert={!isMenuOpen}
       >
         <nav className="nav-overlay-links" aria-label="Sections">
-          {SECTIONS.map(({ to, label }, index) => (
-            <Link
-              key={to}
-              to={to}
-              spy
-              smooth
-              offset={-80}
-              duration={600}
-              onClick={closeMenu}
-            >
+          {SECTIONS.map(({ id, label }, index) => (
+            <a key={id} href={`#${id}`} onClick={closeMenu}>
               <span className="nav-overlay-index">
                 0{index + 1}
               </span>
               {label}
-            </Link>
+            </a>
           ))}
           <a href="/blog/" onClick={closeMenu}>
             <span className="nav-overlay-index">05</span>

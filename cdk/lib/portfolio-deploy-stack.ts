@@ -267,7 +267,7 @@ function handler(event) {
       minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2021,
       defaultRootObject: 'index.html',
       priceClass: PriceClass.PRICE_CLASS_100,
-      httpVersion: HttpVersion.HTTP2,
+      httpVersion: HttpVersion.HTTP2_AND_3,
       enableIpv6: true,
       enabled: true,
     }).applyRemovalPolicy(RemovalPolicy.RETAIN);

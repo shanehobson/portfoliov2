@@ -53,14 +53,28 @@ done
 
 echo "Other images:"
 # The hero has no photograph any more — it is type on a ruled grid — so bg.jpg
-# is no longer encoded. shane.png is now the About portrait and the avatar on
-# the hero's contact card.
+# is no longer encoded. shane.png is the About portrait.
 encode "$src/shane.png"         shane          "600x>" 82
 encode "$src/blog.png"          blog          "1300x>" 80
 encode "$src/stella-poster.jpg" stella-poster "1300x>" 78
 # Book.png is 509x346 and renders at most a card wide, so there is nothing to
 # downsize — keep the quality high and just change codec.
 encode "$src/Book.png"          Book          "1300x>" 90
+
+# The hero. Every one of these is above the fold and competes with the portrait
+# for bandwidth, so each is cut to the size its slot actually renders at:
+#   - the portrait is 320px wide on a phone, up to ~763px on a desktop, and
+#     the master is only 931px, so there is no DPR-2 desktop variant to make;
+#   - the Odyssey card shows its screenshot at 204px (full width on a phone);
+#   - the contact card's avatar is a 46px circle (144 covers DPR 3).
+# Hero.jsx's srcset/sizes and the preload in index.html list the same files.
+echo "Hero (portrait 480/640/931 q80, card 420/840 q78, avatar 144 q82):"
+encode "$src/shane-cutout.png"  shane-cutout-480  "480x>" 80
+encode "$src/shane-cutout.png"  shane-cutout-640  "640x>" 80
+encode "$src/shane-cutout.png"  shane-cutout      "931x>" 80
+encode "$src/odyssey-hero.png"  odyssey-hero-420  "420x>" 78
+encode "$src/odyssey-hero.png"  odyssey-hero-840  "840x>" 78
+encode "$src/shane.png"         shane-avatar   "144x144^" 82 -gravity center -extent 144x144
 
 # Video posters: a frame from one second in, sized like the screenshots since
 # videos sit in the same panel. The homak.dev walkthroughs (zaera, max-manicure,

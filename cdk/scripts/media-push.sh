@@ -15,7 +15,7 @@ done
 # Filenames are stable (a re-encoded poster keeps its name), so the objects get
 # a long-but-finite max-age rather than `immutable`: the invalidation below
 # refreshes CloudFront right away, and a browser holding an old copy refreshes
-# within the week instead of never.
+# within 30 days instead of never.
 for prefix in "${MEDIA_PREFIXES[@]}"; do
   local_dir="$REPO_DIR/public/$prefix"
   echo "Pushing $local_dir -> s3://$MEDIA_BUCKET/$prefix/ (profile: $AWS_PROFILE)"
@@ -23,7 +23,7 @@ for prefix in "${MEDIA_PREFIXES[@]}"; do
     --region "$REGION" \
     --delete \
     --exclude ".DS_Store" \
-    --cache-control "public, max-age=604800"
+    --cache-control "public, max-age=2592000"
 done
 
 DIST_ID="$(stack_output DistributionId)"

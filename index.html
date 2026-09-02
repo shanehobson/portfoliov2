@@ -12,7 +12,10 @@
     <!--
       The two things that paint the fold: the self-hosted variable font
       (crossorigin because font fetches are always CORS) and the cut-out
-      portrait standing in the middle of the hero.
+      portrait standing in the middle of the hero. The portrait's srcset and
+      sizes are copied from Hero.jsx and must stay identical to it, or the
+      browser preloads one file and then fetches another. No href: a browser
+      without imagesrcset support just skips the preload.
     -->
     <link
       rel="preload"
@@ -25,7 +28,8 @@
       rel="preload"
       as="image"
       type="image/webp"
-      href="/images/shane-cutout.webp"
+      imagesrcset="/images/shane-cutout-480.webp 480w, /images/shane-cutout-640.webp 640w, /images/shane-cutout.webp 931w"
+      imagesizes="(max-width: 45rem) 320px, (max-width: 75rem) 56vh, (max-height: 1051px) 73vh, 763px"
       fetchpriority="high"
     />
     <link rel="canonical" href="https://shanehobson.me/" />

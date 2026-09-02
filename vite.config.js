@@ -39,17 +39,25 @@ function contactProxy(mode) {
 }
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, isSsrBuild }) => ({
   plugins: [react()],
   server: {
     proxy: contactProxy(mode),
   },
   build: {
-    rollupOptions: {
-      input: {
-        main: resolve(import.meta.dirname, 'index.html'),
-        ...blogEntries(),
-      },
-    },
+    // Vite 6 defaults to a 2020-era target and transpiles optional chaining
+    // and class fields for it; every browser this site's CSS works in already
+    // parses them natively.
+    target: 'esnext',
+    // The SSR pass (`vite build --ssr`, see the `build` script) has its own
+    // entry; the HTML entries are the client build's.
+    rollupOptions: isSsrBuild
+      ? {}
+      : {
+          input: {
+            main: resolve(import.meta.dirname, 'index.html'),
+            ...blogEntries(),
+          },
+        },
   },
 }))

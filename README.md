@@ -32,12 +32,23 @@ keeps using plain `/images/...` and `/video/...` paths. After a fresh clone run
 
 `scripts/optimize-images.sh` re-encodes the originals in `images-src/` (also
 gitignored) into `public/images/`, and cuts poster frames from
-`public/video/`.
+`public/video/`. `scripts/optimize-videos.sh` puts the MP4s in `public/video/`
+in shape (faststart, and the autoplay loop downscaled from its master in
+`images-src/`); both are idempotent.
+
+## Building
+
+`npm run build` is three steps: the client build, an SSR build of
+`src/entry-server.jsx`, and `scripts/prerender.mjs`, which renders the
+homepage into `dist/index.html` and inlines its stylesheet. The browser gets
+the whole page in the first response and React only hydrates it. If the
+console shows a hydration warning on `npm run preview`, something rendered
+differently on the server than in the browser; fix it rather than ignoring it.
 
 ## Deploying
 
 ```sh
-npm run deploy   # vite build, then cdk deploy
+npm run deploy   # npm run build, then cdk deploy
 ```
 
 The infrastructure is a CDK app in `cdk/`; setup and details are in its README.
