@@ -1,8 +1,21 @@
 import * as path from 'path';
-import { Stack, StackProps, Duration, Size } from 'aws-cdk-lib';
+import { Stack, StackProps, Duration, RemovalPolicy, Size } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { Distribution } from 'aws-cdk-lib/aws-cloudfront';
+import {
+  AllowedMethods,
+  CachePolicy,
+  CachedMethods,
+  Distribution,
+  HttpVersion,
+  PriceClass,
+  S3OriginAccessControl,
+  SSLMethod,
+  SecurityPolicyProtocol,
+  ViewerProtocolPolicy,
+} from 'aws-cdk-lib/aws-cloudfront';
+import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { BucketDeployment, Source, CacheControl } from 'aws-cdk-lib/aws-s3-deployment';
 
 export interface PortfolioDeployStackProps extends StackProps {
@@ -18,10 +31,63 @@ export class PortfolioDeployStack extends Stack {
 
     const siteBucket = Bucket.fromBucketName(this, 'SiteBucket', props.bucketName);
 
-    const distribution = Distribution.fromDistributionAttributes(this, 'SiteDistribution', {
+    const distribution = Distribution.fromDistributionAttributes(this, 'SiteDistributionRef', {
       distributionId: props.distributionId,
       domainName: props.distributionDomainName,
     });
+
+    // The live distribution, transcribed property-for-property from
+    // `aws cloudfront get-distribution-config --id EEN9EO2INB4OB` so it can be
+    // adopted with `cdk import`. Nothing here creates or replaces anything: the
+    // import binds this logical ID to the existing distribution, and every
+    // property below already holds on it.
+    //
+    // The gate on that is CloudFormation drift detection, not `cdk diff` — a
+    // diff straight after an import compares the template to the template that
+    // was just imported and is always empty. Everything under DistributionConfig
+    // updates in place, so a mistranscribed property would quietly change a live
+    // setting on the next deploy rather than failing loudly.
+    //
+    // The bucket deliberately stays `Bucket.fromBucketName` and the OAC is
+    // referenced by id: on a bucket it does not own, CDK cannot attach a policy,
+    // so it warns and emits no AWS::S3::BucketPolicy. That is what we want —
+    // creating a policy on a bucket that already has one overwrites it, and the
+    // console-created statement is the one CloudFront reads through.
+    const originAccessControl = S3OriginAccessControl.fromOriginAccessControlId(
+      this,
+      'SiteOriginAccessControl',
+      'E2PP8QRV8Q8F4C'
+    );
+
+    new Distribution(this, 'SiteDistribution', {
+      defaultBehavior: {
+        origin: S3BucketOrigin.withOriginAccessControl(siteBucket, {
+          originAccessControl,
+          originId: 'shanehobson.me.s3.us-east-2.amazonaws.com',
+          originShieldEnabled: false,
+          connectionAttempts: 3,
+          connectionTimeout: Duration.seconds(10),
+        }),
+        viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        allowedMethods: AllowedMethods.ALLOW_GET_HEAD,
+        cachedMethods: CachedMethods.CACHE_GET_HEAD,
+        compress: true,
+        cachePolicy: CachePolicy.CACHING_OPTIMIZED,
+      },
+      domainNames: ['shanehobson.me', 'www.shanehobson.me'],
+      certificate: Certificate.fromCertificateArn(
+        this,
+        'SiteCertificate',
+        'arn:aws:acm:us-east-1:730335671883:certificate/d2493128-1354-4f5a-90fd-0cb06773edf0'
+      ),
+      sslSupportMethod: SSLMethod.SNI,
+      minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2021,
+      defaultRootObject: 'index.html',
+      priceClass: PriceClass.PRICE_CLASS_100,
+      httpVersion: HttpVersion.HTTP2,
+      enableIpv6: true,
+      enabled: true,
+    }).applyRemovalPolicy(RemovalPolicy.RETAIN);
 
     const sitePath = path.resolve(__dirname, '..', props.sourcePath);
     const dotFiles = ['.DS_Store', '**/.DS_Store'];
