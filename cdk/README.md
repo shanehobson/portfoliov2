@@ -10,9 +10,14 @@ cp config.example.ts config.local.ts   # then edit with real account / profile
 npm install
 ```
 
-`config.local.ts` is gitignored — it holds the AWS account ID and the local
-AWS profile name. See `config.example.ts` for the schema. The account is
-already CDK-bootstrapped in `us-east-2`.
+`config.local.ts` is gitignored — it holds the AWS account ID, the Route 53
+hosted zone ID, the local AWS profile name, and the contact form's mail
+settings (`sendingDomain`, `fromEmail`, `toEmails`). See `config.example.ts`
+for the schema. The account is already CDK-bootstrapped in `us-east-2`.
+
+The recipient addresses are personal inboxes and deliberately live only there,
+never in tracked source — grepping the repo for the mail provider's domain
+should turn up nothing.
 
 `profile` is read automatically by the scripts under `scripts/` — the media
 sync and `npm run deploy`, which source it in `scripts/_common.sh`. The CDK app
@@ -54,8 +59,9 @@ root), then invalidates `/index.html` and `/blog/*`.
 
 A content-only release — new or changed pages, no infrastructure edits — shows
 up in `cdk diff` as changed `SourceObjectKeys` hashes on the `DeploySite*`
-custom resources, and nothing else. Anything touching the distribution or the
-buckets means the stack itself changed, so read it carefully before deploying.
+custom resources, and nothing else. Anything touching the distribution, the
+DNS records, or the buckets means the stack itself changed, so read it
+carefully before deploying.
 
 ## Stack
 
@@ -71,9 +77,43 @@ buckets means the stack itself changed, so read it carefully before deploying.
   site bucket.
 - **CloudFront Function** rewriting the blog's pretty URLs to `/index.html`
 - **ACM certificate** in `us-east-1`, referenced by ARN
+- **`SiteEmailIdentity`** — SES domain identity for `shanehobson.me`, with a
+  `mail.shanehobson.me` custom MAIL FROM, plus a `_dmarc` TXT record, all in
+  the Route 53 hosted zone (referenced by ID, not owned)
+- **`ContactRateLimitTable`** — DynamoDB, per-IP submission counter, TTL'd
+- **`ContactFunction`** — Node 20 Lambda behind a Function URL, reached only
+  through the `/api/contact` CloudFront behaviour (so the browser call is
+  same-origin and there is no CORS config, and the Function URL never has to
+  be committed)
 
 The media bucket and the distribution are `RETAIN` — `cdk destroy` leaves them
 behind, so a teardown never silently deletes the media.
+
+## Contact form
+
+The "Connect with me" modal POSTs JSON to `/api/contact`. CloudFront routes
+that path to the Lambda, which validates the payload, checks a per-IP rate
+limit (5 per 10 minutes) and a honeypot field, then sends one SES mail with
+the sender's address as `Reply-To`.
+
+**The SES account is in the sandbox** (`aws sesv2 get-account` reports
+`ProductionAccessEnabled: false`), which means mail is only delivered to
+*verified* identities. Every address in `toEmails` must therefore already be a
+verified SES identity in `us-east-2`. Adding a recipient that is not verified
+makes the send fail with a 502 from the Lambda — either verify it first
+(`aws sesv2 create-email-identity --email-identity <address> --region us-east-2`,
+then click the link in the mail it sends), or request production access.
+
+For local dev, take the `ContactFunctionUrl` stack output and put it in a
+`.env` at the repo root:
+
+```bash
+CONTACT_FN_URL=https://<id>.lambda-url.us-east-2.on.aws/
+```
+
+`vite.config.js` proxies `/api/contact` there in dev, so the same fetch works
+against the real Lambda without CORS. Without the variable there is no proxy
+and submissions fail in dev only. `.env` is gitignored; see `.env.example`.
 
 ## Media
 

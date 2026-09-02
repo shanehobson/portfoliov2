@@ -29,6 +29,10 @@ images-src
 /public/sitemap.xml
 /public/robots.txt
 
+# environment variables — CONTACT_FN_URL for the dev proxy, see .env.example
+.env
+.env.production
+
 # CDK
 cdk/config.local.ts
 cdk/cdk.out

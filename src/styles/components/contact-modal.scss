@@ -1,0 +1,209 @@
+// The contact form dialog. Sits on $ink, the darkest step, so it separates
+// from the ground behind it the way the hero's contact card does.
+.contact-modal {
+  width: min(56rem, 92vw);
+  max-height: 90dvh;
+  padding: 0;
+  border: 1px solid $rule;
+  border-radius: 2px;
+  background: $ink;
+  color: $text;
+  overflow: auto;
+  // The dialog scrolls on short windows; without this the scrollbar paints
+  // in the light theme's chrome against the ink.
+  color-scheme: dark;
+
+  &::backdrop {
+    background: rgba(10, 34, 38, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+
+.contact-modal__inner {
+  position: relative;
+  padding: clamp(2.4rem, 4vw, 4rem);
+}
+
+.contact-modal__close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
+  color: $text;
+  background: $surface;
+  border: 1px solid $rule;
+  border-radius: 50%;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+
+  &:hover {
+    background: $surface-raised;
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+
+.contact-modal .eyebrow {
+  margin-bottom: 1.6rem;
+}
+
+.contact-modal__title {
+  margin: 0;
+  // Clears the close button.
+  padding-right: 4.8rem;
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.contact-modal__lede {
+  margin: 1.6rem 0 0;
+  color: $muted;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  // The button is inline-flex, so without this it stretches the full width.
+  align-items: stretch;
+  gap: 2rem;
+  margin-top: clamp(2.4rem, 3vw, 3.2rem);
+
+  &[hidden] {
+    display: none;
+  }
+
+  // The submit button sits left, not stretched across the sheet.
+  .button {
+    align-self: flex-start;
+  }
+
+  .button:disabled {
+    opacity: 0.5;
+    transform: none;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.field__label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $muted;
+}
+
+// Fields borrow the card language: a hairline box on the ink that picks up
+// the accent on focus. No filled background.
+.field__input {
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  font: inherit;
+  font-size: 1.6rem;
+  color: $text;
+  background: transparent;
+  border: 1px solid $rule;
+  border-radius: 2px;
+  transition: border-color 0.25s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: $accent;
+  }
+
+  &::placeholder {
+    color: $muted;
+    opacity: 0.7;
+  }
+}
+
+textarea.field__input {
+  resize: vertical;
+  min-height: 10rem;
+}
+
+// Only after a submit attempt — nobody should be told their email is wrong
+// while they are still typing the first character of it.
+.contact-form[data-submitted] .field__input:invalid {
+  border-color: $danger;
+}
+
+.contact-form__status {
+  margin: 0;
+  min-height: 1.6em;
+  font-size: 1.4rem;
+  color: $muted;
+
+  &[data-tone="error"] {
+    color: $danger;
+  }
+
+  a {
+    color: $accent;
+    border-bottom: 1px solid rgba(75, 184, 154, 0.4);
+  }
+}
+
+.contact-done {
+  margin-top: clamp(2.4rem, 3vw, 3.2rem);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.contact-done__title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.contact-done__note {
+  margin: 0.8rem 0 0;
+  color: $muted;
+}
+
+// Phone: full-bleed sheet. The UA `<dialog>` defaults (the max-width and the
+// auto margins) have to be reset too, not just the width.
+@media only screen and (max-width: $tablet-breakpoint) {
+  .contact-modal {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .contact-modal__inner {
+    min-height: 100%;
+    padding-top: max(6.4rem, calc(env(safe-area-inset-top) + 6.4rem));
+    padding-bottom: max(2.4rem, env(safe-area-inset-bottom));
+  }
+
+  .contact-modal__close {
+    top: max(1.2rem, env(safe-area-inset-top));
+  }
+}

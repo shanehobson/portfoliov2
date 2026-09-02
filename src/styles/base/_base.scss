@@ -81,6 +81,18 @@ button:disabled {
 
 // --------------------------------------------------------------- primitives
 
+// Off-screen but still in the accessibility tree and the form's submission.
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 // Every section hangs off this, which is what keeps the left edge of the page
 // straight from the hero to the footer.
 .shell {

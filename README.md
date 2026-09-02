@@ -16,6 +16,11 @@ npm run preview      # serve the built output
 `npm run dev` and `npm run build` first regenerate the blog's HTML entry points
 from `content/posts/` (`scripts/build-blog.mjs`).
 
+The contact form posts to a Lambda behind CloudFront. To exercise it in dev,
+copy `.env.example` to `.env` and fill in the stack's `ContactFunctionUrl`
+output; see [`cdk/README.md`](cdk/README.md). Without it the form's submit
+fails locally and everything else works.
+
 ## Media
 
 `public/images/` and `public/video/` hold the project posters, portraits and

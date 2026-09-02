@@ -1,4 +1,4 @@
-const Contact = () => (
+const Contact = ({ onContact }) => (
   <section className="section contact" id="contact">
     <div className="shell contact-inner">
       <p className="eyebrow">04 / Contact</p>
@@ -17,7 +17,11 @@ const Contact = () => (
       </a>
 
       <div className="contact-actions">
-        <a className="button button--primary" href="mailto:shanehobson1@gmail.com">
+        <a
+          className="button button--primary"
+          href="mailto:shanehobson1@gmail.com"
+          onClick={onContact}
+        >
           Connect with me
         </a>
         <a

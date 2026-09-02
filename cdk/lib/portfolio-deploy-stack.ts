@@ -13,25 +13,51 @@ import {
   FunctionEventType,
   FunctionRuntime,
   HttpVersion,
+  OriginRequestPolicy,
   PriceClass,
   S3OriginAccessControl,
   SSLMethod,
   SecurityPolicyProtocol,
   ViewerProtocolPolicy,
 } from 'aws-cdk-lib/aws-cloudfront';
-import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { FunctionUrlOrigin, S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { BucketDeployment, Source, CacheControl } from 'aws-cdk-lib/aws-s3-deployment';
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { FunctionUrlAuthType, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { PublicHostedZone, TxtRecord } from 'aws-cdk-lib/aws-route53';
+import { EmailIdentity, Identity } from 'aws-cdk-lib/aws-ses';
 
 export interface PortfolioDeployStackProps extends StackProps {
+  domainName: string;
+  hostedZoneId: string;
   bucketName: string;
   distributionId: string;
   distributionDomainName: string;
   sourcePath: string;
+  /** Domain SES signs contact mail for — the hosted zone above. */
+  sendingDomain: string;
+  /** Envelope From for contact mail; an address on `sendingDomain`. */
+  fromEmail: string;
+  /**
+   * Contact form recipients. The SES account is in the sandbox, so each of
+   * these has to be a verified identity in this region. Supplied from the
+   * gitignored `config.local.ts` — personal inboxes stay out of the repo.
+   */
+  toEmails: readonly string[];
 }
 
 export class PortfolioDeployStack extends Stack {
   constructor(scope: Construct, id: string, props: PortfolioDeployStackProps) {
     super(scope, id, props);
+
+    const { domainName, hostedZoneId, sendingDomain, fromEmail, toEmails } = props;
+
+    const hostedZone = PublicHostedZone.fromPublicHostedZoneAttributes(this, 'HostedZone', {
+      hostedZoneId,
+      zoneName: domainName,
+    });
 
     const siteBucket = Bucket.fromBucketName(this, 'SiteBucket', props.bucketName);
 
@@ -141,6 +167,87 @@ function handler(event) {
       cachePolicy: CachePolicy.CACHING_OPTIMIZED,
     };
 
+    // ------------------------------------------------------------ contact form
+
+    // Domain identity for the contact form's Lambda. CDK writes the DKIM
+    // CNAMEs and the custom MAIL FROM MX/SPF records into the hosted zone, so
+    // the mail is aligned on both SPF and DKIM.
+    const emailIdentity = new EmailIdentity(this, 'SiteEmailIdentity', {
+      identity: Identity.publicHostedZone(hostedZone),
+      mailFromDomain: `mail.${sendingDomain}`,
+    });
+
+    // Strict alignment, and aggregate reports to the first recipient — the
+    // one inbox we know is already watched.
+    new TxtRecord(this, 'DmarcRecord', {
+      zone: hostedZone,
+      recordName: `_dmarc.${sendingDomain}`,
+      values: [`v=DMARC1; p=quarantine; rua=mailto:${toEmails[0]}; adkim=s; aspf=s; pct=100`],
+    });
+
+    // Per-IP submission counter for the contact form. Items carry a TTL and
+    // are worthless once expired, so the table is disposable.
+    const rateLimitTable = new Table(this, 'ContactRateLimitTable', {
+      partitionKey: { name: 'pk', type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      timeToLiveAttribute: 'ttl',
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+
+    const contactFn = new NodejsFunction(this, 'ContactFunction', {
+      entry: path.join(__dirname, '..', 'lambda', 'contact', 'handler.ts'),
+      handler: 'handler',
+      runtime: Runtime.NODEJS_20_X,
+      timeout: Duration.seconds(10),
+      memorySize: 256,
+      environment: {
+        TO_EMAILS: toEmails.join(','),
+        FROM_EMAIL: fromEmail,
+        RATE_LIMIT_TABLE: rateLimitTable.tableName,
+      },
+      bundling: {
+        minify: true,
+        sourceMap: false,
+        target: 'node20',
+        // Provided by the Node 20 runtime; bundling them only inflates the
+        // artefact.
+        externalModules: ['@aws-sdk/client-sesv2', '@aws-sdk/client-dynamodb'],
+      },
+    });
+
+    rateLimitTable.grantReadWriteData(contactFn);
+
+    contactFn.addToRolePolicy(
+      new PolicyStatement({
+        actions: ['ses:SendEmail', 'ses:SendRawEmail'],
+        resources: [
+          emailIdentity.emailIdentityArn,
+          ...toEmails.map(
+            (email) => `arn:aws:ses:${this.region}:${this.account}:identity/${email}`
+          ),
+        ],
+      })
+    );
+
+    // No CORS block: the browser only ever reaches this through the
+    // CloudFront behaviour below, which makes the call same-origin. The
+    // Function URL itself stays out of the repo.
+    const fnUrl = contactFn.addFunctionUrl({
+      authType: FunctionUrlAuthType.NONE,
+    });
+
+    // The distribution has no error-page rewrites, so the Lambda's own
+    // 400/405/429/502 pass through intact. ALL_VIEWER_EXCEPT_HOST_HEADER
+    // forwards the body and content-type while leaving Host as the Function
+    // URL's own, which its SigV4-less auth still requires.
+    const contactBehavior = {
+      origin: new FunctionUrlOrigin(fnUrl),
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      allowedMethods: AllowedMethods.ALLOW_ALL,
+      cachePolicy: CachePolicy.CACHING_DISABLED,
+      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER_EXCEPT_HOST_HEADER,
+    };
+
     new Distribution(this, 'SiteDistribution', {
       defaultBehavior,
       additionalBehaviors: {
@@ -148,6 +255,7 @@ function handler(event) {
         '/blog/*': blogBehavior,
         '/images/*': mediaBehavior,
         '/video/*': mediaBehavior,
+        '/api/contact': contactBehavior,
       },
       domainNames: ['shanehobson.me', 'www.shanehobson.me'],
       certificate: Certificate.fromCertificateArn(
@@ -253,6 +361,10 @@ function handler(event) {
     // invalidate only once everything is in place.
     root.node.addDependency(assets, blog);
 
+    new CfnOutput(this, 'ContactFunctionUrl', {
+      value: fnUrl.url,
+      description: 'Put in .env at the repo root as CONTACT_FN_URL for local dev',
+    });
     new CfnOutput(this, 'DistributionId', { value: props.distributionId });
     new CfnOutput(this, 'SiteBucketName', { value: siteBucket.bucketName });
     new CfnOutput(this, 'MediaBucketName', {

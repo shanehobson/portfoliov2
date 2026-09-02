@@ -1,6 +1,6 @@
 import { existsSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
 const blogDir = resolve(import.meta.dirname, 'blog')
@@ -19,9 +19,31 @@ function blogEntries() {
   return entries
 }
 
+// The contact form POSTs to `/api/contact`, which in production is a
+// CloudFront behaviour in front of the contact Lambda. In dev there is no
+// CloudFront, so proxy the same path straight at the Function URL — same
+// fetch, same origin, no CORS. Put the stack's `ContactFunctionUrl` output in
+// `.env` as CONTACT_FN_URL; without it the form fails in dev only.
+function contactProxy(mode) {
+  const { CONTACT_FN_URL } = loadEnv(mode, import.meta.dirname, '')
+  if (!CONTACT_FN_URL) return {}
+  return {
+    // The Function URL serves the handler at its root, so the path is
+    // rewritten away rather than forwarded.
+    '/api/contact': {
+      target: CONTACT_FN_URL,
+      changeOrigin: true,
+      rewrite: () => '/',
+    },
+  }
+}
+
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
+  server: {
+    proxy: contactProxy(mode),
+  },
   build: {
     rollupOptions: {
       input: {
@@ -30,4 +52,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))
