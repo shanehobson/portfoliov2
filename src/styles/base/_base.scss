@@ -1,21 +1,71 @@
-* {
+// Inter, self-hosted. Only the latin subset ships, and it is a single variable
+// file covering 400-900, so the whole type scale costs one 48 KB request.
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   font-size: 62.5%;
-  // scroll-behavior: smooth;
+  scroll-behavior: smooth;
+  // The fixed nav would otherwise sit on top of whatever a nav link scrolls to.
+  scroll-padding-top: 9rem;
+  background-color: $ground;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
-  color: $off-white;
-  background-color: #eaeaea;
-  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  background-color: $ground;
+  color: $text;
+  font-family: $font-sans;
   font-size: $m-size;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-button, .button {
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
   cursor: pointer;
 }
 
@@ -23,25 +73,169 @@ button:disabled {
   cursor: default;
 }
 
-.is-active {
-  font-weight: bold;
+:focus-visible {
+  outline: 2px solid $accent;
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+// --------------------------------------------------------------- primitives
+
+// Every section hangs off this, which is what keeps the left edge of the page
+// straight from the hero to the footer.
+.shell {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding-left: $gutter;
+  padding-right: $gutter;
+}
+
+// The small uppercase label that sits above a section title, numbered the way
+// the nav numbers its own entries.
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 0 0 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $muted;
+
+  &::before {
+    content: "";
+    width: 2.4rem;
+    height: 1px;
+    background: $rule;
+  }
+}
+
+.section {
+  position: relative;
+  padding: clamp(8rem, 12vw, 16rem) 0;
+  border-top: 1px solid $rule;
 }
 
 .section-title {
-  color: #333;
+  margin: 0;
+  font-size: clamp(3.6rem, 6vw, 7.2rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
-  font-size: 4rem;
 }
 
-.section-subtitle {
-  max-width: 700px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.section-lede {
+  max-width: 62ch;
+  margin: 2.4rem 0 0;
+  font-size: clamp(1.7rem, 1.6vw, 2rem);
+  line-height: 1.6;
+  color: $muted;
 }
 
+// Buttons. `.button` is kept as the class name because the markup and the
+// blog both already use it.
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.2rem 2rem;
+  border: 1px solid $rule;
+  border-radius: 999px;
+  background: transparent;
+  color: $text;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: border-color 0.25s ease, background-color 0.25s ease,
+    color 0.25s ease, transform 0.25s ease;
+
+  &::after {
+    content: "↗";
+    font-size: 1.2rem;
+    color: $muted;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: $surface-raised;
+    transform: translateY(-1px);
+  }
+
+  &:hover::after {
+    color: $text;
+    transform: translate(2px, -2px);
+  }
+}
+
+// The accent is a mid green, so the filled button takes the ground as its type
+// color rather than white — 7.2:1 instead of 2.4:1.
+.button--primary {
+  border-color: $accent;
+  background: $accent;
+  color: $ground;
+
+  &::after {
+    color: rgba(10, 28, 31, 0.7);
+  }
+
+  &:hover {
+    border-color: #63cfb0;
+    background: #63cfb0;
+    color: $ground;
+  }
+
+  &:hover::after {
+    color: $ground;
+  }
+}
+
+// A link inside prose.
+.link {
+  color: $accent;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(75, 184, 154, 0.4);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-bottom-color: $accent;
+  }
+}
+
+// The faint ruled grid with a `+` at each intersection. It is decorative, so it
+// is a background on a pseudo-element rather than markup, and it fades out
+// toward the bottom of whatever it is applied to.
+//
+// The cross tile is authored at 120x120 to match the 120px ($cell) grid pitch
+// 1:1 — scaling the tile would scale the crosses with it — and is then shifted
+// half a cell so the crosses land on the line intersections rather than in the
+// middle of each square.
+$grid-cell: 120px;
+
+@mixin blueprint-grid($fade: 82%) {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60 54.5v11M54.5 60h11' stroke='rgba(255,255,255,0.22)' stroke-width='1'/%3E%3C/svg%3E"),
+      linear-gradient(to right, #{$rule-soft} 1px, transparent 1px),
+      linear-gradient(to bottom, #{$rule-soft} 1px, transparent 1px);
+    background-size: $grid-cell $grid-cell, $grid-cell $grid-cell,
+      $grid-cell $grid-cell;
+    background-position: calc(#{$grid-cell} / -2) calc(#{$grid-cell} / -2), 0 0,
+      0 0;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 $fade,
+      transparent 100%
+    );
+    mask-image: linear-gradient(to bottom, #000 0%, #000 $fade, transparent 100%);
+  }
+}

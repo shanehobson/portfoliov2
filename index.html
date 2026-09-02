@@ -4,20 +4,54 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1c6b58" />
+    <meta
+      name="description"
+      content="Shane Hobson is a software engineer with a decade of experience building applications for the web, spanning frontend, backend, and cloud infrastructure."
+    />
+    <!--
+      The two things that paint the fold: the self-hosted variable font
+      (crossorigin because font fetches are always CORS) and the cut-out
+      portrait standing in the middle of the hero.
+    -->
     <link
       rel="preload"
-      as="image"
-      href="/images/bg.webp"
-      fetchpriority="high"
-      media="(min-width: 45.0625rem)"
+      as="font"
+      type="font/woff2"
+      href="/fonts/inter-latin-var.woff2"
+      crossorigin
     />
     <link
       rel="preload"
       as="image"
-      href="/images/bg-mobile.webp"
+      type="image/webp"
+      href="/images/shane-cutout.webp"
       fetchpriority="high"
-      media="(max-width: 45rem)"
     />
+    <link rel="canonical" href="https://shanehobson.me/" />
+
+    <!--
+      Link previews. og:image must be an absolute URL and is served as JPEG
+      rather than WebP because several scrapers, LinkedIn's included, still
+      handle WebP badly. 1200x630 is the size every network crops from.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Shane Hobson" />
+    <meta property="og:url" content="https://shanehobson.me/" />
+    <meta property="og:title" content="Shane Hobson - Software Engineer" />
+    <meta property="og:description" content="Shane Hobson is a software engineer with a decade of experience building applications for the web, spanning frontend, backend, and cloud infrastructure." />
+    <meta property="og:image" content="https://shanehobson.me/images/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Shane Hobson, software engineer" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Shane Hobson - Software Engineer" />
+    <meta name="twitter:description" content="Shane Hobson is a software engineer with a decade of experience building applications for the web, spanning frontend, backend, and cloud infrastructure." />
+    <meta name="twitter:image" content="https://shanehobson.me/images/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Shane Hobson, software engineer" />
+
     <title>Shane Hobson - Software Engineer</title>
   </head>
   <body>

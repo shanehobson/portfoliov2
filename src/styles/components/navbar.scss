@@ -1,122 +1,173 @@
-.NavBar-navBar {
-    display: flex;
-    padding-left: 5rem;
-    padding-right: 5rem;
-    align-items: center;
-    position: relative;
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    backdrop-filter 0.3s ease;
+  border-bottom: 1px solid transparent;
 }
 
-.NavBar-menu {
-    display: flex;
-    align-items: center;
+// Transparent over the hero; a ground and a hairline once the page moves.
+.nav--scrolled {
+  background-color: rgba(10, 34, 38, 0.82);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom-color: $rule;
 }
 
-.NavBar-item {
-    font-family: Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    font-size: 0.875em;
-    text-decoration: none;
-    padding: 1em 2em;
-    -webkit-transition: color .6s;
-    transition: color .6s;
+.nav-inner {
+  // The overlay is a child of the same stacking context, so the bar has to be
+  // lifted above it or the open menu covers its own close button.
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  height: 7.2rem;
 }
 
-.NavBar-item:hover {
-    color: #706f6f;
-    cursor: pointer;
+.nav-mark {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  cursor: pointer;
+
+  sup {
+    font-size: 0.5em;
+    font-weight: 500;
+    top: -0.9em;
+  }
 }
 
-#NavBar-icon {
-    margin-right: auto;
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.6rem, 3vw, 4rem);
 }
 
-#NavBar-icon > img {
-    width: 5rem;
-    height: 5rem;
+.nav-link {
+  position: relative;
+  padding: 0.4rem 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: $field-muted;
+  cursor: pointer;
+  transition: color 0.25s ease;
+
+  // The underline grows from the left rather than fading in, so the active
+  // item reads as a position on a rule and not just a color change.
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    color: $text;
+  }
+
+  &:hover::after,
+  &.nav-link--active::after {
+    transform: scaleX(1);
+  }
 }
 
-.NavBar-hamburger {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    z-index: 1001;
-    margin-left: auto;
+.nav-link--active {
+  color: $text;
 }
 
-.NavBar-hamburger-line {
+// ------------------------------------------------------------------- mobile
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
+  margin-right: -0.8rem;
+  background: none;
+  border: none;
+
+  span {
     display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #fff;
-    margin: 5px 0;
-    transition: all 0.3s ease;
+    width: 24px;
+    height: 1.5px;
+    margin: 0 auto;
+    background: $text;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
 }
 
-.NavBar-hamburger-line.open:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+.nav-toggle--open span:first-child {
+  transform: translateY(3.75px) rotate(45deg);
 }
 
-.NavBar-hamburger-line.open:nth-child(2) {
-    opacity: 0;
+.nav-toggle--open span:last-child {
+  transform: translateY(-3.75px) rotate(-45deg);
 }
 
-.NavBar-hamburger-line.open:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  background: $ink;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-@media only screen and (max-width: $tablet-breakpoint) {
-    .NavBar-navBar {
-        padding-left: 2rem;
-        padding-right: 2rem;
-        flex-wrap: wrap;
-        position: relative;
-    }
-
-    .NavBar-hamburger {
-        display: block;
-    }
-
-    .NavBar-menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100vw;
-        max-height: 0;
-        overflow: hidden;
-        background-color: rgba(0, 0, 0, 0.95);
-        flex-direction: column;
-        transition: max-height 0.3s ease;
-        z-index: 1000;
-    }
-
-    .NavBar-menu-open {
-        max-height: 500px;
-    }
-
-    .NavBar-item {
-        width: 100%;
-        text-align: center;
-        padding: 1.5em 2em;
-    }
-
-    #NavBar-icon {
-        display: block;
-    }
+.nav-overlay--open {
+  opacity: 1;
+  visibility: visible;
 }
 
-@media only screen and (max-width: $iphone-breakpoint) {
-    .NavBar-navBar {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+.nav-overlay-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  width: 100%;
+  padding: 0 $gutter;
 
-    #NavBar-icon > img {
-        width: 4rem;
-        height: 4rem;
-    }
+  a {
+    display: flex;
+    align-items: baseline;
+    gap: 1.6rem;
+    font-size: clamp(3.2rem, 11vw, 5.6rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+}
+
+.nav-overlay-index {
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: $muted;
+}
+
+@media only screen and (max-width: $desktop-breakpoint) {
+  .nav-links {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
 }

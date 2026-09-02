@@ -39,14 +39,9 @@ encode() {
 screenshots=(
   blinds-tracker
   contract-generator
-  hobson-electric
   knecht-insurance
   loader-gallery
-  lumina
-  max-manicure
-  nadia
-  nightingale-nails
-  zaera
+  odyssey-hero
 )
 
 echo "Screenshots (1300w, q78):"
@@ -55,33 +50,40 @@ for name in "${screenshots[@]}"; do
 done
 
 echo "Other images:"
-# The hero is a grainy 12MP phone photo sitting under a dark overlay at
-# background-size: cover — a slight blur before encoding buys ~25% and is
-# invisible through the overlay.
-encode "$src/bg.jpg"            bg            "1920x>" 62 -blur 0x0.6
-encode "$src/bg.jpg"            bg-mobile     "1000x>" 55 -blur 0x0.6
+# The hero has no photograph any more — it is type on a ruled grid — so bg.jpg
+# is no longer encoded. shane.png is now the About portrait and the avatar on
+# the hero's contact card.
 encode "$src/shane.png"         shane          "600x>" 82
-encode "$src/medium.png"        medium        "1120x>" 78
+encode "$src/blog.png"          blog          "1300x>" 80
 encode "$src/stella-poster.jpg" stella-poster "1300x>" 78
-# Book.png is only 291x439 and already renders upscaled to 351x530, so there is
-# nothing to downsize — keep the quality high and just change codec.
+# Book.png is 509x346 and renders at most a card wide, so there is nothing to
+# downsize — keep the quality high and just change codec.
 encode "$src/Book.png"          Book          "1300x>" 90
 
-# Video posters: the demo videos render at height 300, so 600 covers DPR-2.
-# Stella has a hand-picked poster in images-src and is handled above.
-echo "Video posters (600h, q78):"
+# Video posters: a frame from one second in, sized like the screenshots since
+# videos sit in the same panel. The homak.dev walkthroughs (zaera, max-manicure,
+# nightingale-nails, science-of-dance, odyssey, vault, lumina, hobson-electric)
+# are copied from ../homak/public/videos and replace the old screenshots for
+# those projects. Stella has a hand-picked poster in images-src, handled above.
+echo "Video posters (1300w, q78):"
 posters=(
-  "app-demo-1.mp4|pitching-theory-poster"
-  "Vault_Demo.mp4|vault-poster"
-  "Odyssey_video.mp4|odyssey-poster"
-  "Invoice_Generator.mp4|invoice-generator-poster"
+  "zaera.mp4|zaera-poster"
+  "odyssey.mp4|odyssey-poster"
+  "vault.mp4|vault-poster"
   "workout-tracker-video.mp4|workout-tracker-poster"
+  "app-demo-1.mp4|pitching-theory-poster"
+  "Invoice_Generator.mp4|invoice-generator-poster"
+  "max-manicure.mp4|max-manicure-poster"
+  "nightingale-nails.mp4|nightingale-nails-poster"
+  "science-of-dance.mp4|science-of-dance-poster"
+  "hobson-electric.mp4|hobson-electric-poster"
+  "lumina.mp4|lumina-poster"
 )
 for entry in "${posters[@]}"; do
   file="${entry%%|*}"; name="${entry##*|}"
   frame="$tmp/$name-frame.png"
   ffmpeg -loglevel error -y -ss 1 -i "$video/$file" -frames:v 1 "$frame"
-  encode "$frame" "$name" "x600>" 78
+  encode "$frame" "$name" "1300x>" 78
 done
 
 echo "Done."

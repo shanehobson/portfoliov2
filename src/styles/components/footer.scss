@@ -1,11 +1,41 @@
-.footer-contentContainer {
-    background: $blue;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.footer {
+  border-top: 1px solid $rule;
 }
 
-.footer-text {
-    color: $off-white;
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 3.2rem;
+  padding-bottom: 3.2rem;
+}
+
+.footer-mark {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+
+  sup {
+    font-size: 0.5em;
+    font-weight: 500;
+    top: -0.9em;
+  }
+}
+
+.footer-text,
+.footer-link {
+  margin: 0;
+  font-size: 1.3rem;
+  color: $muted;
+}
+
+.footer-link {
+  transition: color 0.25s ease;
+
+  &:hover {
+    color: $text;
+  }
 }

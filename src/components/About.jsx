@@ -1,87 +1,111 @@
-import React from "react";
+// Ordered the way the resume groups them — languages, front end, back end,
+// data, cloud, testing — so the list reads as a stack rather than a keyword
+// dump. Deliberately the core set, not everything: the long tail (Radix,
+// Tanstack Query, SQS, API Gateway, Cognito) lives on the resume.
+const CORE_TECH = [
+  "TypeScript",
+  "JavaScript",
+  "React",
+  "Angular",
+  "Next.js",
+  "Redux",
+  "Tailwind CSS",
+  "SCSS",
+  "Node.js",
+  "Nest.js",
+  "Express",
+  "GraphQL",
+  "PostgreSQL",
+  "DynamoDB",
+  "Amazon Web Services",
+  "AWS Lambda",
+  "AWS CDK",
+  "Jest",
+  "Playwright",
+];
 
-const About = () => {
-  return (
-    <div className="about-contentContainer">
-      <div>
-        <h1 className="section-title">About Me</h1>
-        <div className="about-imageContainer">
+const CERTIFICATES = [
+  "AWS Certified Solutions Architect",
+  "AWS Certified Cloud Practitioner",
+];
+
+const About = () => (
+  <section className="section about" id="about">
+    <div className="shell about-inner">
+      <div className="about-aside">
+        <p className="eyebrow">01 / About</p>
+        <h2 className="section-title">
+          About
+          <br />
+          Me
+        </h2>
+        <figure className="about-portrait">
           <img
             src="/images/shane.webp"
-            className="about-pic"
-            id="about-pic2"
             width="600"
             height="645"
             loading="lazy"
             decoding="async"
-          ></img>
-        </div>
-
-        <p className="section-subtitle" id="about-subtitle">
-          I am a software engineer building high-performance, scalable
-          applications that serve hundreds of thousands of users. I have
-          experience across the entire stack, from frontend to backend to dev
-          ops and cloud services. I have nearly a decade of experience building
-          software for the web, and I am an Amazon Web Services Certified
-          Solutions Architect.
-          <br />
-        </p>
-
-        <p className="section-subtitle" id="about-subtitle">
-          I have a proven track record of designing and implementing
-          production-grade applications across various technology stacks,
-          helping businesses and individuals solve real-world problems. I thrive
-          on tackling complex challenges, optimizing performance, and delivering
-          robust, maintainable solutions.
-          <br />
-        </p>
-
-        <p className="section-subtitle" id="about-subtitle2">
-          I currently work as a consultant for a Fortune 100 media company,
-          helping build a greenfield system that manages over a billion dollars
-          in ad revenue. When not working, I enjoy learning new technologies,
-          building all sorts of web apps large and small, writing about
-          software, and reading widely on technical and non-technical subjects.
-        </p>
-        <p className="section-subtitle" id="about-subtitle3">
-          Prior to becoming a web developer, I attended law school and practiced
-          law for three years as a litigation and trial attorney. I remain a
-          licensed attorney. As a result of this background, I am deeply
-          interested in the intersection between law and technology and I am
-          passionate about using my dual skillset to solve legal problems using
-          technology.
-        </p>
-        <div className="about-listContainer">
-          <div>
-            <p className="about-subheading">Core Technologies:</p>
-            <p className="about-list">
-              TypeScript <br />
-              React
-              <br />
-              Angular <br />
-              NextJS
-              <br /> NodeJS
-              <br />
-              Amazon Web Services
-              <br />
-            </p>
-          </div>
-        </div>
-        <div className="about-listContainer">
-          <div>
-            <p className="about-subheading">Certificates:</p>
-            <p className="about-list">
-              AWS Certified Solutions Architect
-              <br />
-              AWS Certified Cloud Practitioner
-              <br />
-            </p>
-          </div>
-        </div>
+            alt="Shane Hobson"
+          />
+        </figure>
       </div>
-      <hr />
+
+      <div className="about-body">
+        <p>
+          I&rsquo;m a software engineer with a decade of experience building
+          applications for the web. My work spans frontend engineering, backend
+          engineering, and cloud infrastructure.
+        </p>
+        <p>
+          I currently consult for a Fortune 100 media company, where I&rsquo;m
+          helping build an advertising platform responsible for managing more
+          than a billion dollars in annual ad revenue. My work focuses on
+          building complex, data-intensive applications and making them fast,
+          scalable, and intuitive.
+        </p>
+        <p>
+          Outside of work, I build software, experiment with new technologies,
+          and write about software engineering and AI. I&rsquo;m particularly
+          interested in understanding how the technologies I use actually work
+          &mdash; from web browsers and distributed systems to large language
+          models &mdash; and explaining those ideas in approachable terms.
+        </p>
+        <p>
+          I took an unconventional path into software engineering. Before
+          writing software professionally, I went to law school and spent three
+          years as a litigation and trial attorney. I remain a licensed
+          attorney, and I&rsquo;m especially interested in the intersection of
+          law and technology and in how software and AI can be used to solve
+          problems in the legal industry. I regularly contribute to open source
+          legal technology and legal AI projects.
+        </p>
+
+        <dl className="about-facts">
+          <div className="about-fact">
+            <dt>Core technologies</dt>
+            <dd>
+              <ul className="tags">
+                {CORE_TECH.map((tech) => (
+                  <li key={tech}>{tech}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+          <div className="about-fact">
+            <dt>Certificates</dt>
+            <dd>
+              <ul className="about-list">
+                {CERTIFICATES.map((cert) => (
+                  <li key={cert}>{cert}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        </dl>
+      </div>
     </div>
-  );
-};
+  </section>
+);
 
 export default About;

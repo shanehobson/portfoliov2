@@ -1,95 +1,128 @@
-.writing-container {
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  margin-top: 4rem;
+.writing-head {
+  margin-bottom: clamp(4rem, 7vw, 8rem);
 }
 
-.writing-writing {
-  color: #706f6f;
+.writing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(34rem, 1fr));
+  gap: clamp(2.4rem, 3vw, 4rem);
 }
 
-.writing-contentContainer {
-  text-align: center;
-  max-width: 1500px;
-  margin: 0 auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-#writing-subtitle {
-  margin-top: 4rem;
-  text-indent: 3rem;
-}
-
-#writing-subtitle2 {
-  text-indent: 3rem;
-}
-
-.writing-imageContainer {
+.writing-card {
   display: flex;
-  justify-content: center;
-}
+  flex-direction: column;
+  border: 1px solid $rule;
+  background: $surface;
+  transition: border-color 0.35s ease, transform 0.35s ease;
 
-.writing-pic {
-  border-radius: 50%;
-  border: 2px solid $blue;
-  box-shadow: 3px 3px 20px rgba(0, 0, 0, 1);
-  height: 300px;
-  width: 300px;
-}
-
-#writing-pic2,
-#writing-pic3 {
-  margin-left: -20px;
-}
-
-.writing-listContainer {
-  display: flex;
-  justify-content: space-around;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.writing-subheading {
-  font-weight: bold;
-  color: $blue;
-}
-
-.writing-appLink {
-  color: $blue;
-}
-
-@media only screen and (max-width: $desktop-breakpoint) {
-  #writing-pic1,
-  #writing-pic3 {
-    display: none;
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-3px);
   }
 }
 
-@media only screen and (max-width: $tablet-breakpoint) {
-  .writing-listContainer {
-    flex-direction: column;
+.writing-card-media {
+  display: block;
+  overflow: hidden;
+  border-bottom: 1px solid $rule;
+  background: $surface-raised;
+
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    transition: transform 0.6s ease;
   }
+}
+
+// Both panels are a fixed 16:9 so the two cards line up, but neither piece of
+// artwork is 16:9 and cropping either loses the part that matters — the book's
+// byline, the article's heading. So both are contained (above), each on a
+// ground sampled from its own artwork, and the bars at their sides then read as
+// part of the image rather than as letterboxing.
+.writing-card-media--blog img {
+  background: #122f32;
+}
+
+.writing-card-media--book img {
+  background: #272727;
+}
+
+.writing-card:hover .writing-card-media img {
+  transform: scale(1.02);
+}
+
+.writing-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: clamp(2.4rem, 3vw, 3.6rem);
+
+  p {
+    margin: 0 0 2rem;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: $muted;
+  }
+}
+
+.writing-card-title {
+  margin: 0 0 1.6rem;
+  font-size: clamp(2rem, 2.2vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 // The three most recent posts, generated into src/data/recent-posts.json by
 // scripts/build-blog.mjs so the list cannot drift from what is published.
-.writing-recentPosts {
-  list-style: none;
-  margin: $m-size 0 0;
+.writing-posts {
+  margin: 0 0 2.4rem;
   padding: 0;
-  text-align: left;
-  display: inline-block;
+  list-style: none;
+  border-top: 1px solid $rule;
+
+  li {
+    border-bottom: 1px solid $rule;
+  }
+
+  a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.3rem 0;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: $text;
+    transition: color 0.25s ease;
+
+    &:hover {
+      color: $accent;
+    }
+  }
 }
 
-.writing-recentPosts li {
-  margin-bottom: 0.6rem;
+.writing-posts-arrow {
+  flex: none;
+  color: $muted;
+  transition: transform 0.25s ease;
+}
+
+.writing-posts a:hover .writing-posts-arrow {
+  transform: translateX(3px);
+  color: $accent;
+}
+
+.writing-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.6rem;
+  margin-top: auto;
+  padding-top: 1rem;
 }
 
 .writing-syndication {
-  font-size: $font-size-small;
-  margin-top: -1rem;
+  margin: 0 !important;
+  font-size: 1.3rem !important;
 }

@@ -1,0 +1,401 @@
+// "SHANE HOBSON" measures 7.5em wide in Inter at this weight and tracking, so
+// 11.2vw is the largest it fits the shell at (the gutter eats 10vw) with a
+// little room left for a font that loads at a slightly different width. The
+// cards are positioned off this too, so it is declared once.
+$wordmark-size: clamp(3.2rem, 11.2vw, 17rem);
+$wordmark-leading: 0.85;
+$wordmark-descent: 0.3em;
+
+// The hero is the one saturated color field on the page: a green-to-blue
+// diagonal that the cut-out photograph stands on. Everything else on the site
+// sits on the darker ink the field was drawn from.
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border-bottom: 1px solid $rule;
+  background: linear-gradient(
+    152deg,
+    $field-green 0%,
+    #175a5b 48%,
+    $field-blue 100%
+  );
+
+  @include blueprint-grid(88%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  // A single column with the statement pinned near the top and the wordmark on
+  // the bottom rail; the portrait and the cards float over both.
+  grid-template-rows: 1fr auto;
+  width: 100%;
+  padding-top: clamp(12rem, 22vh, 20rem);
+  padding-bottom: clamp(3rem, 6vh, 6rem);
+}
+
+// The ghosted first name behind everything. It is set in the same face as the
+// wordmark so the two read as one piece of type at two opacities.
+.hero-ghost {
+  position: absolute;
+  z-index: 0;
+  top: clamp(4rem, 11vh, 12rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-size: clamp(8rem, 26vw, 34rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.09);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+// ---------------------------------------------------------------- portrait
+//
+// Sized off the viewport height and hung from the bottom rail so the head
+// always lands in the same place relative to the fold, whatever the window is.
+// The bottom of the photograph is masked away rather than covered by a scrim:
+// a scrim over a transparent PNG would print the image's bounding box onto the
+// field as a rectangle, a mask just dissolves the shirt into it.
+.hero-portrait {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: clamp(36rem, 78vh, 82rem);
+  pointer-events: none;
+  user-select: none;
+
+  // White stops rather than black, and the far stop spelled out in full: white
+  // reads as "keep" whether the mask is sampled for alpha or for luminance, and
+  // an explicit rgba() avoids `transparent` interpolating through grey.
+  img {
+    width: auto;
+    max-width: none;
+    height: 100%;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #fff 74%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #fff 74%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+.hero-statement {
+  position: relative;
+  z-index: 2;
+  align-self: start;
+  max-width: 46rem;
+  padding-top: clamp(2rem, 6vh, 6rem);
+}
+
+.hero-rule {
+  display: block;
+  width: 6rem;
+  height: 1px;
+  margin-bottom: 2.4rem;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.hero-lede {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.1vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+// ------------------------------------------------------------------- cards
+
+.hero-cards {
+  position: absolute;
+  z-index: 3;
+  right: $gutter;
+  top: clamp(12rem, 24vh, 20rem);
+  // Stacked from the bottom of the hero: the inner's own padding, the wordmark
+  // box, the year line above it, then a gap. The wordmark grows with vw and
+  // this rail used to be set in vh, so on a short wide window the contact card
+  // landed on top of the name.
+  bottom: calc(
+    clamp(3rem, 6vh, 6rem) + #{$wordmark-size} * #{$wordmark-leading} +
+      #{$wordmark-descent} + 5rem
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.hero-card {
+  display: block;
+  border: 1px solid $rule;
+  background: $surface;
+  transition: transform 0.35s ease, border-color 0.35s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+.hero-card--work {
+  width: 22rem;
+  padding: 0.8rem;
+  background: #fff;
+  border-color: #fff;
+
+  .hero-card-media {
+    display: block;
+    overflow: hidden;
+    background: $surface;
+
+    img {
+      width: 100%;
+      // The screenshot is close to 2:1; a 4:3 panel cropped a third of its
+      // width away, sidebar included.
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.5s ease;
+    }
+  }
+
+  &:hover .hero-card-media img {
+    transform: scale(1.03);
+  }
+
+  .hero-card-foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0.2rem 0.2rem;
+    font-size: 1.2rem;
+    color: $ground;
+  }
+
+  .hero-card-name {
+    font-weight: 600;
+  }
+
+  .hero-card-kind {
+    color: #5f7a78;
+  }
+}
+
+.hero-card--contact {
+  background: $ink;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  width: 27rem;
+  padding: 1.2rem;
+
+  .hero-card-avatar {
+    flex: none;
+    width: 4.6rem;
+    height: 4.6rem;
+    overflow: hidden;
+    border-radius: 2px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 18%;
+    }
+  }
+
+  .hero-card-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+  }
+
+  .hero-card-eyebrow {
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $muted;
+  }
+
+  .hero-card-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .hero-card-kind {
+    font-size: 1.3rem;
+    color: $muted;
+  }
+
+  .hero-card-arrow {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    flex: none;
+    border: 1px solid $rule;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  &:hover .hero-card-arrow {
+    background: $surface-raised;
+    transform: translate(2px, -2px);
+  }
+}
+
+// -------------------------------------------------------------- the wordmark
+
+.hero-name {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+}
+
+.hero-year {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  // $muted is mixed for the dark ground and only reaches 2.5:1 on the field,
+  // so anything set over the hero uses white at an opacity instead.
+  color: $field-muted;
+}
+
+// It has to stay on one line — the portrait stands where a second line would
+// go — which is what $wordmark-size is sized for. The leading is tighter than
+// 1, so the glyphs hang below their own line boxes; the padding is what keeps
+// them off the bottom edge of the hero.
+.hero-wordmark {
+  display: block;
+  padding-bottom: $wordmark-descent;
+  white-space: nowrap;
+  font-size: $wordmark-size;
+  font-weight: 800;
+  line-height: $wordmark-leading;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.hero-scroll {
+  position: absolute;
+  right: $gutter;
+  bottom: clamp(3rem, 6vh, 6rem);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $field-muted;
+  cursor: pointer;
+  transition: color 0.25s ease;
+
+  &:hover {
+    color: $text;
+  }
+}
+
+.hero-scroll-line {
+  display: block;
+  width: 4rem;
+  height: 1px;
+  background: currentColor;
+}
+
+@media only screen and (max-width: $desktop-breakpoint) {
+  .hero-cards {
+    position: static;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 4rem;
+  }
+
+  // The cards drop into the left column here, so the portrait gets out of
+  // their way: smaller, and hung off the right edge instead of centered.
+  .hero-portrait {
+    left: auto;
+    right: -2rem;
+    transform: none;
+    height: 60vh;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: $tablet-breakpoint) {
+  // On a phone the statement, the portrait, both cards and a two-line wordmark
+  // do not fit in one screen, and a hero that clips its own name is worse than
+  // one that runs a little past the fold. So the height stops being fixed here
+  // and the section grows to whatever its content needs.
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-inner {
+    grid-template-rows: auto;
+    gap: 4rem;
+    padding-top: 12rem;
+    padding-bottom: 6rem;
+  }
+
+  // And the portrait stops floating: it becomes a row of the stack, between
+  // the statement and the cards.
+  .hero-portrait {
+    position: static;
+    height: auto;
+    width: min(100%, 32rem);
+    margin: 0 auto -2rem;
+
+    img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .hero-cards {
+    margin-top: 0;
+    gap: 1.6rem;
+  }
+
+  .hero-card--work,
+  .hero-card--contact {
+    width: 100%;
+  }
+
+  .hero-ghost {
+    top: 7rem;
+  }
+}

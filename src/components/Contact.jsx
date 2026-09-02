@@ -1,27 +1,36 @@
-import React from 'react';
+const Contact = () => (
+  <section className="section contact" id="contact">
+    <div className="shell contact-inner">
+      <p className="eyebrow">04 / Contact</p>
+      <h2 className="contact-title">
+        Let&rsquo;s build
+        <br />
+        something.
+      </h2>
+      <p className="section-lede">
+        Interested in working together? Reach out directly — I read every
+        message.
+      </p>
 
-const Contact = () => {
-  return (
-    <div className='contact-contentContainer'>
-        <h1 className='section-title'>Contact</h1>
-        <p className='contact-subtitle'>
-        Interested in working together? Contact me directly by clicking the "Connect" button!
-        </p>
-        <div className='portfolio-portfolioButtonContainer'>
-            <div className='contact-contactButton'>
-                <a href='mailto:shanehobson1@gmail.com' className='button'>Connect With Me</a>
-            </div>
-        </div>
-        <div className='contact-socialContainer'>
-            <p>Connect with me on LinkedIn</p>
-            <a href='https://www.linkedin.com/in/shane-hobson-1a979158/' target='blank'><img src='/images/linked-in.png' width='50' height='41' loading='lazy' decoding='async'></img></a>
-        </div>
-        {/* <div className='contact-socialContainer'>
-            <p>View my GitHub</p>
-            <a href='https://github.com/shanehobson' target='blank'><img src='/images/github.png' className='contact-githubImage' width='72' height='50' loading='lazy' decoding='async'></img></a>
-        </div> */}
+      <a className="contact-email" href="mailto:shanehobson1@gmail.com">
+        shanehobson1@gmail.com
+      </a>
+
+      <div className="contact-actions">
+        <a className="button button--primary" href="mailto:shanehobson1@gmail.com">
+          Connect with me
+        </a>
+        <a
+          className="button"
+          href="https://www.linkedin.com/in/shane-hobson-1a979158/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn
+        </a>
+      </div>
     </div>
-  );
-}
+  </section>
+);
 
 export default Contact;

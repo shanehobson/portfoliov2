@@ -2,26 +2,37 @@
 //
 // These pages are plain HTML with no React and no client-side JavaScript, so
 // this is their only stylesheet. It imports the portfolio's settings and
-// mirrors the base rules from _base.scss — the same #eaeaea ground, the same
-// Helvetica stack, the same #706f6f body text and #333 headings the About,
-// Writing and Portfolio sections use — so the blog reads as the same site.
+// mirrors the base rules from _base.scss — the same near-black ground, the
+// same self-hosted Inter, the same hairline rules and one cool accent — so the
+// blog reads as the same site as the front page.
 @import "./base/settings";
 
-// The portfolio's body grey is #706f6f, which lands at 4.16:1 on this ground —
-// under the 4.5:1 WCAG AA threshold. That is survivable for a few lines of
-// section copy but not for article-length reading, so the blog darkens it to
-// 5.73:1. It is the one value here that deliberately departs from the
-// portfolio; everything else is taken from it unchanged.
-$blog-body: #5a5a5a;
-$blog-heading: #333; // .section-title / .portfolio-portfolioItemTitle
-$blog-ground: #eaeaea; // body background in _base.scss
-$blog-rail: #f1f1f1;
-$blog-rule: #d5d5d5;
-$blog-code-bg: #f4f4f4;
+// The portfolio's $muted lands at 5.7:1 on this ground, which is fine for a few
+// lines of section copy but thin for article-length reading, so the blog reads
+// its body text at full strength and reserves $muted for metadata. That is the
+// one value here that departs from the portfolio; everything else is taken
+// from it unchanged.
+$blog-body: #d7d7d2; // 12.9:1 on $ground
+$blog-heading: $text;
+$blog-ground: $ground;
+$blog-rail: #101012;
+$blog-rule: $rule;
+$blog-code-bg: #121215;
 $blog-sidebar-width: 30rem;
 // Below this the rail and a comfortable article column no longer both fit, so
 // the rail collapses to a compact banner above the article.
 $blog-stack-breakpoint: 80rem;
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
+}
 
 * {
   box-sizing: border-box;
@@ -29,20 +40,22 @@ $blog-stack-breakpoint: 80rem;
 
 html {
   font-size: 62.5%;
+  background-color: $blog-ground;
 }
 
 body {
   margin: 0;
   background-color: $blog-ground;
   color: $blog-body;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: $font-sans;
   font-size: $m-size;
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  color: $blue;
+  color: $accent;
   text-decoration: none;
 
   &:hover {
@@ -91,14 +104,14 @@ img {
   display: block;
   color: $blog-heading;
   text-transform: uppercase;
-  font-size: 2.4rem;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 700;
   line-height: 1.15;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
 
   &:hover {
     text-decoration: none;
-    color: $blue;
+    color: $accent;
   }
 
   span {
@@ -120,9 +133,8 @@ img {
 .blog-sidebar__photo {
   display: block;
   width: 100%;
-  border: 2px solid $blue;
-  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.35);
-}
+  border: 1px solid $rule;
+  }
 
 .blog-sidebar__bio {
   font-size: 1.4rem;
@@ -151,8 +163,10 @@ img {
 .blog-index__title {
   color: $blog-heading;
   text-transform: uppercase;
-  font-size: 4rem;
-  line-height: 1.1;
+  font-size: clamp(3.2rem, 5vw, 5.6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
   margin: 0 0 $l-size;
 }
 
@@ -179,10 +193,11 @@ img {
 }
 
 a:hover .blog-index__item-title {
-  color: $blue;
+  color: $accent;
 }
 
 .blog-index__item-excerpt {
+  color: $muted;
   margin: 0.4rem 0 0;
 }
 
@@ -196,13 +211,16 @@ a:hover .blog-index__item-title {
 
 .blog-post__title {
   color: $blog-heading;
-  font-size: 3.6rem;
-  line-height: 1.2;
+  font-size: clamp(3rem, 4.4vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   margin: 0 0 $s-size;
 }
 
 .blog-post__meta {
   font-size: $font-size-small;
+  color: $muted;
   margin: 0;
 }
 
@@ -255,7 +273,7 @@ a:hover .blog-index__item-title {
   }
 
   blockquote {
-    border-left: 3px solid $blue;
+    border-left: 2px solid $accent;
     margin: $m-size 0;
     padding: 0.4rem 0 0.4rem $m-size;
   }

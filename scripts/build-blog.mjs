@@ -38,9 +38,9 @@ const AUTHOR = 'Shane Hobson';
 const BLOG_TITLE = 'Shane Hobson Software Engineering Blog';
 // Stable, non-hashed image under the images/ prefix — social scrapers need an
 // absolute URL, and Vite only rewrites <img src>, never <meta content>.
-const SOCIAL_IMAGE = `${SITE}/images/shane.webp`;
+const SOCIAL_IMAGE = `${SITE}/images/og-image.jpg`;
 
-const SHIKI_THEME = 'github-light';
+const SHIKI_THEME = 'github-dark-default';
 const SHIKI_LANGS = ['javascript', 'typescript', 'jsx', 'tsx', 'json', 'bash', 'html', 'css', 'python'];
 
 // ------------------------------------------------------------------- markdown
@@ -171,7 +171,7 @@ function sidebar(posts, currentSlug) {
             <li><a href="/">Home</a></li>
             <li><a href="/#about">About</a></li>
             <li><a href="/#writing">Writing</a></li>
-            <li><a href="/#portfolio">Portfolio</a></li>
+            <li><a href="/#work">Work</a></li>
             <li><a href="/#contact">Contact</a></li>
           </ul>
         </div>
@@ -223,6 +223,8 @@ function postHead(post) {
     <meta property="og:description" content="${escapeHtml(post.excerpt)}" />
     <meta property="og:url" content="${escapeHtml(post.url)}" />
     <meta property="og:image" content="${SOCIAL_IMAGE}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="${escapeHtml(AUTHOR)}" />
     <meta property="article:published_time" content="${post.date}" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -304,6 +306,8 @@ function indexPage(posts) {
     <meta property="og:title" content="${escapeHtml(BLOG_TITLE)}" />
     <meta property="og:url" content="${SITE}/blog/" />
     <meta property="og:image" content="${SOCIAL_IMAGE}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
 `,
     body: `    <main class="blog-wrap">
