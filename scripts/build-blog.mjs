@@ -35,6 +35,7 @@ const DATA_DIR = path.join(ROOT, 'src', 'data');
 
 const SITE = 'https://shanehobson.me';
 const AUTHOR = 'Shane Hobson';
+const BLOG_TITLE = 'Shane Hobson Software Engineering Blog';
 // Stable, non-hashed image under the images/ prefix — social scrapers need an
 // absolute URL, and Vite only rewrites <img src>, never <meta content>.
 const SOCIAL_IMAGE = `${SITE}/images/shane.webp`;
@@ -121,26 +122,61 @@ function formatDate(iso) {
 // ------------------------------------------------------------------ templates
 
 /**
- * A static header rather than the React NavBar: blog pages are separate
+ * A static sidebar rather than the React NavBar: blog pages are separate
  * documents, so react-scroll's in-page links would not work, and a partial
- * keeps the pages zero-JavaScript.
+ * keeps the pages zero-JavaScript. Every route it points at is a plain anchor
+ * back into the portfolio's single page.
  */
-function header(current) {
-  const links = [
-    ['/#about', 'About Me'],
-    ['/blog/', 'Blog'],
-    ['/#portfolio', 'Portfolio'],
-    ['/#contact', 'Contact'],
-  ];
-  return `<nav class="blog-nav">
-      <a class="blog-nav__home" href="/">Shane Hobson</a>
-      ${links
-        .map(
-          ([href, label]) =>
-            `<a class="blog-nav__link${href === current ? ' is-active' : ''}" href="${href}">${label}</a>`
-        )
-        .join('\n      ')}
-    </nav>`;
+function sidebar(posts, currentSlug) {
+  const articles = posts
+    .map(
+      (post) =>
+        `<li><a class="${post.slug === currentSlug ? 'is-current' : ''}" href="${post.path}">${escapeHtml(
+          post.title
+        )}</a></li>`
+    )
+    .join('\n          ');
+
+  return `<aside class="blog-sidebar">
+      <a class="blog-sidebar__title" href="/blog/">Shane Hobson<span>Software Engineering Blog</span></a>
+
+      <div class="blog-sidebar__host">
+        <p class="blog-sidebar__label">Your host</p>
+        <img
+          class="blog-sidebar__photo"
+          src="/images/shane.webp"
+          width="600"
+          height="645"
+          alt="Shane Hobson"
+          decoding="async"
+        />
+        <p class="blog-sidebar__bio">
+          I'm Shane Hobson, a software engineer. I write about architecture,
+          scalability, AI, and real-world lessons from building production
+          systems. <a href="/#about">More about me.</a>
+        </p>
+      </div>
+
+      <div class="blog-sidebar__links">
+        <div class="blog-sidebar__articles">
+          <p class="blog-sidebar__label">Articles</p>
+          <ul class="blog-sidebar__nav">
+            ${articles}
+          </ul>
+        </div>
+
+        <div class="blog-sidebar__site">
+          <p class="blog-sidebar__label">Portfolio</p>
+          <ul class="blog-sidebar__nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#writing">Writing</a></li>
+            <li><a href="/#portfolio">Portfolio</a></li>
+            <li><a href="/#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>`;
 }
 
 function footer() {
@@ -149,7 +185,7 @@ function footer() {
     </footer>`;
 }
 
-function page({ title, description, canonical, head = '', body }) {
+function page({ title, description, canonical, head = '', sidebarFor, posts, body }) {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -163,7 +199,13 @@ function page({ title, description, canonical, head = '', body }) {
     <link rel="stylesheet" href="/src/styles/blog.scss" />
 ${head}  </head>
   <body>
+    <div class="blog-layout">
+    ${sidebar(posts, sidebarFor)}
+      <div class="blog-content">
 ${body}
+${footer()}
+      </div>
+    </div>
   </body>
 </html>
 `;
@@ -203,7 +245,7 @@ ${JSON.stringify(jsonLd, null, 2)
 `;
 }
 
-function postPage(post, { newer, older }) {
+function postPage(post, posts, { newer, older }) {
   const nav = [
     newer
       ? `<a class="blog-post__nav-link" href="${newer.path}"><span>Newer</span>${escapeHtml(newer.title)}</a>`
@@ -214,12 +256,13 @@ function postPage(post, { newer, older }) {
   ].join('\n        ');
 
   return page({
-    title: `${post.title} — ${AUTHOR}`,
+    title: `${post.title} — ${BLOG_TITLE}`,
     description: post.excerpt,
     canonical: post.url,
     head: postHead(post),
-    body: `    ${header('/blog/')}
-    <main class="blog-wrap">
+    posts,
+    sidebarFor: post.slug,
+    body: `    <main class="blog-wrap">
       <article>
         <header class="blog-post__header">
           <h1 class="blog-post__title">${escapeHtml(post.title)}</h1>
@@ -240,8 +283,7 @@ ${post.html}
         ${nav}
         </nav>
       </article>
-    </main>
-${footer()}`,
+    </main>`,
   });
 }
 
@@ -261,18 +303,18 @@ function indexPage(posts) {
     .join('\n');
 
   return page({
-    title: `Blog — ${AUTHOR}`,
+    title: BLOG_TITLE,
     description: `Articles by ${AUTHOR} on software architecture, rendering internals, AI, and building production systems.`,
     canonical: `${SITE}/blog/`,
+    posts,
     head: `    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Blog — ${escapeHtml(AUTHOR)}" />
+    <meta property="og:title" content="${escapeHtml(BLOG_TITLE)}" />
     <meta property="og:url" content="${SITE}/blog/" />
     <meta property="og:image" content="${SOCIAL_IMAGE}" />
     <meta name="twitter:card" content="summary_large_image" />
 `,
-    body: `    ${header('/blog/')}
-    <main class="blog-wrap">
-      <h1 class="blog-index__title">Blog</h1>
+    body: `    <main class="blog-wrap">
+      <h1 class="blog-index__title">Articles</h1>
       <p class="blog-index__intro">
         Writing about software development: architecture, scalability, AI, and
         real-world lessons from building production systems.
@@ -280,8 +322,7 @@ function indexPage(posts) {
       <ul class="blog-index__list">
 ${items}
       </ul>
-    </main>
-${footer()}`,
+    </main>`,
   });
 }
 
@@ -394,7 +435,7 @@ async function main() {
     await mkdir(path.join(OUT_DIR, post.slug), { recursive: true });
     await writeFile(
       path.join(OUT_DIR, post.slug, 'index.html'),
-      postPage(post, { newer: posts[i - 1], older: posts[i + 1] })
+      postPage(post, posts, { newer: posts[i - 1], older: posts[i + 1] })
     );
   }
 

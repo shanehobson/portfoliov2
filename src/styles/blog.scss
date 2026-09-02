@@ -1,16 +1,22 @@
 // Styles for the generated blog pages.
 //
 // These pages are plain HTML with no React and no client-side JavaScript, so
-// this is their only stylesheet. It imports the portfolio's settings — and
-// nothing else — so the palette and spacing scale stay in one place while the
-// article typography stays independent of the app shell's component styles.
+// this is their only stylesheet. It imports the portfolio's settings and
+// mirrors the base rules from _base.scss — the same #eaeaea ground, the same
+// Helvetica stack, the same #706f6f body text and #333 headings the About,
+// Writing and Portfolio sections use — so the blog reads as the same site.
 @import "./base/settings";
 
-$blog-max-width: 72rem;
-$blog-ink: #2b2b2b;
-$blog-muted: #706f6f;
-$blog-rule: #dcdcdc;
-$blog-code-bg: #f6f8fa;
+$blog-body: #706f6f; // .about-about / .portfolio-portfolio
+$blog-heading: #333; // .section-title / .portfolio-portfolioItemTitle
+$blog-ground: #eaeaea; // body background in _base.scss
+$blog-rail: #f1f1f1;
+$blog-rule: #d5d5d5;
+$blog-code-bg: #f4f4f4;
+$blog-sidebar-width: 30rem;
+// Below this the rail and a comfortable article column no longer both fit, so
+// the rail collapses to a compact banner above the article.
+$blog-stack-breakpoint: 80rem;
 
 * {
   box-sizing: border-box;
@@ -22,11 +28,11 @@ html {
 
 body {
   margin: 0;
-  background-color: #fff;
-  color: $blog-ink;
+  background-color: $blog-ground;
+  color: $blog-body;
   font-family: Helvetica, Arial, sans-serif;
   font-size: $m-size;
-  line-height: 1.7;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -44,70 +50,108 @@ img {
   height: auto;
 }
 
-// ---------------------------------------------------------------- page chrome
+// ------------------------------------------------------------------- layout
 
-.blog-nav {
-  background-color: $dark-blue;
+.blog-layout {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 0 5rem;
+  // stretch keeps the rail a full-height column, so its background and right
+  // border run the whole length of the article.
+  align-items: stretch;
 }
 
-.blog-nav__home {
-  margin-right: auto;
-  font-weight: bold;
-  color: $off-white;
-  text-transform: uppercase;
-  font-size: 0.875em;
-  padding: 1em 0;
+.blog-content {
+  flex: 1 1 auto;
+  min-width: 0; // let wide code blocks scroll rather than stretch the page
 }
-
-.blog-nav__link {
-  font-family: Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: $off-white;
-  font-size: 0.875em;
-  padding: 1em 2em;
-  transition: color 0.6s;
-
-  &:hover {
-    color: $blog-muted;
-    text-decoration: none;
-  }
-}
-
-.blog-footer {
-  background: $blue;
-  color: $off-white;
-  margin-top: $xl-size;
-  padding: $l-size 2rem;
-  text-align: center;
-
-  a {
-    color: $off-white;
-    text-decoration: underline;
-  }
-}
-
-// -------------------------------------------------------------------- layouts
 
 .blog-wrap {
-  max-width: $blog-max-width;
+  max-width: 76rem;
   margin: 0 auto;
-  padding: $xl-size 2rem 0;
+  padding: $xl-size 3rem 0;
 }
 
+// ------------------------------------------------------------------ sidebar
+
+.blog-sidebar {
+  flex: 0 0 $blog-sidebar-width;
+  width: $blog-sidebar-width;
+  // Deliberately not sticky with its own overflow: that gave the rail a second
+  // scrollbar and put the lower links out of reach on short viewports.
+  background: $blog-rail;
+  border-right: 1px solid $blog-rule;
+  padding: $l-size 2.5rem $xl-size;
+}
+
+.blog-sidebar__title {
+  display: block;
+  color: $blog-heading;
+  text-transform: uppercase;
+  font-size: 2.4rem;
+  font-weight: bold;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+
+  &:hover {
+    text-decoration: none;
+    color: $blue;
+  }
+
+  span {
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 0.4rem;
+  }
+}
+
+.blog-sidebar__label {
+  color: $blog-heading;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  margin: $l-size 0 $s-size;
+}
+
+.blog-sidebar__photo {
+  display: block;
+  width: 100%;
+  border: 2px solid $blue;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.35);
+}
+
+.blog-sidebar__bio {
+  font-size: 1.4rem;
+  margin: $s-size 0 0;
+}
+
+.blog-sidebar__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 1.4rem;
+
+  li {
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .is-current {
+    color: $blog-heading;
+    font-weight: bold;
+  }
+}
+
+// ------------------------------------------------------------------- index
+
 .blog-index__title {
-  color: $dark-grey;
+  color: $blog-heading;
   text-transform: uppercase;
   font-size: 4rem;
+  line-height: 1.1;
   margin: 0 0 $s-size;
 }
 
 .blog-index__intro {
-  color: $blog-muted;
   margin: 0 0 $xl-size;
 }
 
@@ -127,18 +171,21 @@ img {
 }
 
 .blog-index__item-title {
+  color: $blog-heading;
   font-size: 2.2rem;
   line-height: 1.3;
   margin: 0 0 0.4rem;
-  color: $dark-grey;
+}
+
+a:hover .blog-index__item-title {
+  color: $blue;
 }
 
 .blog-index__item-excerpt {
-  color: $blog-muted;
   margin: 0.4rem 0 0;
 }
 
-// -------------------------------------------------------------------- article
+// ------------------------------------------------------------------ article
 
 .blog-post__header {
   border-bottom: 1px solid $blog-rule;
@@ -147,14 +194,13 @@ img {
 }
 
 .blog-post__title {
-  color: $dark-grey;
+  color: $blog-heading;
   font-size: 3.6rem;
   line-height: 1.2;
   margin: 0 0 $s-size;
 }
 
 .blog-post__meta {
-  color: $blog-muted;
   font-size: $font-size-small;
   margin: 0;
 }
@@ -165,10 +211,9 @@ img {
 
 .blog-tag {
   display: inline-block;
-  background: $off-white;
+  background: $blog-rail;
   border: 1px solid $blog-rule;
   border-radius: 3px;
-  color: $blog-muted;
   font-size: 1.2rem;
   padding: 0.2rem 0.8rem;
   margin: 0 0.4rem 0.4rem 0;
@@ -178,7 +223,7 @@ img {
   h2,
   h3,
   h4 {
-    color: $dark-grey;
+    color: $blog-heading;
     line-height: 1.3;
     margin: $l-size 0 $s-size;
   }
@@ -210,13 +255,12 @@ img {
 
   blockquote {
     border-left: 3px solid $blue;
-    color: $blog-muted;
     margin: $m-size 0;
     padding: 0.4rem 0 0.4rem $m-size;
+  }
 
-    p:last-child {
-      margin-bottom: 0;
-    }
+  blockquote p:last-child {
+    margin-bottom: 0;
   }
 
   // Inline code only — fenced blocks are pre-highlighted by Shiki below.
@@ -261,7 +305,6 @@ img {
   max-width: 30rem;
 
   span {
-    color: $blog-muted;
     display: block;
     font-size: 1.2rem;
     text-transform: uppercase;
@@ -269,24 +312,99 @@ img {
 }
 
 .blog-post__origin {
-  color: $blog-muted;
   font-size: $font-size-small;
   margin-top: $m-size;
 }
 
-@media only screen and (max-width: $tablet-breakpoint) {
-  .blog-nav {
-    padding: 0 2rem;
+// ------------------------------------------------------------------- footer
+
+.blog-footer {
+  background: $blue;
+  color: $off-white;
+  margin-top: $xl-size;
+  padding: $l-size 2rem;
+  text-align: center;
+
+  a {
+    color: $off-white;
+    text-decoration: underline;
+  }
+}
+
+// --------------------------------------------------------------- responsive
+
+@media only screen and (max-width: $blog-stack-breakpoint) {
+  .blog-layout {
+    display: block;
   }
 
-  .blog-nav__link {
-    padding: 1em 1em;
+  // A compact banner, not a stacked column: at this width the full rail would
+  // push the article a whole screen down the page.
+  .blog-sidebar {
+    width: auto;
+    border-right: none;
+    border-bottom: 1px solid $blog-rule;
+    padding: $m-size 2rem;
+  }
+
+  .blog-sidebar__title {
+    font-size: 2rem;
+
+    span {
+      display: inline;
+      font-size: inherit;
+      margin: 0 0 0 0.6rem;
+    }
+  }
+
+  // The host block becomes a byline: a small portrait beside the bio.
+  .blog-sidebar__host {
+    display: flex;
+    align-items: flex-start;
+    gap: $m-size;
+    margin-top: $m-size;
+
+    .blog-sidebar__label {
+      display: none;
+    }
+  }
+
+  .blog-sidebar__photo {
+    flex: 0 0 7rem;
+    width: 7rem;
+    box-shadow: none;
+  }
+
+  .blog-sidebar__bio {
+    margin: 0;
+  }
+
+  // The whole article list is what /blog/ already is; keeping it here only
+  // lengthens the banner.
+  .blog-sidebar__articles {
+    display: none;
+  }
+
+  .blog-sidebar__label {
+    margin: $m-size 0 $s-size;
+  }
+
+  .blog-sidebar__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 $m-size;
+
+    li {
+      margin-bottom: 0;
+    }
   }
 
   .blog-wrap {
-    padding-top: $l-size;
+    padding: $l-size 2rem 0;
   }
+}
 
+@media only screen and (max-width: $tablet-breakpoint) {
   .blog-post__title {
     font-size: 2.8rem;
   }
