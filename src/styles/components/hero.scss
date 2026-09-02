@@ -58,6 +58,17 @@ $wordmark-descent: 0.3em;
   white-space: nowrap;
 }
 
+// The surname only appears on a phone, where it takes over from the wordmark.
+.hero-ghost-line--last {
+  display: none;
+}
+
+// Groups the statement and the portrait. It only becomes a box on a phone;
+// here the grid sees straight through it and lays out its children itself.
+.hero-fold {
+  display: contents;
+}
+
 // ---------------------------------------------------------------- portrait
 //
 // Sized off the viewport height and hung from the bottom rail so the head
@@ -355,10 +366,10 @@ $wordmark-descent: 0.3em;
 }
 
 @media only screen and (max-width: $tablet-breakpoint) {
-  // On a phone the statement, the portrait, both cards and a two-line wordmark
-  // do not fit in one screen, and a hero that clips its own name is worse than
-  // one that runs a little past the fold. So the height stops being fixed here
-  // and the section grows to whatever its content needs.
+  // On a phone the section stops being one fixed screen and grows to whatever
+  // its content needs. The first screen is .hero-fold: the statement at the
+  // top and the portrait hung from the bottom, full viewport height less the
+  // inner's top padding. The cards follow it, so they start below the fold.
   .hero {
     min-height: auto;
   }
@@ -370,13 +381,21 @@ $wordmark-descent: 0.3em;
     padding-bottom: 6rem;
   }
 
-  // And the portrait stops floating: it becomes a row of the stack, between
-  // the statement and the cards.
+  .hero-fold {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100svh - 12rem);
+  }
+
+  // The portrait stops floating: it becomes the bottom of the first screen,
+  // pushed down by the auto margin, with its shirt dissolving into the field
+  // right at the fold.
   .hero-portrait {
     position: static;
     height: auto;
     width: min(100%, 32rem);
-    margin: 0 auto -2rem;
+    margin: auto auto 0;
+    transform: none;
 
     img {
       width: 100%;
@@ -395,7 +414,26 @@ $wordmark-descent: 0.3em;
     width: 100%;
   }
 
+  // The wordmark on the bottom rail goes; the ghost carries the full name
+  // instead, as two stacked lines. "HOBSON" is the wider of the two and is
+  // what the size is fitted to.
+  .hero-name {
+    display: none;
+  }
+
   .hero-ghost {
     top: 7rem;
+    font-size: 22vw;
+    line-height: 0.85;
+  }
+
+  .hero-ghost-line {
+    display: block;
+  }
+
+  // Clear the two ghost lines: their top (7rem) plus two lines of 22vw at
+  // 0.85 leading plus a 2rem gap, less the inner's own 12rem of top padding.
+  .hero-statement {
+    padding-top: calc(37.4vw - 3rem);
   }
 }
