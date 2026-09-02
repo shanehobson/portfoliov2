@@ -307,7 +307,9 @@ ${post.tags.map((t) => `      <category>${escapeXml(t)}</category>`).join('\n')}
     <atom:link href="${SITE}/blog/feed.xml" rel="self" type="application/rss+xml" />
     <description>Articles on software architecture, rendering internals, AI, and building production systems.</description>
     <language>en-us</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <!-- Derived from the newest post, not the clock: a build-time stamp would
+         change the blog bundle's hash on every build and re-upload every page. -->
+    <lastBuildDate>${new Date(`${posts[0].date}T12:00:00Z`).toUTCString()}</lastBuildDate>
 ${items}
   </channel>
 </rss>
