@@ -74,3 +74,22 @@
     flex-direction: column;
   }
 }
+
+// The three most recent posts, generated into src/data/recent-posts.json by
+// scripts/build-blog.mjs so the list cannot drift from what is published.
+.writing-recentPosts {
+  list-style: none;
+  margin: $m-size 0 0;
+  padding: 0;
+  text-align: left;
+  display: inline-block;
+}
+
+.writing-recentPosts li {
+  margin-bottom: 0.6rem;
+}
+
+.writing-syndication {
+  font-size: $font-size-small;
+  margin-top: -1rem;
+}
