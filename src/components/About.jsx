@@ -34,9 +34,13 @@ const About = () => (
     <div className="shell about-inner">
       <div className="about-aside">
         <p className="eyebrow">01 / About</p>
+        {/*
+          Two stacked lines beside the prose; one line on a phone, where the
+          heading sits on top of it instead and the break is hidden.
+        */}
         <h2 className="section-title">
-          About
-          <br />
+          About{" "}
+          <br className="about-title-break" />
           Me
         </h2>
         <figure className="about-portrait">

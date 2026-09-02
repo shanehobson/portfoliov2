@@ -43,7 +43,6 @@ screenshots=(
   contract-generator
   knecht-insurance
   loader-gallery
-  odyssey-hero
 )
 
 echo "Screenshots (1300w, q78):"
@@ -65,15 +64,12 @@ encode "$src/Book.png"          Book          "1300x>" 90
 # for bandwidth, so each is cut to the size its slot actually renders at:
 #   - the portrait is 320px wide on a phone, up to ~763px on a desktop, and
 #     the master is only 931px, so there is no DPR-2 desktop variant to make;
-#   - the Odyssey card shows its screenshot at 204px (full width on a phone);
 #   - the contact card's avatar is a 46px circle (144 covers DPR 3).
 # Hero.jsx's srcset/sizes and the preload in index.html list the same files.
-echo "Hero (portrait 480/640/931 q80, card 420/840 q78, avatar 144 q82):"
+echo "Hero (portrait 480/640/931 q80, avatar 144 q82):"
 encode "$src/shane-cutout.png"  shane-cutout-480  "480x>" 80
 encode "$src/shane-cutout.png"  shane-cutout-640  "640x>" 80
 encode "$src/shane-cutout.png"  shane-cutout      "931x>" 80
-encode "$src/odyssey-hero.png"  odyssey-hero-420  "420x>" 78
-encode "$src/odyssey-hero.png"  odyssey-hero-840  "840x>" 78
 encode "$src/shane.png"         shane-avatar   "144x144^" 82 -gravity center -extent 144x144
 
 # Video posters: a frame from one second in, sized like the screenshots since

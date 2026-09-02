@@ -1,7 +1,7 @@
 // "SHANE HOBSON" measures 7.5em wide in Inter at this weight and tracking, so
 // 11.2vw is the largest it fits the shell at (the gutter eats 10vw) with a
 // little room left for a font that loads at a slightly different width. The
-// cards are positioned off this too, so it is declared once.
+// card rail is positioned off this too, so it is declared once.
 $wordmark-size: clamp(3.2rem, 11.2vw, 17rem);
 $wordmark-leading: 0.85;
 $wordmark-descent: 0.3em;
@@ -31,7 +31,7 @@ $wordmark-descent: 0.3em;
   z-index: 1;
   display: grid;
   // A single column with the statement pinned near the top and the wordmark on
-  // the bottom rail; the portrait and the cards float over both.
+  // the bottom rail; the portrait and the card float over both.
   grid-template-rows: 1fr auto;
   width: 100%;
   padding-top: clamp(12rem, 22vh, 20rem);
@@ -148,7 +148,8 @@ $wordmark-descent: 0.3em;
   );
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  // The one card sits at the foot of the rail, just above the wordmark.
+  justify-content: flex-end;
   align-items: flex-end;
   gap: 2rem;
   pointer-events: none;
@@ -167,51 +168,6 @@ $wordmark-descent: 0.3em;
   &:hover {
     transform: translateY(-3px);
     border-color: rgba(255, 255, 255, 0.35);
-  }
-}
-
-.hero-card--work {
-  width: 22rem;
-  padding: 0.8rem;
-  background: #fff;
-  border-color: #fff;
-
-  .hero-card-media {
-    display: block;
-    overflow: hidden;
-    background: $surface;
-
-    img {
-      width: 100%;
-      // The screenshot is close to 2:1; a 4:3 panel cropped a third of its
-      // width away, sidebar included.
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      object-position: top center;
-      transition: transform 0.5s ease;
-    }
-  }
-
-  &:hover .hero-card-media img {
-    transform: scale(1.03);
-  }
-
-  .hero-card-foot {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.9rem 0.2rem 0.2rem;
-    font-size: 1.2rem;
-    color: $ground;
-  }
-
-  .hero-card-name {
-    font-weight: 600;
-  }
-
-  .hero-card-kind {
-    color: #5f7a78;
   }
 }
 
@@ -342,6 +298,8 @@ $wordmark-descent: 0.3em;
 }
 
 @media only screen and (max-width: $desktop-breakpoint) {
+  // The rail leaves the right edge and drops into the flow as its own grid row,
+  // directly above the wordmark row, so it needs its own air on both sides.
   .hero-cards {
     position: static;
     flex-direction: row;
@@ -349,6 +307,7 @@ $wordmark-descent: 0.3em;
     justify-content: flex-start;
     flex-wrap: wrap;
     margin-top: 4rem;
+    margin-bottom: 6rem;
   }
 
   // The cards drop into the left column here, so the portrait gets out of
@@ -368,8 +327,8 @@ $wordmark-descent: 0.3em;
 @media only screen and (max-width: $tablet-breakpoint) {
   // On a phone the section stops being one fixed screen and grows to whatever
   // its content needs. The first screen is .hero-fold: the statement at the
-  // top and the portrait hung from the bottom, full viewport height less the
-  // inner's top padding. The cards follow it, so they start below the fold.
+  // top and the portrait hung from the bottom, a little short of the viewport
+  // so the statement and the portrait sit closer together. The cards follow it.
   .hero {
     min-height: auto;
   }
@@ -384,7 +343,7 @@ $wordmark-descent: 0.3em;
   .hero-fold {
     display: flex;
     flex-direction: column;
-    min-height: calc(100svh - 12rem);
+    min-height: calc(100svh - 15rem);
   }
 
   // The portrait stops floating: it becomes the bottom of the first screen,
@@ -409,7 +368,6 @@ $wordmark-descent: 0.3em;
     gap: 1.6rem;
   }
 
-  .hero-card--work,
   .hero-card--contact {
     width: 100%;
   }
@@ -431,9 +389,15 @@ $wordmark-descent: 0.3em;
     display: block;
   }
 
+  // A little air between the two lines; 0.85 leading alone runs them together.
+  .hero-ghost-line--last {
+    margin-top: 0.1em;
+  }
+
   // Clear the two ghost lines: their top (7rem) plus two lines of 22vw at
-  // 0.85 leading plus a 2rem gap, less the inner's own 12rem of top padding.
+  // 0.85 leading, the 0.1em (2.2vw) gap between them, and a 2rem gap below,
+  // less the inner's own 12rem of top padding.
   .hero-statement {
-    padding-top: calc(37.4vw - 3rem);
+    padding-top: calc(39.6vw - 3rem);
   }
 }

@@ -124,3 +124,9 @@
     max-width: 34rem;
   }
 }
+
+@media only screen and (max-width: $tablet-breakpoint) {
+  .about-title-break {
+    display: none;
+  }
+}

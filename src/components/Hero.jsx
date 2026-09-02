@@ -6,7 +6,7 @@ export const PORTRAIT_SIZES =
 
 // A color field with a cut-out photograph standing in the middle of it: the
 // ghosted first name sits behind the head, the oversized wordmark crosses the
-// chest, and two cards float over the right side.
+// chest, and the contact card floats over the right side.
 const Hero = ({ onContact }) => (
   <section className="hero" id="hero">
     <div className="hero-inner shell">
@@ -53,32 +53,6 @@ const Hero = ({ onContact }) => (
       </div>
 
       <div className="hero-cards">
-        <a
-          className="hero-card hero-card--work"
-          href="https://www.findmyodyssey.com"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span className="hero-card-media">
-            <img
-              src="/images/odyssey-hero-420.webp"
-              srcSet="/images/odyssey-hero-420.webp 420w, /images/odyssey-hero-840.webp 840w"
-              sizes="(max-width: 45rem) 100vw, 204px"
-              width="420"
-              height="212"
-              alt=""
-              decoding="async"
-              fetchPriority="low"
-            />
-          </span>
-          <span className="hero-card-foot">
-            <span className="hero-card-name">
-              <span aria-hidden="true">✳</span> Odyssey
-            </span>
-            <span className="hero-card-kind">/ Travel Planner</span>
-          </span>
-        </a>
-
         <a
           className="hero-card hero-card--contact"
           href="mailto:shanehobson1@gmail.com"
