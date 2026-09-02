@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "optimize:images": "bash scripts/optimize-images.sh",
     "preview": "vite preview",
-    "deploy": "npm run build && npm --prefix cdk run cdk -- deploy --require-approval never --profile trip-planner"
+    "deploy": "npm run build && npm --prefix cdk run deploy",
+    "media:push": "npm --prefix cdk run media:push",
+    "media:pull": "npm --prefix cdk run media:pull"
   },
   "dependencies": {
     "react": "^19.0.0",

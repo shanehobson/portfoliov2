@@ -8,7 +8,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "diff": "cdk diff",
+    "deploy": "./scripts/deploy.sh",
+    "media:push": "./scripts/media-push.sh",
+    "media:pull": "./scripts/media-pull.sh"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

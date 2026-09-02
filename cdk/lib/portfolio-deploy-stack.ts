@@ -1,8 +1,8 @@
 import * as path from 'path';
-import { Stack, StackProps, Duration, RemovalPolicy, Size } from 'aws-cdk-lib';
+import { CfnOutput, Duration, RemovalPolicy, Size, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import {
   AllowedMethods,
   CachePolicy,
@@ -38,6 +38,18 @@ export class PortfolioDeployStack extends Stack {
     const distribution = Distribution.fromDistributionAttributes(this, 'SiteDistributionRef', {
       distributionId: props.distributionId,
       domainName: props.distributionDomainName,
+    });
+
+    // Images and video live here rather than in the site bucket (and rather
+    // than in git): they are not part of the build, and the site deployments
+    // below prune anything they did not upload. Populated by
+    // scripts/media-push.sh, never by a deploy.
+    const mediaBucket = new Bucket(this, 'MediaBucket', {
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
+      removalPolicy: RemovalPolicy.RETAIN,
+      autoDeleteObjects: false,
     });
 
     // The live distribution, transcribed property-for-property from
@@ -115,11 +127,27 @@ function handler(event) {
       ],
     };
 
+    // Served from the same origin as the site, so markup keeps using plain
+    // `/images/...` and `/video/...` paths — no absolute media host, no CORS.
+    // The media bucket is owned by this stack, so here CDK does create the
+    // OAC and the bucket policy that lets CloudFront read through it.
+    // WebP and MP4 are already compressed, so CloudFront compression is off.
+    const mediaBehavior = {
+      origin: S3BucketOrigin.withOriginAccessControl(mediaBucket),
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      allowedMethods: AllowedMethods.ALLOW_GET_HEAD,
+      cachedMethods: CachedMethods.CACHE_GET_HEAD,
+      compress: false,
+      cachePolicy: CachePolicy.CACHING_OPTIMIZED,
+    };
+
     new Distribution(this, 'SiteDistribution', {
       defaultBehavior,
       additionalBehaviors: {
         '/blog': blogBehavior,
         '/blog/*': blogBehavior,
+        '/images/*': mediaBehavior,
+        '/video/*': mediaBehavior,
       },
       domainNames: ['shanehobson.me', 'www.shanehobson.me'],
       certificate: Certificate.fromCertificateArn(
@@ -162,28 +190,6 @@ function handler(event) {
       ],
     });
 
-    // Images and video keep stable filenames, so they get a long-but-finite
-    // max-age instead of `immutable`: re-uploading one at the same name still
-    // refreshes, just not instantly.
-    const mediaCacheControl = [
-      CacheControl.setPublic(),
-      CacheControl.maxAge(Duration.days(7)),
-    ];
-
-    const images = new BucketDeployment(this, 'DeploySiteImages', {
-      ...shared,
-      sources: [Source.asset(path.join(sitePath, 'images'), { exclude: dotFiles })],
-      destinationKeyPrefix: 'images',
-      cacheControl: mediaCacheControl,
-    });
-
-    const video = new BucketDeployment(this, 'DeploySiteVideo', {
-      ...shared,
-      sources: [Source.asset(path.join(sitePath, 'video'), { exclude: dotFiles })],
-      destinationKeyPrefix: 'video',
-      cacheControl: mediaCacheControl,
-    });
-
     // dist/blog holds only HTML and feed.xml — the posts' images and CSS are
     // content-hashed into dist/assets under the immutable policy above — so the
     // same revalidate-every-time policy as index.html costs nothing here.
@@ -202,9 +208,14 @@ function handler(event) {
     // Everything left at the root — index.html above all — must be revalidated
     // every time, or a deploy never reaches anyone holding a cached copy.
     // Pruning is off here: this deployment has no prefix to scope deletion to,
-    // so pruning would delete the four prefixes above. For the same reason
-    // every prefix that has its own deployment must be excluded, or this one
-    // would also upload those files at the wrong Cache-Control and race it.
+    // so pruning would delete the prefixes above. For the same reason every
+    // prefix that has its own deployment must be excluded, or this one would
+    // also upload those files at the wrong Cache-Control and race it.
+    //
+    // `images/` and `video/` are excluded for a different reason: a developer's
+    // local copy of the media sits in `public/`, so the build emits it, but it
+    // is served from the media bucket. Shipping it here too would duplicate
+    // the bytes into a bucket nothing reads them from.
     const root = new BucketDeployment(this, 'DeploySiteRoot', {
       ...shared,
       prune: false,
@@ -240,6 +251,13 @@ function handler(event) {
 
     // Upload the content index.html points at before publishing index.html, and
     // invalidate only once everything is in place.
-    root.node.addDependency(assets, images, video, blog);
+    root.node.addDependency(assets, blog);
+
+    new CfnOutput(this, 'DistributionId', { value: props.distributionId });
+    new CfnOutput(this, 'SiteBucketName', { value: siteBucket.bucketName });
+    new CfnOutput(this, 'MediaBucketName', {
+      value: mediaBucket.bucketName,
+      description: 'Upload images/ and video/ here — see cdk/scripts/media-push.sh',
+    });
   }
 }

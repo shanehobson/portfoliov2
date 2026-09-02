@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { PortfolioDeployStack } from '../lib/portfolio-deploy-stack';
+import { localConfig } from '../config.local';
 
 const app = new cdk.App();
 
 new PortfolioDeployStack(app, 'PortfolioDeployStack', {
   env: {
-    account: '730335671883',
+    account: localConfig.account,
     region: 'us-east-2',
   },
   bucketName: 'shanehobson.me',

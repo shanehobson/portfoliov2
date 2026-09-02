@@ -3,8 +3,10 @@
 # Re-encodes the full-size originals in images-src/ into web-sized WebP files
 # in public/images/, and generates video poster frames from public/video/.
 #
-# Everything this writes is committed; images-src/ is gitignored, so this only
-# needs to run when an original changes. Requires: magick, cwebp, ffmpeg.
+# Neither directory is in git: images-src/ is gitignored, and public/images/
+# is hosted in the S3 media bucket (`npm run media:push` publishes what this
+# writes). So this only needs to run when an original changes.
+# Requires: magick, cwebp, ffmpeg.
 #
 set -euo pipefail
 

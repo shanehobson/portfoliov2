@@ -16,6 +16,12 @@ dist-ssr
 # scripts/optimize-images.sh
 images-src
 
+# Hosted media — lives in the S3 media bucket, not the repo.
+# `npm run media:pull` fetches a local copy for dev; `npm run media:push`
+# publishes changes. See cdk/README.md.
+/public/images
+/public/video
+
 # Generated blog source pages (scripts/build-blog.mjs). content/ is the source
 # of truth and is committed; everything below is build output.
 /blog
@@ -24,6 +30,7 @@ images-src
 /public/robots.txt
 
 # CDK
+cdk/config.local.ts
 cdk/cdk.out
 cdk/node_modules
 cdk/*.js
