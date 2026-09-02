@@ -77,7 +77,7 @@ const About = () => (
         </p>
         <p>
           I took an unconventional path into software engineering. Before
-          writing software professionally, I went to law school and spent three
+          entering software engineering, I went to law school and spent three
           years as a litigation and trial attorney. I remain a licensed
           attorney, and I&rsquo;m especially interested in the intersection of
           law and technology and in how software and AI can be used to solve
