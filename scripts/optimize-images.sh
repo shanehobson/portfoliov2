@@ -25,13 +25,11 @@ trap 'rm -rf "$tmp"' EXIT
 
 # encode <input> <output-name> <geometry> <quality> [extra magick args...]
 #
-# Geometry is a magick resize spec. Every call ends in `>` so an original that is
-# already smaller than the target is left at its own size rather than upscaled.
+# Names an output in public/images/ and reports the saving; the encode itself
+# lives in encode-image.sh, which the blog importer shares.
 encode() {
   local input="$1" name="$2" geometry="$3" quality="$4"; shift 4
-  local stage="$tmp/$name.png"
-  magick "$input" -resize "$geometry" "$@" -strip "$stage"
-  cwebp -quiet -q "$quality" "$stage" -o "$out/$name.webp"
+  bash "$root/scripts/encode-image.sh" "$input" "$out/$name.webp" "$geometry" "$quality" "$@"
   printf '  %-24s %6s KB -> %6s KB\n' "$name.webp" \
     "$(( ($(stat -f%z "$input") + 1023) / 1024 ))" \
     "$(( ($(stat -f%z "$out/$name.webp") + 1023) / 1024 ))"

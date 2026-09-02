@@ -16,6 +16,13 @@ dist-ssr
 # scripts/optimize-images.sh
 images-src
 
+# Generated blog source pages (scripts/build-blog.mjs). content/ is the source
+# of truth and is committed; everything below is build output.
+/blog
+/public/blog
+/public/sitemap.xml
+/public/robots.txt
+
 # CDK
 cdk/cdk.out
 cdk/node_modules
