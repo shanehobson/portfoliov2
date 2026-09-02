@@ -7,7 +7,12 @@
 // Writing and Portfolio sections use — so the blog reads as the same site.
 @import "./base/settings";
 
-$blog-body: #706f6f; // .about-about / .portfolio-portfolio
+// The portfolio's body grey is #706f6f, which lands at 4.16:1 on this ground —
+// under the 4.5:1 WCAG AA threshold. That is survivable for a few lines of
+// section copy but not for article-length reading, so the blog darkens it to
+// 5.73:1. It is the one value here that deliberately departs from the
+// portfolio; everything else is taken from it unchanged.
+$blog-body: #5a5a5a;
 $blog-heading: #333; // .section-title / .portfolio-portfolioItemTitle
 $blog-ground: #eaeaea; // body background in _base.scss
 $blog-rail: #f1f1f1;
