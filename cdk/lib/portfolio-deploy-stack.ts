@@ -8,6 +8,10 @@ import {
   CachePolicy,
   CachedMethods,
   Distribution,
+  Function as CloudFrontFunction,
+  FunctionCode,
+  FunctionEventType,
+  FunctionRuntime,
   HttpVersion,
   PriceClass,
   S3OriginAccessControl,
@@ -59,20 +63,63 @@ export class PortfolioDeployStack extends Stack {
       'E2PP8QRV8Q8F4C'
     );
 
+    const siteOrigin = S3BucketOrigin.withOriginAccessControl(siteBucket, {
+      originAccessControl,
+      originId: 'shanehobson.me.s3.us-east-2.amazonaws.com',
+      originShieldEnabled: false,
+      connectionAttempts: 3,
+      connectionTimeout: Duration.seconds(10),
+    });
+
+    const defaultBehavior = {
+      origin: siteOrigin,
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      allowedMethods: AllowedMethods.ALLOW_GET_HEAD,
+      cachedMethods: CachedMethods.CACHE_GET_HEAD,
+      compress: true,
+      cachePolicy: CachePolicy.CACHING_OPTIMIZED,
+    };
+
+    // With an OAC/S3 origin, CloudFront's DefaultRootObject only resolves "/",
+    // so a request for /blog/ or /blog/<slug> reaches S3 as a key that does not
+    // exist. This rewrites directory-style URIs to the index.html underneath
+    // them, which is what makes the pretty URLs resolve at all.
+    //
+    // Kept off the default behavior deliberately: the root site works as it is
+    // and this only needs to cover the blog. "/blog" needs its own pattern
+    // because "/blog/*" does not match the bare prefix.
+    const directoryIndex = new CloudFrontFunction(this, 'BlogDirectoryIndex', {
+      runtime: FunctionRuntime.JS_2_0,
+      comment: 'Rewrites directory-style blog URIs to their index.html',
+      code: FunctionCode.fromInline(`
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+  if (uri.charAt(uri.length - 1) === '/') {
+    request.uri = uri + 'index.html';
+    return request;
+  }
+  var lastSegment = uri.substring(uri.lastIndexOf('/') + 1);
+  if (lastSegment.indexOf('.') === -1) {
+    request.uri = uri + '/index.html';
+  }
+  return request;
+}
+`),
+    });
+
+    const blogBehavior = {
+      ...defaultBehavior,
+      functionAssociations: [
+        { function: directoryIndex, eventType: FunctionEventType.VIEWER_REQUEST },
+      ],
+    };
+
     new Distribution(this, 'SiteDistribution', {
-      defaultBehavior: {
-        origin: S3BucketOrigin.withOriginAccessControl(siteBucket, {
-          originAccessControl,
-          originId: 'shanehobson.me.s3.us-east-2.amazonaws.com',
-          originShieldEnabled: false,
-          connectionAttempts: 3,
-          connectionTimeout: Duration.seconds(10),
-        }),
-        viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        allowedMethods: AllowedMethods.ALLOW_GET_HEAD,
-        cachedMethods: CachedMethods.CACHE_GET_HEAD,
-        compress: true,
-        cachePolicy: CachePolicy.CACHING_OPTIMIZED,
+      defaultBehavior,
+      additionalBehaviors: {
+        '/blog': blogBehavior,
+        '/blog/*': blogBehavior,
       },
       domainNames: ['shanehobson.me', 'www.shanehobson.me'],
       certificate: Certificate.fromCertificateArn(
