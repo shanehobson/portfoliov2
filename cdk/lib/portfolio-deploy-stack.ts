@@ -71,16 +71,43 @@ export class PortfolioDeployStack extends Stack {
       cacheControl: mediaCacheControl,
     });
 
+    // dist/blog holds only HTML and feed.xml — the posts' images and CSS are
+    // content-hashed into dist/assets under the immutable policy above — so the
+    // same revalidate-every-time policy as index.html costs nothing here.
+    // Pruning is safe because it is scoped to this deployment's own prefix.
+    const blog = new BucketDeployment(this, 'DeploySiteBlog', {
+      ...shared,
+      sources: [Source.asset(path.join(sitePath, 'blog'), { exclude: dotFiles })],
+      destinationKeyPrefix: 'blog',
+      cacheControl: [
+        CacheControl.setPublic(),
+        CacheControl.maxAge(Duration.seconds(0)),
+        CacheControl.mustRevalidate(),
+      ],
+    });
+
     // Everything left at the root — index.html above all — must be revalidated
     // every time, or a deploy never reaches anyone holding a cached copy.
     // Pruning is off here: this deployment has no prefix to scope deletion to,
-    // so pruning would delete the three prefixes above.
+    // so pruning would delete the four prefixes above. For the same reason
+    // every prefix that has its own deployment must be excluded, or this one
+    // would also upload those files at the wrong Cache-Control and race it.
     const root = new BucketDeployment(this, 'DeploySiteRoot', {
       ...shared,
       prune: false,
       sources: [
         Source.asset(sitePath, {
-          exclude: [...dotFiles, 'assets', 'assets/**', 'images', 'images/**', 'video', 'video/**'],
+          exclude: [
+            ...dotFiles,
+            'assets',
+            'assets/**',
+            'images',
+            'images/**',
+            'video',
+            'video/**',
+            'blog',
+            'blog/**',
+          ],
         }),
       ],
       cacheControl: [
@@ -90,12 +117,16 @@ export class PortfolioDeployStack extends Stack {
       ],
       distribution,
       // Hashed assets are immutable and media is served from a stable URL, so
-      // index.html is the only object that ever needs evicting from the edge.
-      distributionPaths: ['/index.html'],
+      // index.html and the blog's HTML are the only objects that ever need
+      // evicting from the edge.
+      distributionPaths: ['/index.html', '/blog/*'],
     });
+
+    // The blog's images and CSS live in dist/assets, so publish those first.
+    blog.node.addDependency(assets);
 
     // Upload the content index.html points at before publishing index.html, and
     // invalidate only once everything is in place.
-    root.node.addDependency(assets, images, video);
+    root.node.addDependency(assets, images, video, blog);
   }
 }
