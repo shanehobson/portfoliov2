@@ -72,6 +72,12 @@ function markdownRenderer(highlighter) {
   md.renderer.rules.image = (tokens, idx, options, env, self) => {
     const token = tokens[idx];
     const src = token.attrGet('src') ?? '';
+    // Article images are diagrams that carry the explanation, so an empty alt
+    // is a bug, not a decorative image. The build fails on missing front
+    // matter for the same reason: the next import cannot regress it silently.
+    if (!token.content.trim()) {
+      throw new Error(`${env.slug}: image ${src} has no alt text`);
+    }
     if (src.startsWith('../images/')) {
       token.attrSet('src', `../../content/images/${src.slice('../images/'.length)}`);
     }
@@ -79,6 +85,23 @@ function markdownRenderer(highlighter) {
     token.attrSet('decoding', 'async');
     return defaultImage(tokens, idx, options, env, self);
   };
+
+  // The post's title is the page's <h1>, so the top heading level inside the
+  // body has to be <h2> or the outline skips a level. The imported Markdown
+  // uses ### throughout; demoting here rather than rewriting the files means
+  // `npm run import:medium` cannot undo it.
+  md.core.ruler.push('demote_headings', (state) => {
+    const levels = state.tokens
+      .filter((t) => t.type === 'heading_open')
+      .map((t) => Number(t.tag.slice(1)));
+    if (levels.length === 0) return;
+    const shift = 2 - Math.min(...levels);
+    if (shift === 0) return;
+    for (const token of state.tokens) {
+      if (token.type !== 'heading_open' && token.type !== 'heading_close') continue;
+      token.tag = `h${Math.min(6, Number(token.tag.slice(1)) + shift)}`;
+    }
+  });
 
   // Medium links and any other off-site link should not keep the reader's tab.
   const defaultLinkOpen = md.renderer.rules.link_open ?? ((t, i, o, e, s) => s.renderToken(t, i, o));
@@ -106,7 +129,10 @@ const escapeHtml = (s) =>
 const escapeXml = (s) => escapeHtml(s).replace(/'/g, '&apos;');
 
 function readingTime(markdown) {
-  const words = markdown.split(/\s+/).filter(Boolean).length;
+  // Alt text is not read by the people this estimate is for, and a long
+  // diagram description would otherwise add a minute to the figure.
+  const prose = markdown.replace(/!\[[^\]]*\]/g, '![]');
+  const words = prose.split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
 }
 
@@ -129,12 +155,14 @@ function formatDate(iso) {
  */
 function sidebar(posts, currentSlug) {
   const articles = posts
-    .map(
-      (post) =>
-        `<li><a class="${post.slug === currentSlug ? 'is-current' : ''}" href="${post.path}">${escapeHtml(
-          post.title
-        )}</a></li>`
-    )
+    .map((post) => {
+      const current = post.slug === currentSlug;
+      // The class is the visual cue; aria-current is the one a screen reader
+      // reads, and the sidebar is repeated on every page.
+      return `<li><a class="${current ? 'is-current' : ''}"${
+        current ? ' aria-current="page"' : ''
+      } href="${post.path}">${escapeHtml(post.title)}</a></li>`;
+    })
     .join('\n          ');
 
   return `<aside class="blog-sidebar">
@@ -158,14 +186,14 @@ function sidebar(posts, currentSlug) {
       </div>
 
       <div class="blog-sidebar__links">
-        <div class="blog-sidebar__articles">
+        <nav class="blog-sidebar__articles" aria-label="Articles">
           <p class="blog-sidebar__label">Articles</p>
           <ul class="blog-sidebar__nav">
             ${articles}
           </ul>
-        </div>
+        </nav>
 
-        <div class="blog-sidebar__site">
+        <nav class="blog-sidebar__site" aria-label="Portfolio">
           <p class="blog-sidebar__label">Portfolio</p>
           <ul class="blog-sidebar__nav">
             <li><a href="/">Home</a></li>
@@ -174,7 +202,7 @@ function sidebar(posts, currentSlug) {
             <li><a href="/#work">Work</a></li>
             <li><a href="/#contact">Contact</a></li>
           </ul>
-        </div>
+        </nav>
       </div>
     </aside>`;
 }
@@ -194,6 +222,7 @@ function page({ title, description, canonical, head = '', sidebarFor, posts, bod
     <link rel="stylesheet" href="/src/styles/blog.scss" />
 ${head}  </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     <div class="blog-layout">
     ${sidebar(posts, sidebarFor)}
       <div class="blog-content">
@@ -258,7 +287,7 @@ function postPage(post, posts, { newer, older }) {
     head: postHead(post),
     posts,
     sidebarFor: post.slug,
-    body: `    <main class="blog-wrap">
+    body: `    <main class="blog-wrap" id="content">
       <article>
         <header class="blog-post__header">
           <h1 class="blog-post__title">${escapeHtml(post.title)}</h1>
@@ -275,7 +304,7 @@ ${post.html}
         <p class="blog-post__origin">
           Originally published on <a href="${escapeHtml(post.mediumUrl)}" target="_blank" rel="noopener noreferrer">Medium</a>.
         </p>
-        <nav class="blog-post__nav">
+        <nav class="blog-post__nav" aria-label="More articles">
         ${nav}
         </nav>
       </article>
@@ -311,7 +340,7 @@ function indexPage(posts) {
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
 `,
-    body: `    <main class="blog-wrap">
+    body: `    <main class="blog-wrap" id="content">
       <h1 class="blog-index__title">Recent Posts</h1>
       <ul class="blog-index__list">
 ${items}
@@ -418,7 +447,7 @@ async function main() {
   const md = markdownRenderer(highlighter);
 
   for (const post of posts) {
-    post.html = md.render(post.markdown);
+    post.html = md.render(post.markdown, { slug: post.slug });
   }
 
   await rm(OUT_DIR, { recursive: true, force: true });

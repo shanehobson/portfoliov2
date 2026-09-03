@@ -12,7 +12,7 @@ How does React actually accomplish this?
 
 In this article, we’ll explore React’s rendering system, Fiber. We’ll begin by looking at how JSX is compiled into JavaScript, and then see how a simple hypothetical rendering system might transform components into a tree of DOM nodes. Then we’ll dive into Fiber and see how it improves on the naive approach by pausing and resuming rendering, efficiently reconciling updates, and prioritizing urgent work over less important tasks.
 
-![](../images/how-react-renders-components-a-deep-dive-into-fiber/1.webp)
+![A pipeline in two halves. At compile time, JSX — React components written with JSX syntax — is transformed by a build tool such as Babel, SWC or TypeScript into compiled JavaScript. At runtime in the browser, that JavaScript produces React elements, plain objects describing what should be rendered, which become Fiber nodes, React's internal structure for the component tree and its work, which in turn create and update the real DOM elements.](../images/how-react-renders-components-a-deep-dive-into-fiber/1.webp)
 _The Journey from JSX to the DOM._
 
 ### 1\. A Simple React Component Tree
@@ -234,7 +234,7 @@ Each Fiber is processed in two stages. Together, they perform a depth-first trav
 
 If beginWork() has no child Fiber to process, performUnitOfWork() hands control to completeUnitOfWork(). This helper walks back up the tree, calling completeWork() on each completed Fiber, which prepares the actual DOM updates.
 
-![](../images/how-react-renders-components-a-deep-dive-into-fiber/2.webp)
+![A flowchart of React's work loop. The Scheduler picks work and calls workLoop(). workLoop() asks whether there is time to work, that is whether shouldYield() is false. If there is not, it returns to the Scheduler, pausing without committing, and the Scheduler re-invokes workLoop() later. If there is, performUnitOfWork() processes one unit of work, the current Fiber, and returns the next one. If work remains the loop continues with that next Fiber; if none remains, React commits the changes to the DOM synchronously.](../images/how-react-renders-components-a-deep-dive-into-fiber/2.webp)
 
 ### 7\. Reconciliation
 
@@ -359,7 +359,7 @@ function completeWork(workInProgressFiber) {
 }
 ```
 
-![](../images/how-react-renders-components-a-deep-dive-into-fiber/3.webp)
+![Two Fiber trees side by side. The current tree holds the UI on screen — App, Greeting, h1, and the text "Hello World" — and the work-in-progress tree is being built in memory with the same nodes but the text "Hello Mars". Dashed lines join each pair of corresponding Fibers as alternates. React compares the two trees and commits only the changed text node, updating "World" to "Mars" in the DOM.](../images/how-react-renders-components-a-deep-dive-into-fiber/3.webp)
 
 ### 8\. Committing to the DOM
 

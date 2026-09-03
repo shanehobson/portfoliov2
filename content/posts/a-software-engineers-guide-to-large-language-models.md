@@ -41,7 +41,7 @@ How exactly does the model make these adjustments? A machine learning model is m
 
 Sophisticated machine learning models have billions of these connections, and they each have a weight. When a model is first built, each weight is seeded with a random value. As the model undergoes the training process described above, the weights are adjusted, allowing the model to “learn” from the data it has processed and applying that learning when it processes future data.
 
-![](../images/a-software-engineers-guide-to-large-language-models/1.webp)
+![The training loop drawn as a cycle of five steps: training data of examples with correct outcomes, such as "I love this!" labelled positive; a forward pass in which the model makes a prediction; a loss step comparing that prediction to the correct outcome and calculating how far off it is; backpropagation, passing the loss information back through the model to determine how each weight contributed to the error; and a weight update that adjusts the connections to reduce the loss, after which the loop repeats with more data.](../images/a-software-engineers-guide-to-large-language-models/1.webp)
 _A simplified diagram of the machine learning training loop for a binary classification system._
 
 After a machine learning model is trained, it is ready to be used in the real world. A fully trained machine learning model can accept new inputs it has never seen before, and use the information it gained from its training data and recorded in its weights to provide accurate responses to those novel inputs. This final stage of actually using a machine learning model to generate responses to real-world inputs is called “inference.”
@@ -62,7 +62,7 @@ In LLMs, the “correct” next token is simply _the next token in the training 
 
 By repeatedly learning to predict the _next_ token in a sequence, LLMs learn complex patterns and relationships between tokens, including how their meanings depend on the context in which they appear. This is the key insight that explains how they are so effective at generating text, simply by predicting one token at a time. When training is over and it’s time for inference (i.e., real-world use), the model’s weights encode an enormous amount of information about the patterns and relationships it encountered during training, allowing it to apply what it learned to new sequences of tokens.
 
-![](../images/a-software-engineers-guide-to-large-language-models/2.webp)
+![Six steps of an LLM generating a sentence one word at a time. At each step the current text is fed to the model, the model predicts a distribution over possible next words, one word is chosen, and it is appended to the text: "Once upon a time" gains "there", then "was", "a", "little", "dog", and finally a period, at which the model may stop on that stop token.](../images/a-software-engineers-guide-to-large-language-models/2.webp)
 
 ### The Architecture of a Large Language Model
 
@@ -72,7 +72,7 @@ Here is a high-level roadmap of what we will explore:
 
 We will see how the input text is turned into **tokens**, which are then converted into **embeddings**. These embeddings are passed through a number of **transformer blocks**, which contain (1) an **attention mechanism** and (2) a **feed-forward network**. Finally, the **language model head** produces a **vector** containing a raw score for each token in the model’s vocabulary, and the **sampling** step uses those scores to select the next token. This process repeats until an **end of sequence** condition is reached.
 
-![](../images/a-software-engineers-guide-to-large-language-models/3.webp)
+![The seven stages of the architecture. Input text from the user goes to a tokenizer, which breaks it into token IDs; embeddings convert each ID into a vector; the vectors pass through N transformer blocks, each applying self-attention and then a feed-forward network; the LM head maps the final hidden state to one logit per token in the vocabulary; sampling converts those logits to probabilities and selects the next token; and the process repeats with the selected token appended, until a stop token is generated or a maximum length is reached.](../images/a-software-engineers-guide-to-large-language-models/3.webp)
 
 #### First, A Small Amount of Linear Algebra
 
@@ -86,7 +86,7 @@ These transformations are how LLMs represent the weighted edges of the neural ne
 
 To multiply two matrices, you multiply every row of the first matrix by every column of the second matrix:
 
-![](../images/a-software-engineers-guide-to-large-language-models/4.webp)
+![A worked two-by-two matrix multiplication. Matrix A holds 1 and 2 over 3 and 4; matrix B holds 5 and 6 over 7 and 8. Each value in the result is a row of A multiplied by a column of B and summed: 1 times 5 plus 2 times 7 is 19; 1 times 6 plus 2 times 8 is 22; 3 times 5 plus 4 times 7 is 43; and 3 times 6 plus 4 times 8 is 50. The result is 19 and 22 over 43 and 50.](../images/a-software-engineers-guide-to-large-language-models/4.webp)
 
 There are two more concepts that we will reference below that you need to know:
 
@@ -114,7 +114,7 @@ After we have our list of tokens, the model generates **embeddings** for each to
 
 You can think of these embeddings as representing a point in an n-dimensional space, with n being the length, or **dimension** of the embedding. (Embeddings in today’s largest models can have dimensions of over 10,000.) Tokens that are similar to each other, such as tokens representing “dog” and “cat”, will often have similar embeddings. Since it’s impossible for humans to visualize a 10,000-dimensional space, this concept is usually represented using a simple 2D graph:
 
-![](../images/a-software-engineers-guide-to-large-language-models/5.webp)
+![A two-dimensional scatter plot standing in for embedding space. The points for "dog" and "cat" sit close together, meaning their embeddings are similar, while "highway" sits far away in the opposite corner, meaning a different meaning.](../images/a-software-engineers-guide-to-large-language-models/5.webp)
 
 The numbers in the embedding vectors are **trainable parameters**, which means they are learned by the model during training. As the model processes more and more tokens during training, it learns how tokens tend to be used and related to one another, and updates the embeddings accordingly.
 
@@ -156,7 +156,7 @@ These resulting weights tell the attention mechanism _how much information to ta
 
 Finally, it adds all of the transformed value vectors together, element by element. The result is a new vector where each value contains a weighted combination of the corresponding values from the value vectors of the preceding tokens. This final vector is the **attention output** for the token.
 
-![](../images/a-software-engineers-guide-to-large-language-models/6.webp)
+![How attention is computed for the token "it" in the sentence "The dog chased the ball because it was excited". Three trainable matrices — query, key and value — each multiply the token's vector to produce its query, key and value vector. Then five steps: the query for "it" is compared by dot product with the keys of every preceding token to give attention scores; softmax normalizes those scores into weights between 0 and 1 that sum to 1, with "dog" taking the largest weight at 0.64; each preceding token's value vector is multiplied by its weight; the weighted value vectors are added together element by element; and the sum is the attention output for "it", a single vector summarizing information from all preceding tokens.](../images/a-software-engineers-guide-to-large-language-models/6.webp)
 
 One final twist before we move on to the next step in the process: inside each transformer block, there are actually _multiple_ attention mechanisms. Each attention mechanism is called an **attention head**, and the concept of using multiple attention heads inside a single transformer block is referred to as **multi-head attention**.
 

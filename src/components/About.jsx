@@ -30,7 +30,7 @@ const CERTIFICATES = [
 ];
 
 const About = () => (
-  <section className="section about" id="about">
+  <section className="section about" id="about" aria-labelledby="about-title">
     <div className="shell about-inner">
       <div className="about-aside">
         <p className="eyebrow">01 / About</p>
@@ -38,7 +38,7 @@ const About = () => (
           Two stacked lines beside the prose; one line on a phone, where the
           heading sits on top of it instead and the break is hidden.
         */}
-        <h2 className="section-title">
+        <h2 className="section-title" id="about-title">
           About{" "}
           <br className="about-title-break" />
           Me

@@ -37,7 +37,7 @@
   padding: 0;
   color: $text;
   background: $surface;
-  border: 1px solid $rule;
+  border: 1px solid $rule-control;
   border-radius: 50%;
   transition: border-color 0.25s ease, background-color 0.25s ease;
 
@@ -118,7 +118,9 @@
   font-size: 1.6rem;
   color: $text;
   background: transparent;
-  border: 1px solid $rule;
+  // The border is the only thing marking where the field is, so it takes the
+  // control rule: $rule is 2.2:1 on the ink, under the 3:1 of 1.4.11.
+  border: 1px solid $rule-control;
   border-radius: 2px;
   transition: border-color 0.25s ease;
 
@@ -126,9 +128,10 @@
     border-color: rgba(255, 255, 255, 0.28);
   }
 
+  // The accent border is the secondary cue only; the global :focus-visible
+  // ring is left alone so the form focuses like everything else on the page.
   &:focus,
   &:focus-visible {
-    outline: none;
     border-color: $accent;
   }
 
@@ -143,14 +146,27 @@ textarea.field__input {
   min-height: 10rem;
 }
 
-// Only after a submit attempt — nobody should be told their email is wrong
-// while they are still typing the first character of it.
-.contact-form[data-submitted] .field__input:invalid {
+// aria-invalid is only ever set by a failed submit, so this is already
+// deferred: nobody is told their email is wrong while they are still typing
+// the first character of it.
+.field__input[aria-invalid="true"] {
   border-color: $danger;
 }
 
-.contact-form__status {
+// The red border is the secondary cue. This is the one that says what is
+// wrong, and it is what aria-describedby points the field at. $danger is
+// 5.96:1 on the ink.
+.field__error {
   margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: $danger;
+}
+
+// Sits outside the form so it survives the swap to the thanks panel, which is
+// why it carries its own top margin rather than riding the form's gap.
+.contact-form__status {
+  margin: 1.6rem 0 0;
   min-height: 1.6em;
   font-size: 1.4rem;
   color: $muted;

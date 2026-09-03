@@ -73,25 +73,10 @@ button:disabled {
   cursor: default;
 }
 
-:focus-visible {
-  outline: 2px solid $accent;
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
 // --------------------------------------------------------------- primitives
-
-// Off-screen but still in the accessibility tree and the form's submission.
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
+//
+// The focus ring, .visually-hidden and .skip-link live in base/_a11y.scss,
+// which the blog's stylesheet imports too.
 
 // Every section hangs off this, which is what keeps the left edge of the page
 // straight from the hero to the footer.
@@ -154,7 +139,9 @@ button:disabled {
   align-items: center;
   gap: 0.9rem;
   padding: 1.2rem 2rem;
-  border: 1px solid $rule;
+  // The pill outline is what identifies the target, so it takes the control
+  // rule rather than the decorative hairline.
+  border: 1px solid $rule-control;
   border-radius: 999px;
   background: transparent;
   color: $text;
@@ -206,15 +193,16 @@ button:disabled {
   }
 }
 
-// A link inside prose.
+// A link inside prose. Prose lands on cards as often as on the ground, so it
+// takes the lifted accent — the ground value misses AA on $surface.
 .link {
-  color: $accent;
+  color: $accent-on-surface;
   text-decoration: none;
-  border-bottom: 1px solid rgba(75, 184, 154, 0.4);
+  border-bottom: 1px solid rgba(92, 196, 167, 0.45);
   transition: border-color 0.2s ease;
 
   &:hover {
-    border-bottom-color: $accent;
+    border-bottom-color: $accent-on-surface;
   }
 }
 
@@ -249,5 +237,47 @@ $grid-cell: 120px;
       transparent 100%
     );
     mask-image: linear-gradient(to bottom, #000 0%, #000 $fade, transparent 100%);
+  }
+}
+
+// -------------------------------------------- forced colors and high contrast
+//
+// In Windows High Contrast the OS replaces the palette and drops every
+// background image. That takes out the blueprint grid and the portrait's
+// gradient mask, both of which are decorative and fine to lose. What is not
+// fine is the set of hairlines drawn as a `background` on a one-pixel element
+// — the nav's active underline, the eyebrow's dash, the hero's rule and its
+// scroll line all vanish with them. Redrawn as borders they are forced to a
+// system color instead of removed.
+@media (forced-colors: active) {
+  .eyebrow::before,
+  .nav-link::after,
+  .hero-rule,
+  .hero-scroll-line {
+    height: 0;
+    background: none;
+    border-top: 1px solid;
+  }
+
+  // The one indicator that must survive whatever else does.
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+// Every muted value already clears AA, but muted is the first thing someone
+// asking the OS for more contrast wants gone, so it goes.
+@media (prefers-contrast: more) {
+  .section-lede,
+  .project-copy,
+  .project-index,
+  .contact-modal__lede,
+  .contact-done__note,
+  .field__label,
+  .contact-form__status,
+  .footer-text,
+  .footer-link,
+  .nav-overlay-index {
+    color: $text;
   }
 }

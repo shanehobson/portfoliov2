@@ -57,6 +57,9 @@ const Hero = ({ onContact }) => (
           className="hero-card hero-card--contact"
           href="mailto:shanehobson1@gmail.com"
           onClick={onContact}
+          // The mailto: is the no-JS fallback, so this stays a link; the
+          // attribute is what says it opens the contact dialog instead.
+          aria-haspopup="dialog"
         >
           <span className="hero-card-avatar" aria-hidden="true">
             <img

@@ -1,0 +1,48 @@
+// Shared accessibility primitives. Both stylesheets pull this in — the
+// portfolio through styles.scss and the generated blog pages through
+// blog.scss — so the focus ring, the off-screen primitive and the skip link
+// are the same on every page of the site rather than only on the React app.
+
+// Off-screen but still in the accessibility tree and a form's submission.
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// One ring for the whole site. Accent on the ground is 5.41:1, well clear of
+// the 3:1 that 1.4.11 asks of a focus indicator.
+:focus-visible {
+  outline: 2px solid $accent;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+// The first tab stop on every page, so a keyboard visitor can get past the
+// nav — eleven repeated links on a blog page — in one keystroke. Parked above
+// the top edge rather than clipped, so it is focusable but not painted, and
+// dropped into the corner once it takes focus.
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  margin: 1rem;
+  padding: 1.2rem 2rem;
+  transform: translateY(-200%);
+  background: $ink;
+  color: $text;
+  border: 1px solid $rule-control;
+  border-radius: 2px;
+  font-size: 1.4rem;
+  font-weight: 500;
+
+  &:focus {
+    transform: none;
+  }
+}

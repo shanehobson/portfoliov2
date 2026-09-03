@@ -62,6 +62,35 @@
     width: 100%;
   }
 
+  // The stop for the one panel that autoplays. Small and cornered so it reads
+  // as a control on the screenshot rather than a media bar across it.
+  .project-media__toggle {
+    position: absolute;
+    right: clamp(1.2rem, 2vw, 2.4rem);
+    bottom: clamp(1.2rem, 2vw, 2.4rem);
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    padding: 0;
+    color: $text;
+    background: rgba(10, 34, 38, 0.78);
+    border: 1px solid $rule-control;
+    border-radius: 50%;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+
+    &:hover {
+      background: $ink;
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+
   img,
   video {
     width: 100%;

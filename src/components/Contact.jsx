@@ -1,8 +1,8 @@
 const Contact = ({ onContact }) => (
-  <section className="section contact" id="contact">
+  <section className="section contact" id="contact" aria-labelledby="contact-title">
     <div className="shell contact-inner">
       <p className="eyebrow">04 / Contact</p>
-      <h2 className="contact-title">
+      <h2 className="contact-title" id="contact-title">
         Let&rsquo;s build
         <br />
         something.
@@ -21,6 +21,9 @@ const Contact = ({ onContact }) => (
           className="button button--primary"
           href="mailto:shanehobson1@gmail.com"
           onClick={onContact}
+          // Announced as a link, because with JavaScript off that is exactly
+          // what it is; this says what it does when JavaScript is on.
+          aria-haspopup="dialog"
         >
           Connect with me
         </a>

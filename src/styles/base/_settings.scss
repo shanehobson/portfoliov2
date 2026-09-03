@@ -17,6 +17,18 @@ $accent: #4bb89a;
 $accent-dim: rgba(75, 184, 154, 0.14);
 $danger: #ff6b6b; // invalid form fields
 
+// $accent is measured against $ground. On $surface — which is lighter — the
+// same green falls to 4.45:1, which misses AA for body-size type on a card.
+// This is the same hue lifted until it clears on every step the site paints
+// on: 5.1:1 on $surface, 6.2:1 on $ground, 7.8:1 on $ink.
+$accent-on-surface: #5cc4a7;
+
+// $rule is a decorative hairline at 1.7:1 on the ground — the right weight for
+// a section divider or a card edge, and well under the 3:1 that 1.4.11 asks of
+// anything that bounds a control. Inputs and buttons take this instead:
+// 3.9:1 on $ground, 4.9:1 on $ink, 3.2:1 on $surface.
+$rule-control: #5a949d;
+
 // The darkest step, for the things that have to sit *on* the hero's field
 // rather than on the ground: $surface is lighter than $ground by design and
 // would barely separate from the field behind it.

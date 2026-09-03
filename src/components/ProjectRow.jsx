@@ -21,6 +21,14 @@ const useReducedMotion = () =>
 // with controls instead — motion the viewer did not ask for, and cannot stop,
 // is the thing that setting exists to prevent.
 //
+// A loop also runs well past the five seconds 2.2.2 allows, and that criterion
+// is not conditioned on the reduced-motion preference — it covers everyone,
+// including the people who cannot set it. So an autoplaying panel carries a
+// pause toggle. Full `controls` would do the job too, but it paints a media
+// chrome bar across the panel, which is why it was left off in the first
+// place. Once stopped it stays stopped: scrolling the panel back into view
+// does not restart what the visitor deliberately paused.
+//
 // "Autoplays" means plays while on screen: the file is not fetched until the
 // panel is within 200px of the viewport, and it pauses again once scrolled
 // away, so a loop 10,000px down the page is not decoding frames under the
@@ -41,6 +49,7 @@ const ProjectMedia = ({ media }) => {
   const reducedMotion = useReducedMotion();
   const [fallback, setFallback] = useState(false);
   const [near, setNear] = useState(false);
+  const [paused, setPaused] = useState(false);
   const autoplay =
     media.kind === "video" && media.autoplay && !reducedMotion && !fallback;
 
@@ -67,6 +76,13 @@ const ProjectMedia = ({ media }) => {
     const video = videoRef.current;
     if (!autoplay || !video) return;
 
+    // Stopped by the toggle: no observer, so scrolling away and back cannot
+    // start it again.
+    if (paused) {
+      video.pause();
+      return;
+    }
+
     const play = () =>
       video.play().catch((error) => {
         // pause() landing before play() settled is not a policy refusal.
@@ -88,7 +104,7 @@ const ProjectMedia = ({ media }) => {
       // Also the path for reduced motion being switched on while it plays.
       video.pause();
     };
-  }, [autoplay]);
+  }, [autoplay, paused]);
 
   if (media.kind === "video") {
     return (
@@ -104,6 +120,22 @@ const ProjectMedia = ({ media }) => {
           aria-label={media.alt}
           src={media.src}
         />
+        {autoplay && (
+          <button
+            className="project-media__toggle"
+            type="button"
+            onClick={() => setPaused((stopped) => !stopped)}
+            aria-label={`${paused ? "Play" : "Pause"} video: ${media.alt}`}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              {paused ? (
+                <path d="M8 5l11 7-11 7z" fill="currentColor" />
+              ) : (
+                <path d="M9 5h3v14H9zm6 0h3v14h-3z" fill="currentColor" />
+              )}
+            </svg>
+          </button>
+        )}
       </div>
     );
   }

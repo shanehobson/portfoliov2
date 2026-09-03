@@ -8,7 +8,7 @@ excerpt: "Angular uses a rendering engine called Ivy to transform component temp
 ---
 Angular uses a rendering engine called Ivy to transform component templates into DOM nodes. Here, we will look behind the scenes to see how Angular compiles a component, creates its runtime data structures, and ultimately renders it to the browser.
 
-![](../images/angular-rendering-under-the-hood/1.webp)
+![The Ivy rendering pipeline in five steps. An Angular component with a template and data is compiled into a ComponentDef, stored as ɵcmp, carrying metadata and a reference to the template function. That template function is a set of imperative rendering instructions and runs in two modes: a create pass that builds the DOM structure once, and an update pass that refreshes bindings when data changes. The create pass produces the TView, a static blueprint of TNodes shared across every instance of the component; the update pass drives the LView, per-instance runtime state holding context data, binding values and references to real DOM nodes. Both feed the final step, where the instructions create and update the real DOM directly, with no virtual DOM and no diffing step.](../images/angular-rendering-under-the-hood/1.webp)
 
 ### 1\. The Angular Component
 

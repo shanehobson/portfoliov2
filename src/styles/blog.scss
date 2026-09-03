@@ -6,6 +6,7 @@
 // same self-hosted Inter, the same hairline rules and one cool accent — so the
 // blog reads as the same site as the front page.
 @import "./base/settings";
+@import "./base/a11y";
 
 // The portfolio's $muted lands at 5.7:1 on this ground, which is fine for a few
 // lines of section copy but thin for article-length reading, so the blog reads
@@ -60,6 +61,28 @@ a {
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+// Colour alone cannot mark a link (1.4.1), and the escape hatch for that needs
+// 3:1 between the link and the surrounding text — the accent against the body
+// grey is 1.69:1, so it does not apply. Every link sitting inside a run of
+// prose therefore underlines by default: the article body, the index
+// excerpts, the sidebar's bio paragraph and the Medium credit under a post.
+// The bare link lists are left alone — a sidebar of nothing but links is
+// unambiguous without it.
+.blog-post__body,
+.blog-index__item-excerpt,
+.blog-sidebar__bio,
+.blog-post__origin {
+  a {
+    text-decoration: underline;
+    text-decoration-color: rgba(75, 184, 154, 0.4);
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      text-decoration-color: currentColor;
+    }
   }
 }
 

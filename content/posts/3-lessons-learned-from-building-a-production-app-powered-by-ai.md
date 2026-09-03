@@ -18,19 +18,19 @@ Along the way, I learned a lot about what it actually takes to integrate AI into
 
 The idea behind Odyssey is straightforward. A user types in a prompt such as “journey through the Canadian Rockies” and can optionally provide a date range for the trip. After clicking “Submit”, the AI generated trip begins to fill the page, with a map showing driving directions and a day by day itinerary appearing as it is generated.
 
-![](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/1.webp)
+![Odyssey's prompt screen, headed "Describe your ideal road trip": a large text box holding "journey through the canadian rockies", start and end date fields set to 01/12/2026 and 01/20/2026, and a green "Generate trip with AI" button.](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/1.webp)
 _User enters prompt, with optional date range._
 
-![](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/2.webp)
+![The generated trip's header: the title "Canadian Rockies Adventure", the dates Jan 12 to Jan 20 2026 and a length of nine days, a box for refinement prompts with an "Update trip" button, and below it the top of the route map summarizing five stops, 486 miles and 9 hours 53 minutes of driving.](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/2.webp)
 _AI-generated trip metadata loads within 1–2 seconds._
 
-![](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/3.webp)
+![The route map: a blue driving route looping out of Calgary north-west through the Rockies and on to Edmonton, with five pins along it, under a summary bar reading five stops, 486 miles, 9 hours 53 minutes.](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/3.webp)
 _Route map loads concurrently with metadata._
 
-![](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/4.webp)
+![Day one of the itinerary, expanded under a green header reading Monday 1/12, Calgary, Alberta. Three cards follow: arrive in Calgary, lunch at Charcut Roast House, and a scenic drive to Banff, each with its location and a sentence of description.](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/4.webp)
 _First day loads shortly after metadata + map._
 
-![](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/5.webp)
+![The same itinerary collapsed to one green bar per day: Monday 1/12 in Calgary, Tuesday 1/13 in Banff, Wednesday 1/14 in Lake Louise, and Thursday 1/15 and Friday 1/16 in Jasper.](../images/3-lessons-learned-from-building-a-production-app-powered-by-ai/5.webp)
 _Remainder of trip streams in day-by-day (collapsed view)._
 
 From there, the user can refine the trip by sending additional prompts to the AI. Each update builds on the existing plan, and the trip is persisted in the user’s account for future viewing and editing.

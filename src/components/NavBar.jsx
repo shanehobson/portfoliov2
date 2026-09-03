@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SECTIONS = [
   { id: "about", label: "About" },
@@ -41,6 +41,9 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const active = useActiveSection();
+  const toggleRef = useRef(null);
+  const overlayRef = useRef(null);
+  const wasMenuOpen = useRef(false);
 
   // The bar is transparent over the hero and picks up a ground and a hairline
   // once anything has scrolled under it.
@@ -51,12 +54,35 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // The mobile menu covers the page, so the page behind it must not scroll.
+  // The mobile menu covers the page, so the page behind it must not scroll —
+  // and must not be reachable either. Without the inert half, tabbing forward
+  // out of the last menu link walks into content that is completely hidden
+  // behind an opaque overlay. The bar itself stays live: it paints above the
+  // overlay (z-index 100 against 1), so its mark and its toggle are both
+  // visible and both still want to be usable.
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    const covered = [
+      document.getElementById("content"),
+      document.querySelector("footer"),
+    ].filter(Boolean);
+    for (const el of covered) el.inert = isMenuOpen;
     return () => {
       document.body.style.overflow = "";
+      for (const el of covered) el.inert = false;
     };
+  }, [isMenuOpen]);
+
+  // Focus follows the panel: into its first link on open, back to the toggle
+  // that opened it on close. The guard keeps the first render from stealing
+  // focus to the toggle on a page that was never opened.
+  useEffect(() => {
+    if (isMenuOpen) {
+      overlayRef.current?.querySelector("a")?.focus();
+    } else if (wasMenuOpen.current) {
+      toggleRef.current?.focus();
+    }
+    wasMenuOpen.current = isMenuOpen;
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -95,9 +121,11 @@ const NavBar = () => {
 
         <button
           className={`nav-toggle${isMenuOpen ? " nav-toggle--open" : ""}`}
+          ref={toggleRef}
           onClick={() => setIsMenuOpen((open) => !open)}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMenuOpen}
+          aria-controls="nav-overlay"
         >
           <span />
           <span />
@@ -106,11 +134,16 @@ const NavBar = () => {
 
       <div
         className={`nav-overlay${isMenuOpen ? " nav-overlay--open" : ""}`}
+        id="nav-overlay"
+        ref={overlayRef}
         // Hidden from assistive tech and from the tab order while closed; the
         // panel is still in the DOM so it can transition.
         inert={!isMenuOpen}
       >
-        <nav className="nav-overlay-links" aria-label="Sections">
+        {/* Named apart from the bar's own nav: only one of the two is ever
+            exposed, but two landmarks called "Sections" would be a coin
+            flip for anyone listing them. */}
+        <nav className="nav-overlay-links" aria-label="Menu">
           {SECTIONS.map(({ id, label }, index) => (
             <a key={id} href={`#${id}`} onClick={closeMenu}>
               <span className="nav-overlay-index">

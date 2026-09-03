@@ -16,7 +16,7 @@ There are three main pieces:
 
 **Public site**: for businesses that don’t have their own website, we auto-generate a landing page with their services, staff, hours, and the booking widget i-framed in.
 
-![](../images/you-dont-need-a-framework-for-everything/1.webp)
+![The booking widget embedded in an auto-generated public site for "Demo Business": a seven-step progress bar — service, professional, date and time, your info, policy, payment, confirm — with step one open, showing category filters for hair, massage and nails above a list of services with their durations and prices.](../images/you-dont-need-a-framework-for-everything/1.webp)
 _The Booking App I-Framed Into the Public Site_
 
 The admin and booking apps are built with React and NodeJS. Fairly standard.

@@ -21,8 +21,12 @@ const DashboardPage = () => {
 
   return (
     <>
+      {/* First tab stop on the page: past the nav and into the content. */}
+      <a className="skip-link" href="#content">
+        Skip to content
+      </a>
       <NavBar />
-      <main>
+      <main id="content">
         <Hero onContact={openContact} />
         <About />
         <Writing />
