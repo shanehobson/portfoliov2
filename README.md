@@ -45,6 +45,27 @@ the whole page in the first response and React only hydrates it. If the
 console shows a hydration warning on `npm run preview`, something rendered
 differently on the server than in the browser; fix it rather than ignoring it.
 
+## Plain-text mirrors
+
+Every page is published a second time as Markdown, for the crawlers that feed
+language models — they get the content without a layout around it, and the
+`<head>` of each page points at its own mirror.
+
+| URL | Written by | From |
+| --- | --- | --- |
+| `/llms.txt` | `build-blog.mjs` | An index of the whole site, per [llmstxt.org](https://llmstxt.org) |
+| `/index.md` | `prerender.mjs` | The same SSR render as `index.html`, converted with `turndown` |
+| `/blog/<slug>.md` | `build-blog.mjs` | The post's source Markdown, with its figures copied to `/blog/media/` |
+| `/llms-full.txt` | `prerender.mjs` | The above concatenated, newest article first |
+
+The homepage's prose lives in JSX across half a dozen components, which is why
+`/index.md` is converted from what React rendered rather than kept alongside
+it: there is no second copy to drift. Articles are the other way round —
+`content/posts/` is already Markdown, so the mirror is the source.
+
+Anything that only exists in the HTML — the `<meta>` tags, the JSON-LD — is
+restated as a short header at the top of each mirror.
+
 ## Deploying
 
 ```sh

@@ -28,6 +28,7 @@ images-src
 /public/blog
 /public/sitemap.xml
 /public/robots.txt
+/public/llms.txt
 
 # environment variables — CONTACT_FN_URL for the dev proxy, see .env.example
 .env

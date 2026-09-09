@@ -9,7 +9,8 @@ const Footer = () => (
         className="footer-link"
         href="https://www.linkedin.com/in/shane-hobson-1a979158/"
         target="_blank"
-        rel="noreferrer"
+        // Same claim the Person node in index.html makes under sameAs.
+        rel="me noreferrer"
       >
         LinkedIn ↗
       </a>

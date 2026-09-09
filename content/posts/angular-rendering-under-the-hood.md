@@ -5,6 +5,7 @@ slug: "angular-rendering-under-the-hood"
 tags: ["software-architecture", "angular", "software-engineering", "software-development", "frontend-development"]
 mediumUrl: "https://medium.com/@shanehobson1/angular-rendering-under-the-hood-69b96c79c391"
 excerpt: "Angular uses a rendering engine called Ivy to transform component templates into DOM nodes. Here, we will look behind the scenes to see how Angular compiles a component, creates its runtime data…"
+description: "How Angular’s Ivy compiles a component into a template function, builds the TView and LView, renders the first pass, and updates the DOM on later ones."
 ---
 Angular uses a rendering engine called Ivy to transform component templates into DOM nodes. Here, we will look behind the scenes to see how Angular compiles a component, creates its runtime data structures, and ultimately renders it to the browser.
 

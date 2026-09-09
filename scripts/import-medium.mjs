@@ -212,6 +212,10 @@ function renderPost(item, markdown) {
     `tags: [${item.tags.map(yamlString).join(', ')}]`,
     `mediumUrl: ${yamlString(item.link)}`,
     `excerpt: ${yamlString(excerpt)}`,
+    // The excerpt is the first paragraph as Medium cut it; this is the
+    // sentence Google prints under the result, and it has to be written.
+    // Empty falls back to the excerpt, and the blog build says so.
+    'description: ""',
     '---',
     '',
   ].join('\n');

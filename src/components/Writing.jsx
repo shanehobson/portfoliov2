@@ -60,7 +60,7 @@ const Writing = () => (
                   className="link"
                   href="https://medium.com/@shanehobson1"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="me noreferrer"
                 >
                   Medium
                 </a>

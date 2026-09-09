@@ -5,6 +5,7 @@ slug: "you-dont-need-a-framework-for-everything"
 tags: ["software-engineering", "software-development"]
 mediumUrl: "https://medium.com/@shanehobson1/you-dont-need-a-framework-for-everything-ec085f5cc7ea"
 excerpt: "I’ve been building Zaera, a multi-tenant SaaS platform for service-based businesses like salons, massage therapists, personal trainers, and studios. The platform handles scheduling, payments, and…"
+description: "Why I dropped Astro for a static site generator of my own: per-tenant rebuilds, no hydration to pay for, and a framework solving problems I didn’t have."
 ---
 I’ve been building **Zaera**, a multi-tenant SaaS platform for service-based businesses like salons, massage therapists, personal trainers, and studios. The platform handles scheduling, payments, and customer management: staff can set their availability, customers can book appointments online, and businesses can collect payments directly into their own bank accounts.
 

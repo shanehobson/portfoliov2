@@ -5,6 +5,7 @@ slug: "how-react-renders-components-a-deep-dive-into-fiber"
 tags: ["react", "front-end-development", "software-engineering", "software-architecture", "software-development"]
 mediumUrl: "https://medium.com/@shanehobson1/how-react-renders-components-a-deep-dive-into-fiber-dbd3fdc1c777"
 excerpt: "React provides a convenient API for declaratively defining components that can be rendered to the DOM. This allows developers to focus on the structure and behavior of the application, while React…"
+description: "How React turns JSX into DOM: elements, the Fiber tree, the interruptible work loop, reconciliation, the commit phase, and how lanes prioritise updates."
 ---
 React provides a convenient API for declaratively defining components that can be rendered to the DOM. This allows developers to focus on the structure and behavior of the application, while React handles the dirty work of manipulating DOM nodes.
 

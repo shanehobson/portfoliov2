@@ -33,6 +33,30 @@
       fetchpriority="high"
     />
     <link rel="canonical" href="https://shanehobson.me/" />
+    <meta name="author" content="Shane Hobson" />
+    <!--
+      The default is index,follow already; what this is here for is
+      max-image-preview, which is what lets Google show the portrait at full
+      width in a result or in Discover rather than as a thumbnail.
+    -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Shane Hobson"
+      href="/blog/feed.xml"
+    />
+    <!--
+      The two files written for crawlers that feed language models: this page
+      as Markdown (scripts/prerender.mjs, from the same render as the HTML),
+      and the index of the whole site at /llms.txt.
+    -->
+    <link
+      rel="alternate"
+      type="text/markdown"
+      title="Shane Hobson - Software Engineer (Markdown)"
+      href="/index.md"
+    />
 
     <!--
       Link previews. og:image must be an absolute URL and is served as JPEG
@@ -40,6 +64,7 @@
       handle WebP badly. 1200x630 is the size every network crops from.
     -->
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Shane Hobson" />
     <meta property="og:url" content="https://shanehobson.me/" />
     <meta property="og:title" content="Shane Hobson - Software Engineer" />
@@ -57,6 +82,94 @@
     <meta name="twitter:image:alt" content="Shane Hobson, software engineer" />
 
     <title>Shane Hobson - Software Engineer</title>
+
+    <!--
+      One @graph rather than several loose blocks, so the Person, the site and
+      this page are the same three nodes everywhere on the site: the blog's
+      generated pages reuse these @ids (scripts/build-blog.mjs) and hang their
+      articles off them. The Person is the node that matters — it is what ties
+      the profiles under sameAs to this domain.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://shanehobson.me/#person",
+            "name": "Shane Hobson",
+            "givenName": "Shane",
+            "familyName": "Hobson",
+            "url": "https://shanehobson.me/",
+            "image": "https://shanehobson.me/images/shane.webp",
+            "jobTitle": "Software Engineer",
+            "description": "Software engineer with a decade of experience building applications for the web, spanning frontend, backend, and cloud infrastructure. Formerly a litigation and trial attorney, and still licensed.",
+            "knowsAbout": [
+              "Software engineering",
+              "Frontend development",
+              "Backend development",
+              "Cloud infrastructure",
+              "TypeScript",
+              "React",
+              "Angular",
+              "Node.js",
+              "GraphQL",
+              "PostgreSQL",
+              "Amazon Web Services",
+              "AWS CDK",
+              "Large language models",
+              "Legal technology"
+            ],
+            "hasCredential": [
+              {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "certificate",
+                "name": "AWS Certified Solutions Architect"
+              },
+              {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "certificate",
+                "name": "AWS Certified Cloud Practitioner"
+              }
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/in/shane-hobson-1a979158/",
+              "https://github.com/shanehobson",
+              "https://medium.com/@shanehobson1"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://shanehobson.me/#website",
+            "url": "https://shanehobson.me/",
+            "name": "Shane Hobson",
+            "description": "Portfolio and writing of Shane Hobson, software engineer.",
+            "inLanguage": "en-US",
+            "publisher": { "@id": "https://shanehobson.me/#person" }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://shanehobson.me/#webpage",
+            "url": "https://shanehobson.me/",
+            "name": "Shane Hobson - Software Engineer",
+            "description": "Shane Hobson is a software engineer with a decade of experience building applications for the web, spanning frontend, backend, and cloud infrastructure.",
+            "isPartOf": { "@id": "https://shanehobson.me/#website" },
+            "about": { "@id": "https://shanehobson.me/#person" },
+            "mainEntity": { "@id": "https://shanehobson.me/#person" },
+            "primaryImageOfPage": "https://shanehobson.me/images/og-image.jpg",
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "Book",
+            "@id": "https://shanehobson.me/#book",
+            "name": "How To Become a Self-Taught Software Developer",
+            "author": { "@id": "https://shanehobson.me/#person" },
+            "url": "https://www.amazon.com/How-Become-Self-Taught-Software-Developer/dp/B0CCCHSC82",
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

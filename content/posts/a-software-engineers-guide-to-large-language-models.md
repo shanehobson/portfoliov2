@@ -5,6 +5,7 @@ slug: "a-software-engineers-guide-to-large-language-models"
 tags: ["ai", "software-engineering", "machine-learning", "llm", "software-development"]
 mediumUrl: "https://medium.com/@shanehobson1/a-software-engineers-guide-to-large-language-models-1efaac0fb805"
 excerpt: "The introduction of large language models (LLMs) has caused a tectonic shift in how software is built. When combined with agentic coding harnesses, LLMs can now perform many of the tasks once thought…"
+description: "How a large language model actually works, end to end: tokenizer, embeddings, transformer blocks, attention, the LM head, and how sampling picks a token."
 ---
 The introduction of large language models (LLMs) has caused a tectonic shift in how software is built. When combined with agentic coding harnesses, LLMs can now perform many of the tasks once thought to be the exclusive domain of human software engineers. These tools can write, analyze, and debug code with a level of competency that would shock a time traveler arriving from earlier in this decade.
 

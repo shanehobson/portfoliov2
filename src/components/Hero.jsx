@@ -28,7 +28,18 @@ const Hero = ({ onContact }) => (
       <div className="hero-fold">
         <div className="hero-statement">
           <span className="hero-rule" aria-hidden="true" />
-          <h1 className="hero-lede">Software Engineer</h1>
+          {/*
+            The name is what this page is about and the query most of its
+            traffic arrives on, but on screen it is only the wordmark on the
+            bottom rail and the ghost behind the portrait — one of which is a
+            plain span, the other aria-hidden, and neither tied to the heading.
+            Nothing visible changes; the heading now reads as name and title
+            for a crawler and a screen reader both.
+          */}
+          <h1 className="hero-lede">
+            <span className="visually-hidden">Shane Hobson &mdash; </span>
+            Software Engineer
+          </h1>
         </div>
 
         {/*

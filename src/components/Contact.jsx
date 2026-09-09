@@ -31,7 +31,7 @@ const Contact = ({ onContact }) => (
           className="button"
           href="https://www.linkedin.com/in/shane-hobson-1a979158/"
           target="_blank"
-          rel="noreferrer"
+          rel="me noreferrer"
         >
           LinkedIn
         </a>

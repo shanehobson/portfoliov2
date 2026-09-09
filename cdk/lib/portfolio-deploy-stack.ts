@@ -118,20 +118,72 @@ export class PortfolioDeployStack extends Stack {
       cachePolicy: CachePolicy.CACHING_OPTIMIZED,
     };
 
+    // The distribution answers on both shanehobson.me and www.shanehobson.me,
+    // and until this existed both returned 200 for every page — one site on two
+    // hostnames. The canonical tags said which one counted, but a canonical is
+    // a hint; a 301 is not, and it also stops the www copy from splitting the
+    // links people make. 301 rather than 302: this is permanent, and only a
+    // permanent redirect consolidates ranking signals onto the apex.
+    //
+    // Inlined into both functions below rather than sitting in a third one,
+    // because CloudFront allows exactly one viewer-request function per cache
+    // behavior and the blog's behavior already needs its own rewrite.
+    const wwwRedirect = `
+  var host = request.headers.host && request.headers.host.value;
+  if (host && host.indexOf('www.') === 0) {
+    // JS 2.0 hands the query string over as a parsed, decoded object with no
+    // raw form, so carrying it across the redirect means rebuilding it, and
+    // re-encoding: a decoded '&' in a value would otherwise split into two.
+    var query = '';
+    for (var key in request.querystring) {
+      var param = request.querystring[key];
+      var values = param.multiValue || [param];
+      for (var i = 0; i < values.length; i++) {
+        query +=
+          (query ? '&' : '?') +
+          encodeURIComponent(key) +
+          '=' +
+          encodeURIComponent(values[i].value);
+      }
+    }
+    return {
+      statusCode: 301,
+      statusDescription: 'Moved Permanently',
+      headers: {
+        location: { value: 'https://' + host.slice(4) + request.uri + query },
+        'cache-control': { value: 'max-age=3600' },
+      },
+    };
+  }
+`;
+
+    const apexRedirect = new CloudFrontFunction(this, 'ApexRedirect', {
+      runtime: FunctionRuntime.JS_2_0,
+      comment: 'Redirects www.shanehobson.me to the apex',
+      code: FunctionCode.fromInline(`
+function handler(event) {
+  var request = event.request;
+${wwwRedirect}
+  return request;
+}
+`),
+    });
+
     // With an OAC/S3 origin, CloudFront's DefaultRootObject only resolves "/",
     // so a request for /blog/ or /blog/<slug> reaches S3 as a key that does not
     // exist. This rewrites directory-style URIs to the index.html underneath
     // them, which is what makes the pretty URLs resolve at all.
     //
-    // Kept off the default behavior deliberately: the root site works as it is
-    // and this only needs to cover the blog. "/blog" needs its own pattern
-    // because "/blog/*" does not match the bare prefix.
+    // The rewrite is kept off the default behavior deliberately: the root site
+    // works as it is and this only needs to cover the blog. "/blog" needs its
+    // own pattern because "/blog/*" does not match the bare prefix.
     const directoryIndex = new CloudFrontFunction(this, 'BlogDirectoryIndex', {
       runtime: FunctionRuntime.JS_2_0,
-      comment: 'Rewrites directory-style blog URIs to their index.html',
+      comment: 'Redirects www to the apex, then rewrites directory-style blog URIs',
       code: FunctionCode.fromInline(`
 function handler(event) {
   var request = event.request;
+${wwwRedirect}
   var uri = request.uri;
   if (uri.charAt(uri.length - 1) === '/') {
     request.uri = uri + 'index.html';
@@ -145,6 +197,16 @@ function handler(event) {
 }
 `),
     });
+
+    // The redirect runs on the site's own pages, not on /api/contact — the
+    // contact form posts to whichever host the page was served from, and a 301
+    // on a POST is not something to make a browser walk through.
+    const rootBehavior = {
+      ...defaultBehavior,
+      functionAssociations: [
+        { function: apexRedirect, eventType: FunctionEventType.VIEWER_REQUEST },
+      ],
+    };
 
     const blogBehavior = {
       ...defaultBehavior,
@@ -249,7 +311,7 @@ function handler(event) {
     };
 
     new Distribution(this, 'SiteDistribution', {
-      defaultBehavior,
+      defaultBehavior: rootBehavior,
       additionalBehaviors: {
         '/blog': blogBehavior,
         '/blog/*': blogBehavior,
@@ -349,9 +411,9 @@ function handler(event) {
       ],
       distribution,
       // Hashed assets are immutable and media is served from a stable URL, so
-      // index.html and the blog's HTML are the only objects that ever need
-      // evicting from the edge.
-      distributionPaths: ['/index.html', '/blog/*'],
+      // index.html, the blog's HTML, and the plain-text mirrors beside them are
+      // the only objects that ever need evicting from the edge.
+      distributionPaths: ['/index.html', '/index.md', '/llms.txt', '/llms-full.txt', '/blog/*'],
     });
 
     // The blog's images and CSS live in dist/assets, so publish those first.

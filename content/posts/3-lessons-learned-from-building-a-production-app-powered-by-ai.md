@@ -5,6 +5,7 @@ slug: "3-lessons-learned-from-building-a-production-app-powered-by-ai"
 tags: ["software-development", "ai"]
 mediumUrl: "https://medium.com/@shanehobson1/3-lessons-learned-from-building-a-production-app-powered-by-ai-2dfa87d1b467"
 excerpt: "Building a road trip planning app powered by AI sounded simple, until users were staring at a blank screen for 30 seconds waiting for their trip to load."
+description: "Three lessons from shipping an AI travel planner: streaming NDJSON with structured tool calls, iterating hard on prompts, and usage tiers that cap cost."
 ---
 Building a road trip planning app powered by AI sounded simple, until users were staring at a blank screen for 30 seconds waiting for their trip to load.
 
