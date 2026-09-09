@@ -71,12 +71,20 @@ carefully before deploying.
   the Vite build.
 - **`MediaBucket`** — private, owned by the stack, holds images and video (see
   below)
-- **CloudFront distribution** `EEN9EO2INB4OB`, adopted with `cdk import`. OAC
-  on both buckets, aliased to `shanehobson.me` and `www.shanehobson.me`.
-  `/images/*` and `/video/*` route to the media bucket; everything else to the
-  site bucket.
-- **CloudFront Function** rewriting the blog's pretty URLs to `/index.html`
+- **CloudFront distribution**, adopted with `cdk import`. OAC on both buckets,
+  aliased to `shanehobson.me` and `www.shanehobson.me`. `/images/*` and
+  `/video/*` route to the media bucket; everything else to the site bucket.
+- **CloudFront Functions** — one redirecting `www` to the apex with a 301, one
+  doing that and rewriting the blog's pretty URLs to `/index.html`. CloudFront
+  allows a single viewer-request function per cache behaviour, which is why the
+  redirect is inlined into both rather than sitting in a third.
 - **ACM certificate** in `us-east-1`, referenced by ARN
+
+The distribution, its OAC and the certificate were all created before the stack
+existed and are referenced, not owned. Their ids live in `config.local.ts`
+rather than in tracked source — they are not credentials, but they name live
+infrastructure and the certificate ARN carries the account id. See
+`config.example.ts` for the AWS CLI calls that read each one back.
 - **`SiteEmailIdentity`** — SES domain identity for `shanehobson.me`, with a
   `mail.shanehobson.me` custom MAIL FROM, plus a `_dmarc` TXT record, all in
   the Route 53 hosted zone (referenced by ID, not owned)

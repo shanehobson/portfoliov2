@@ -9,6 +9,28 @@ export const localConfig = {
    */
   profile: "default",
 
+  /* ---- Adopted resources -------------------------------------------- */
+  /*
+   * The distribution, its OAC and the certificate were created in the console
+   * and adopted with `cdk import`; the stack references all three rather than
+   * creating them. Their ids are not secrets — none of them is usable without
+   * credentials for the account above — but they name real infrastructure, and
+   * an account id is the one value in this file that appears verbatim in an
+   * ARN. They live here so a public repo does not publish the inventory.
+   *
+   * Read them back with:
+   *   aws cloudfront list-distributions \
+   *     --query "DistributionList.Items[?Aliases.Items[0]=='example.com']"
+   *   aws cloudfront list-origin-access-controls
+   *   aws acm list-certificates --region us-east-1
+   */
+  distributionId: "E000000000000",
+  distributionDomainName: "d000000000000.cloudfront.net",
+  originAccessControlId: "E000000000000",
+  /** Must be in us-east-1, whatever region the stack runs in. */
+  certificateArn:
+    "arn:aws:acm:us-east-1:000000000000:certificate/00000000-0000-0000-0000-000000000000",
+
   /* ---- Contact form ------------------------------------------------- */
   /** Domain SES signs mail for. Must be the hosted zone above. */
   sendingDomain: "example.com",

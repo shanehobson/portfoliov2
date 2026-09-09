@@ -33,8 +33,18 @@ export interface PortfolioDeployStackProps extends StackProps {
   domainName: string;
   hostedZoneId: string;
   bucketName: string;
+  /*
+   * The distribution, its origin access control and the certificate all
+   * predate the stack and are adopted rather than created. Their ids come from
+   * the gitignored config.local.ts, not from source: they are not credentials,
+   * but they name live infrastructure and the certificate ARN carries the
+   * account id, and none of that needs publishing with the repo.
+   */
   distributionId: string;
   distributionDomainName: string;
+  originAccessControlId: string;
+  /** ACM certificate for the aliases below. Must live in us-east-1. */
+  certificateArn: string;
   sourcePath: string;
   /** Domain SES signs contact mail for — the hosted zone above. */
   sendingDomain: string;
@@ -79,8 +89,8 @@ export class PortfolioDeployStack extends Stack {
     });
 
     // The live distribution, transcribed property-for-property from
-    // `aws cloudfront get-distribution-config --id EEN9EO2INB4OB` so it can be
-    // adopted with `cdk import`. Nothing here creates or replaces anything: the
+    // `aws cloudfront get-distribution-config --id <distributionId>` so it can
+    // be adopted with `cdk import`. Nothing here creates or replaces anything: the
     // import binds this logical ID to the existing distribution, and every
     // property below already holds on it.
     //
@@ -98,7 +108,7 @@ export class PortfolioDeployStack extends Stack {
     const originAccessControl = S3OriginAccessControl.fromOriginAccessControlId(
       this,
       'SiteOriginAccessControl',
-      'E2PP8QRV8Q8F4C'
+      props.originAccessControlId
     );
 
     const siteOrigin = S3BucketOrigin.withOriginAccessControl(siteBucket, {
@@ -321,7 +331,7 @@ ${wwwRedirect}
       certificate: Certificate.fromCertificateArn(
         this,
         'SiteCertificate',
-        'arn:aws:acm:us-east-1:730335671883:certificate/d2493128-1354-4f5a-90fd-0cb06773edf0'
+        props.certificateArn
       ),
       sslSupportMethod: SSLMethod.SNI,
       minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2021,
