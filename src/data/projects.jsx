@@ -203,12 +203,9 @@ const projects = [
     body: [
       "A website built for a Denver, Colorado nail salon using NextJS. This site contains an email contact form built on top of NextJS Api Routes and Nodemailer. The site uses Incremental Static Regeneration (ISR) to achieve fast page loads while maintaining content freshness.",
     ],
-    links: [
-      {
-        label: "Explore the app",
-        href: "https://nails-git-main-shane-hobsons-projects.vercel.app/",
-      },
-    ],
+    // No link: the deployment is gone. The walkthrough below is the only
+    // record of it now, which is why the entry stays.
+    links: [],
     media: {
       kind: "video",
       src: "/video/nightingale-nails.mp4",
