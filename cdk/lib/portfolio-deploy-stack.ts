@@ -131,19 +131,17 @@ export class PortfolioDeployStack extends Stack {
     const wwwRedirect = `
   var host = request.headers.host && request.headers.host.value;
   if (host && host.indexOf('www.') === 0) {
-    // JS 2.0 hands the query string over as a parsed, decoded object with no
-    // raw form, so carrying it across the redirect means rebuilding it, and
-    // re-encoding: a decoded '&' in a value would otherwise split into two.
+    // JS 2.0 splits the query string into an object with no raw form, so
+    // carrying it across the redirect means rebuilding it. The pieces come
+    // through still percent-encoded, verified against the deployed function:
+    // ?utm_source=a%20b arrives as the five characters 'a%20b', so encoding
+    // them again here is what turns it into 'a%2520b'. Pass them through.
     var query = '';
     for (var key in request.querystring) {
       var param = request.querystring[key];
       var values = param.multiValue || [param];
       for (var i = 0; i < values.length; i++) {
-        query +=
-          (query ? '&' : '?') +
-          encodeURIComponent(key) +
-          '=' +
-          encodeURIComponent(values[i].value);
+        query += (query ? '&' : '?') + key + '=' + values[i].value;
       }
     }
     return {
