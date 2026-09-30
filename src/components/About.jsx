@@ -59,7 +59,7 @@ const About = () => (
         <p>
           I&rsquo;m a software engineer with a decade of experience building
           applications for the web. My work spans frontend engineering, backend
-          engineering, and cloud infrastructure.
+          engineering, cloud infrastructure, and AI engineering.
         </p>
         <p>
           I currently consult for a Fortune 100 media company, where I&rsquo;m
