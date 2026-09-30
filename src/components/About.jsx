@@ -65,8 +65,8 @@ const About = () => (
           I currently consult for a Fortune 100 media company, where I&rsquo;m
           helping build an advertising platform responsible for managing more
           than a billion dollars in annual ad revenue. My work focuses on
-          solving complex, business-critical problems with intuitive software
-          solutions.
+          solving complex, business-critical problems with intuitive and reliable
+          software.
         </p>
         <p>
           Outside of work, I build software, experiment with new technologies,
