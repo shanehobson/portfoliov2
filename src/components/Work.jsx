@@ -11,10 +11,6 @@ const Work = () => (
             Work
           </h2>
         </div>
-        <p className="section-lede">
-          Built for clients, for friends, and for the fun of it &mdash; from
-          multi-tenant SaaS platforms to small tools that do one thing well.
-        </p>
       </header>
 
       <div className="work-list">
