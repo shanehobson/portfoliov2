@@ -1,5 +1,11 @@
 [
   {
+    "title": "A Software Engineer’s Guide to Agents",
+    "date": "2026-10-22",
+    "path": "/blog/a-software-engineers-guide-to-agents/",
+    "readingTime": 31
+  },
+  {
     "title": "A Software Engineer’s Guide to Large Language Models",
     "date": "2026-09-02",
     "path": "/blog/a-software-engineers-guide-to-large-language-models/",
@@ -10,11 +16,5 @@
     "date": "2026-07-30",
     "path": "/blog/how-react-renders-components-a-deep-dive-into-fiber/",
     "readingTime": 21
-  },
-  {
-    "title": "How Angular Renders Components: A Deep Dive Into Ivy",
-    "date": "2026-06-23",
-    "path": "/blog/angular-rendering-under-the-hood/",
-    "readingTime": 15
   }
 ]
