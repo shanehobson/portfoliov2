@@ -80,51 +80,6 @@ const projects = [
     },
   },
   {
-    id: "workout-tracker",
-    title: "Workout Tracker",
-    tags: ["Angular", "D3", "Node.js", "Express", "MongoDB"],
-    body: [
-      "Workout Tracker allows the user to keep a daily log of their workouts and provides the user with analytics concerning the frequency and intensity of their workouts, along with the relative distribution of exercise types and body part usage. The app uses the D3 data visualization framework to build graphs and charts giving the user real-time and historic information on their workouts and workout patterns. The app features a chart showing the user's activity over the previous 365-day period, which was inspired by the Github annual contributions chart. The front-end of Workout Tracker was built using Angular, and the backend was built using Node.js, Express, and a MongoDB cloud database.",
-    ],
-    links: [
-      {
-        label: "Front-end source",
-        href: "https://github.com/shanehobson/workout-tracker",
-      },
-      {
-        label: "Backend source",
-        href: "https://github.com/shanehobson/workout-tracker-api",
-      },
-    ],
-    media: {
-      kind: "video",
-      src: "/video/workout-tracker-video.mp4",
-      poster: "/images/workout-tracker-poster.webp",
-      alt: "A demo of the Workout Tracker analytics charts",
-    },
-  },
-  {
-    id: "blog-cms",
-    title: "Blog Content Management System",
-    tags: ["Angular", "Node.js", "Express", "MongoDB", "AWS"],
-    body: [
-      "This web application allows content creators to create a multimedia blog post in less than five minutes. Users have the ability to create blog posts containing text, images, and video. The blog posts can be edited or deleted by the author at any time. The app was built using the MEAN stack (MongoDB, Express.js, Angular, and Node.js). The app uses AWS services for file storage and content delivery.",
-      "Check out the video to see the system in action and watch me create, edit, and delete a blog post in three minutes.",
-    ],
-    links: [
-      {
-        label: "View source",
-        href: "https://github.com/shanehobson/pitching-theory-app",
-      },
-    ],
-    media: {
-      kind: "video",
-      src: "/video/app-demo-1.mp4",
-      poster: "/images/pitching-theory-poster.webp",
-      alt: "A demo of creating a blog post in the CMS",
-    },
-  },
-  {
     id: "invoice-generator",
     title: "Invoice Generator",
     tags: ["React", "Redux", "Node.js", "Express", "AWS S3"],
@@ -173,6 +128,22 @@ const projects = [
     },
   },
   {
+    id: "bkb-co",
+    title: "BKB & Co.",
+    tags: ["Astro", "Preact", "Shopify", "AWS CDK"],
+    body: [
+      "An online store built for a clothing boutique in Naples, Florida. Shoppers can browse by category, filter by size, price, and availability, and add items to a cart that slides in beside the page, so they never lose their place.",
+      "The storefront is a static Astro site with Preact islands for the interactive pieces, backed by the Shopify Storefront API. Shopify handles checkout, and the owner manages products, stock, and orders in the Shopify admin. The site is deployed on AWS via CDK.",
+    ],
+    links: [{ label: "Explore the site", href: "https://shopbkbco.com/" }],
+    media: {
+      kind: "video",
+      src: "/video/bkb-co.mp4",
+      poster: "/images/bkb-co-poster.webp",
+      alt: "A walkthrough of the BKB & Co. online store",
+    },
+  },
+  {
     id: "max-manicure",
     title: "Max Manicure",
     tags: ["Astro", "AWS CDK"],
@@ -194,6 +165,51 @@ const projects = [
       src: "/video/max-manicure.mp4",
       poster: "/images/max-manicure-poster.webp",
       alt: "A walkthrough of the Max Manicure website",
+    },
+  },
+  {
+    id: "workout-tracker",
+    title: "Workout Tracker",
+    tags: ["Angular", "D3", "Node.js", "Express", "MongoDB"],
+    body: [
+      "Workout Tracker allows the user to keep a daily log of their workouts and provides the user with analytics concerning the frequency and intensity of their workouts, along with the relative distribution of exercise types and body part usage. The app uses the D3 data visualization framework to build graphs and charts giving the user real-time and historic information on their workouts and workout patterns. The app features a chart showing the user's activity over the previous 365-day period, which was inspired by the Github annual contributions chart. The front-end of Workout Tracker was built using Angular, and the backend was built using Node.js, Express, and a MongoDB cloud database.",
+    ],
+    links: [
+      {
+        label: "Front-end source",
+        href: "https://github.com/shanehobson/workout-tracker",
+      },
+      {
+        label: "Backend source",
+        href: "https://github.com/shanehobson/workout-tracker-api",
+      },
+    ],
+    media: {
+      kind: "video",
+      src: "/video/workout-tracker-video.mp4",
+      poster: "/images/workout-tracker-poster.webp",
+      alt: "A demo of the Workout Tracker analytics charts",
+    },
+  },
+  {
+    id: "blog-cms",
+    title: "Blog Content Management System",
+    tags: ["Angular", "Node.js", "Express", "MongoDB", "AWS"],
+    body: [
+      "This web application allows content creators to create a multimedia blog post in less than five minutes. Users have the ability to create blog posts containing text, images, and video. The blog posts can be edited or deleted by the author at any time. The app was built using the MEAN stack (MongoDB, Express.js, Angular, and Node.js). The app uses AWS services for file storage and content delivery.",
+      "Check out the video to see the system in action and watch me create, edit, and delete a blog post in three minutes.",
+    ],
+    links: [
+      {
+        label: "View source",
+        href: "https://github.com/shanehobson/pitching-theory-app",
+      },
+    ],
+    media: {
+      kind: "video",
+      src: "/video/app-demo-1.mp4",
+      poster: "/images/pitching-theory-poster.webp",
+      alt: "A demo of creating a blog post in the CMS",
     },
   },
   {

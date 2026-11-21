@@ -153,6 +153,10 @@ img {
   margin: $l-size 0 $s-size;
 }
 
+.blog-sidebar__host {
+  margin-top: $l-size;
+}
+
 .blog-sidebar__photo {
   display: block;
   width: 100%;
@@ -390,10 +394,6 @@ a:hover .blog-index__item-title {
     align-items: flex-start;
     gap: $m-size;
     margin-top: $m-size;
-
-    .blog-sidebar__label {
-      display: none;
-    }
   }
 
   .blog-sidebar__photo {

@@ -73,7 +73,7 @@ encode "$src/shane-cutout.png"  shane-cutout      "931x>" 80
 encode "$src/shane.png"         shane-avatar   "144x144^" 82 -gravity center -extent 144x144
 
 # Video posters: a frame from one second in, sized like the screenshots since
-# videos sit in the same panel. The homak.dev walkthroughs (zaera, max-manicure,
+# videos sit in the same panel. The homak.dev walkthroughs (zaera, bkb-co, max-manicure,
 # nightingale-nails, science-of-dance, odyssey, vault, lumina, hobson-electric)
 # are copied from ../homak/public/videos and replace the old screenshots for
 # those projects. Stella has a hand-picked poster in images-src, handled above.
@@ -85,6 +85,7 @@ posters=(
   "workout-tracker-video.mp4|workout-tracker-poster"
   "app-demo-1.mp4|pitching-theory-poster"
   "Invoice_Generator.mp4|invoice-generator-poster"
+  "bkb-co.mp4|bkb-co-poster"
   "max-manicure.mp4|max-manicure-poster"
   "nightingale-nails.mp4|nightingale-nails-poster"
   "science-of-dance.mp4|science-of-dance-poster"

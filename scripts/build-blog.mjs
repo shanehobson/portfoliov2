@@ -373,7 +373,6 @@ function sidebar(posts, currentSlug) {
       <a class="blog-sidebar__title" href="/blog/">Shane Hobson<span>Software Engineering Blog</span></a>
 
       <div class="blog-sidebar__host">
-        <p class="blog-sidebar__label">Your host</p>
         <img
           class="blog-sidebar__photo"
           src="/images/shane.webp"
